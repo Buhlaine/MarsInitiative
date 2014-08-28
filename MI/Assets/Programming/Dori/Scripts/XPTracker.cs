@@ -37,8 +37,12 @@ public class XPTracker : MonoBehaviour
 		{
 			leftOverXP = currentXP - maxXP;
 
+			Debug.Log(player);
 			GameObject.Find(player).SendMessage ("RestartXPCounter", leftOverXP);
 			Debug.Log ("Leftover XP heading back to player: " + leftOverXP);
+			// This should be sent when the player chooses the ability to level up. Maybe GUI should send this to player?
+			GameObject.Find (player).transform.GetChild(0).SendMessage ("Changed");
+			GameObject.Find (player).transform.GetChild(1).SendMessage ("Changed");
 			GameObject.Find(player).SendMessage ("ReceiveLevelUp");
 		}
 

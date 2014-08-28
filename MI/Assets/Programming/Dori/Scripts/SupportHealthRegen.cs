@@ -6,7 +6,9 @@ public class SupportHealthRegen : MonoBehaviour
 {
 	public float regenAmount;
 	public float regenCounter;
-	public int regenDuration;
+	public float regenDurationUpgrade = 10.0f;
+	public float regenRadiusUpgrade = 0.5f;
+	public float regenDuration;
 	public int currentAbilityLevel;
 	
 	public bool isRegen;
@@ -28,18 +30,18 @@ public class SupportHealthRegen : MonoBehaviour
 	{
 		// Sphere Collider radius and regenAmount changes depending on player level
 		if (currentAbilityLevel == 1) {
-			regenDuration = 10;
-			sphereCollider.radius = 0.5f;
+			regenDuration += regenDurationUpgrade;
+			sphereCollider.radius += regenRadiusUpgrade;
 			regenAmount = player.GetComponent<Player>().maxHealth * 0.06f;
 		}
 		if (currentAbilityLevel == 2) {
-			regenDuration = 15;
-			sphereCollider.radius = 2.0f;
+			regenDuration += regenDurationUpgrade;
+			sphereCollider.radius += regenRadiusUpgrade;
 			regenAmount = player.GetComponent<Player>().maxHealth * 0.12f;
 		}
 		if (currentAbilityLevel == 3) {
-			regenDuration = 30;
-			sphereCollider.radius = 5.0f;
+			regenDuration += regenDurationUpgrade;
+			sphereCollider.radius += regenRadiusUpgrade;
 			regenAmount = player.GetComponent<Player>().maxHealth * 0.24f;
 		}
 

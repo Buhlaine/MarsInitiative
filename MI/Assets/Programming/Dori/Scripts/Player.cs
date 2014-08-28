@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Player : MonoBehaviour 
 {
-	public int ammo;
+	public float ammo;
 	public int xp;
 	public int kills;
 	public int deaths;
@@ -16,6 +16,7 @@ public class Player : MonoBehaviour
 	public float defaultSpeed = 5.0f;
 
 	private XPTracker xptracker;
+	private GameObject ammoObject;
 	
 	void Start()
 	{
@@ -33,6 +34,8 @@ public class Player : MonoBehaviour
 		ArrayList playerInfo = new ArrayList();
 		playerInfo.Add (this.gameObject.name);
 		playerInfo.Add (this.gameObject.tag);
+
+		ammoObject = this.gameObject.transform.FindChild ("AmmoRegen").gameObject;
 
 		xptracker.SendMessage ("StorePlayer", playerInfo);
 	}
@@ -117,10 +120,26 @@ public class Player : MonoBehaviour
 	}
 
 	// TEST DEFENSE SECTION
-	void AmmoRegen(int _amount)
+	void AmmoRegen(float _amount)
 	{
-		Debug.Log ("Ammo Amount: " + _amount);
 		ammo += _amount;
+	}
+
+	void CheckRegenAmount(int _abilityLevel)
+	{
+		float regenAmount = 0.0f;
+
+		if (_abilityLevel == 1) {
+			regenAmount = maxAmmo * 0.06f;
+		}
+		if (_abilityLevel == 2) {
+			regenAmount = maxAmmo * 0.12f;
+		}
+		if (_abilityLevel == 3) {
+			regenAmount = maxAmmo * 0.24f;
+		}
+
+		ammoObject.SendMessage ("RecieveRegenAmount", regenAmount);
 	}
 	
 	// TEST OFFENSE SECTION

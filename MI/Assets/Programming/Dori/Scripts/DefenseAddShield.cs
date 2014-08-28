@@ -4,11 +4,15 @@ using System.Collections.Generic;
 
 public class DefenseAddShield : MonoBehaviour 
 {
-	public float shieldCounter;
-	public float shieldDuration;
 	public int currentAbilityLevel;
+	public float shieldCounter;
+	public float shieldDuration = 0.0f;
+	public float shieldRadius;
+	public float shieldUpgradeAmount = 10.0f;
+	public float shieldUpgradeRadius = 1.0f;
 	
 	public bool isShielded;
+	public bool hasChanged;
 	
 	private SphereCollider sphereCollider;
 	private List<GameObject> BlueInRadius = new List<GameObject>();	
@@ -20,25 +24,13 @@ public class DefenseAddShield : MonoBehaviour
 		currentAbilityLevel = 1;
 
 		sphereCollider = this.transform.GetComponent<SphereCollider> ();
+
+		CheckStats ();
 	}
 
 	void Update()
 	{
-		// Duration of shield is based on player level
-		if (currentAbilityLevel == 1) {
-			shieldDuration = 10.0f;
-			sphereCollider.radius = 0.5f;
-		}
-		if (currentAbilityLevel == 2) {
-			shieldDuration = 15.0f;
-			sphereCollider.radius = 2.0f;
-		}
-		if (currentAbilityLevel == 3) {
-			shieldDuration = 30.0f;
-			sphereCollider.radius = 5.0f;
-		}
-
-		if (Input.GetKeyDown (KeyCode.Q)) {
+		if (Input.GetKeyDown (KeyCode.Q) && !isShielded) {
 			isShielded = true;
 		}
 
@@ -54,7 +46,7 @@ public class DefenseAddShield : MonoBehaviour
 
 			// Turn sphere colliders on (they are on layermask "Ignore Raycast")
 			sphereCollider.enabled = true;
-			gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
+			gameObject.transform.parent.gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
 			
 			foreach (GameObject teammates in BlueInRadius) {
 				// Store players within range into a second list 
@@ -75,6 +67,37 @@ public class DefenseAddShield : MonoBehaviour
 			}
 			// Clear the second list for a new batch of players in range
 			BlueShielded.Clear();
+		}
+	}
+
+	void CheckStats()
+	{
+		if (currentAbilityLevel == 1) {
+			shieldDuration = shieldUpgradeAmount;
+			sphereCollider.radius = shieldUpgradeRadius;
+			shieldRadius = sphereCollider.radius;
+		}
+		if (currentAbilityLevel == 2) {
+			shieldDuration += shieldUpgradeAmount;
+			sphereCollider.radius += shieldUpgradeRadius;
+			shieldRadius = sphereCollider.radius;
+		}
+		if (currentAbilityLevel == 3) {
+			shieldDuration += shieldUpgradeAmount;
+			sphereCollider.radius += shieldUpgradeRadius;
+			shieldRadius = sphereCollider.radius;
+		}
+
+		hasChanged = false;
+	}
+
+	void Changed()
+	{
+		hasChanged = true;
+		
+		if (hasChanged) {
+			Debug.Log ("Checking Stats...");
+			CheckStats();
 		}
 	}
 	

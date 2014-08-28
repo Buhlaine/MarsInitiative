@@ -6,7 +6,9 @@ public class SupportSpeedBoost : MonoBehaviour
 {
 	public float speedBoostAmount;
 	public float boostCounter;
-	public int speedBoostDuration;
+	public float boostDurationUpgrade = 10.0f;
+	public float boostRadiusUpgrade = 0.5f;
+	public float speedBoostDuration;
 	public int currentAbilityLevel;
 
 	public bool isBoosted = false;
@@ -33,16 +35,16 @@ public class SupportSpeedBoost : MonoBehaviour
 	{
 		// Duration time is set based on ability level
 		if (currentAbilityLevel == 1) {
-			sphereCollider.radius = 0.5f;
-			speedBoostDuration = 10;
+			sphereCollider.radius += boostRadiusUpgrade;
+			speedBoostDuration += boostDurationUpgrade;
 		}
 		if (currentAbilityLevel == 2) {
-			sphereCollider.radius = 2.0f;
-			speedBoostDuration = 15;
+			sphereCollider.radius += boostRadiusUpgrade;
+			speedBoostDuration += boostDurationUpgrade;
 		}
 		if (currentAbilityLevel == 3) {
-			sphereCollider.radius = 5.0f;
-			speedBoostDuration = 30;
+			sphereCollider.radius += boostRadiusUpgrade;
+			speedBoostDuration += boostDurationUpgrade;
 		}
 
 		if (Input.GetKeyDown (KeyCode.Q) && !isBoosted) {

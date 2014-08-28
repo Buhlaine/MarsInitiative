@@ -4,12 +4,15 @@ using System.Collections.Generic;
 
 public class OffenseCamo : MonoBehaviour 
 {
+	public int currentAbilityLevel;
 	public float decreasedSpeed;
 	public float camoCounter;
-	public int camoDuration;
-	public int currentAbilityLevel;
-
+	public float camoDuration = 0.0f;
+	public float camoDurationUpdrade = 10.0f;
+	public float camoRadiusUpgrade = 1.0f;
+	
 	public bool isCamo;
+	public bool hasChanged;
 
 	private Player player;
 	private SphereCollider sphereCollider;
@@ -27,23 +30,12 @@ public class OffenseCamo : MonoBehaviour
 
 		float sixpercent = player.defaultSpeed * 0.06f;
 		decreasedSpeed = player.defaultSpeed - sixpercent;
+
+		CheckStats ();
 	}
 
 	void Update()
 	{
-		if (currentAbilityLevel == 1) {
-			sphereCollider.radius = 0.5f;
-			camoDuration = 10;
-		}
-		if (currentAbilityLevel == 2) {
-			sphereCollider.radius = 2.0f;
-			camoDuration = 20;
-		}
-		if (currentAbilityLevel == 3) {
-			sphereCollider.radius = 5.0f;
-			camoDuration = 35;
-		}
-
 		if(Input.GetKeyDown (KeyCode.E)) {
 			isCamo = true;
 		}
@@ -73,6 +65,34 @@ public class OffenseCamo : MonoBehaviour
 			}
 			// Clear 
 			BlueCamo.Clear();
+		}
+	}
+
+	void CheckStats()
+	{
+		if (currentAbilityLevel == 1) {
+			camoDuration = camoDurationUpdrade;
+			sphereCollider.radius = camoRadiusUpgrade;
+		}
+		if (currentAbilityLevel == 2) {
+			camoDuration += camoDurationUpdrade;
+			sphereCollider.radius += camoRadiusUpgrade;
+		}
+		if (currentAbilityLevel == 3) {
+			camoDuration += camoDurationUpdrade;
+			sphereCollider.radius += camoRadiusUpgrade;
+		}
+		
+		hasChanged = false;
+	}
+	
+	void Changed()
+	{
+		hasChanged = true;
+		
+		if (hasChanged) {
+			Debug.Log ("Checking Stats...");
+			CheckStats();
 		}
 	}
 

@@ -4,16 +4,20 @@ using System.Collections.Generic;
 
 public class OffenseMarkEnemy : MonoBehaviour 
 {
-	public float markDuration;
-	public float markCounter;
 	public int currentAbilityLevel;
+	public float markDuration = 0.0f;
+	public float markCounter;
 	public string marked;
+	public float markDurationUpgrade = 10.0f;
 
 	public bool isMarking;
+	public bool hasChanged;
 
 	void Start()
 	{
 		currentAbilityLevel = 1;
+
+		CheckStats ();
 	}
 	
 	void Update()
@@ -33,13 +37,13 @@ public class OffenseMarkEnemy : MonoBehaviour
 
 		// Set duration of mark depending on ability level
 		if(currentAbilityLevel == 1) {
-			markDuration = 10.0f;
+			markDuration += markDurationUpgrade;
 		}
 		if(currentAbilityLevel == 2) {
-			markDuration = 15.0f;
+			markDuration += markDurationUpgrade;
 		}
 		if(currentAbilityLevel == 3) {
-			markDuration = 30.0f;
+			markDuration += markDurationUpgrade;
 		}
 
 		// Start Counter
@@ -58,6 +62,31 @@ public class OffenseMarkEnemy : MonoBehaviour
 			markCounter = 0;
 			isMarking = false;
 			marked = null;
+		}
+	}
+
+	void CheckStats()
+	{
+		if (currentAbilityLevel == 1) {
+			markDuration = markDurationUpgrade;
+		}
+		if (currentAbilityLevel == 2) {
+			markDuration += markDurationUpgrade;
+		}
+		if (currentAbilityLevel == 3) {
+			markDuration += markDurationUpgrade;
+		}
+		
+		hasChanged = false;
+	}
+	
+	void Changed()
+	{
+		hasChanged = true;
+		
+		if (hasChanged) {
+			Debug.Log ("Checking Stats...");
+			CheckStats();
 		}
 	}
 }
