@@ -2,4 +2,5 @@ MarsInitiative
 ==============
 
 Ripository for Senior Project
-./skynet
+./skynet2.0
+lel
