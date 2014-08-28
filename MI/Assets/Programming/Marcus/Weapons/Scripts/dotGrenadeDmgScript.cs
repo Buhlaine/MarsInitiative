@@ -13,6 +13,7 @@ public class dotGrenadeDmgScript : MonoBehaviour //Put this on the actual explos
 	public float speedReduction;  //the amount a player is slowed in the dot field
 	public bool isDot = false;
 	public bool isConcussion = false;
+
 	public float dotDmgTime = 0.0f;
 	public float dotTic = 0.1f; //the amount of time in seconds for every damage tic
 

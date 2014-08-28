@@ -7,6 +7,18 @@ public class DamageController : MonoBehaviour {
 	public float deathDelay = 0.0f;
 	public Transform explosion;
 
+
+	float dotTic = 0.5f;
+	float dotDuration = 5.0f;
+	int dotDmg = 1;
+	private bool isDamaging;
+
+	void Start()
+	{
+		isDamaging = true;
+	}
+	
+
 	int ApplyDamage(int damage)
 	{
 		//check if object is already dead
@@ -22,5 +34,28 @@ public class DamageController : MonoBehaviour {
 			Destroy(this.gameObject, deathDelay);
 		}
 		return hitPoints;
+	}
+
+	void ApplyDotDamage(float creationTime)
+	{
+		for (float i = creationTime; i <= (dotDuration+creationTime); i += Time.deltaTime)
+		{
+			StartCoroutine(doDotDmg(dotTic));
+		}
+	}
+
+	IEnumerator doDotDmg(float seconds)
+	{
+		Debug.Log ("coroutine" + seconds);
+		Debug.Log(dotDuration);
+		if(isDamaging)
+		{
+			hitPoints -= dotDmg;
+			isDamaging = false;
+			yield return new WaitForSeconds (seconds);
+			isDamaging = true;
+		}
+
+		
 	}
 }

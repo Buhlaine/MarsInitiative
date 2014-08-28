@@ -60,36 +60,14 @@ public class grenadeExplosionScript : MonoBehaviour
 				{
 					damage *= proximity;
 				}
-				
-				
+				else if (isDot)
+				{
+						//StartCoroutine(dotDmg(dotTic,hit));
+					doDotDmg(hit);
+				}
 				hit.rigidbody.AddExplosionForce(force, grenadePosition, explosionRadius, explosiveLift);
 				hit.collider.SendMessageUpwards("ApplyDamage", damage, SendMessageOptions.DontRequireReceiver);
-				if (isDot)
-				{
-					//for(dotDuration = creationTime;dotDuration <= (dotDmgTime+creationTime);dotDuration += Time.deltaTime) //while (dotDuration <= (dotDmgTime+creationTime))
-					//{
-						//method 1
-						StartCoroutine(dotDmg(dotTic,hit));
-						//hit.collider.SendMessageUpwards("ApplyDamage", damage, SendMessageOptions.DontRequireReceiver);
-						//hit.collider.SendMessageUpwards("slowField", speedReduction, SendMessageOptions.DontRequireReceiver);
 
-
-						//method 2
-						//if(dotTic > 0)
-						//{
-						//	dotTic -= Time.deltaTime;
-						//}
-						//else if(dotTic <= 0)
-						//{
-						//	hit.collider.SendMessageUpwards("ApplyDamage", damage, SendMessageOptions.DontRequireReceiver);
-						//	hit.collider.SendMessageUpwards("slowField", speedReduction, SendMessageOptions.DontRequireReceiver);
-						//	dotTic = dotTicSet;
-						//	//StartCoroutine(dotDmg(dotTicSet));
-						//}
-						//dotDuration += Time.deltaTime;
-					//}
-					
-				}
 			}
 		}
 		//put these in another script to delete the grenade and instatiate the explosion seems to be messing with the coroutine
@@ -98,6 +76,10 @@ public class grenadeExplosionScript : MonoBehaviour
 		
 	}
 
+	void doDotDmg(Collider hit)
+	{
+		hit.SendMessageUpwards ("ApplyDotDamage",creationTime, SendMessageOptions.DontRequireReceiver);
+	}
 
 	IEnumerator dotDmg(float seconds, Collider hit)
 	{
