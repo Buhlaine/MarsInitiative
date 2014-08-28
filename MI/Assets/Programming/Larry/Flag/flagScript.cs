@@ -26,7 +26,6 @@ public class flagScript : MonoBehaviour {
 		if(dist1.magnitude > dist2.magnitude)
 		{
 			this.homePos = initialPos[1].transform.position;
-			//enemyFlag = flagTest[0];
 		}
 		else
 		{
@@ -45,6 +44,7 @@ public class flagScript : MonoBehaviour {
 			enemyTeam = "Blue";
 			homeTeam = "Red";
 		}
+		this.transform.position = homePos;
 	}
 	
 	// Update is called once per frame
@@ -57,7 +57,6 @@ public class flagScript : MonoBehaviour {
 			enemyPlayer.SendMessage("setCarriedFlag", this.gameObject as GameObject);
 		}
 
-		//Debug.Log (dropped);
 	}
 
 	void OnTriggerStay(Collider colliderInfo)
@@ -66,8 +65,9 @@ public class flagScript : MonoBehaviour {
 		{
 			if(colliderInfo.gameObject.tag == enemyTeam)
 			{
+				//May be removed.
+				//had issues during testing where dead player picked flag up
 				colliderInfo.gameObject.SendMessage("areYouAlive", this.gameObject as GameObject);
-				//followPlayer(colliderInfo.gameObject);
 			}
 			else if(colliderInfo.gameObject.tag == homeTeam)
 			{

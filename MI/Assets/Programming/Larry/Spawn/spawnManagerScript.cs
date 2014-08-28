@@ -5,27 +5,18 @@ using System.Collections.Generic;
 public class spawnManagerScript : MonoBehaviour 
 {
 	Dictionary<GameObject, int> allSpawns = new Dictionary<GameObject, int> ();
-	//GameObject[] spawnPoints;
-	ArrayList spawnPoints;
-	ArrayList possibleSpawns;
+	GameObject[] spawnPoints;
+	List<GameObject> possibleSpawns = new List<GameObject> ();
 	public GameObject playerGO;
 	GameObject finalSpawnPos;
-	//int spawnWeight = 1000;
+	int spawnWeight = 1000;
 
 	//Testing stuff
 	//int playerNumber = 5;
 	
 	void Start () 
 	{
-		spawnPoints = new ArrayList ();
-		GameObject[] spawnPoints1 = GameObject.FindGameObjectsWithTag ("spawnPoints");
-
-		foreach(GameObject GO in spawnPoints1)
-		{
-			spawnPoints.Add(GO);
-		}
-		possibleSpawns = new ArrayList ();
-		//Testing start spawn----------------------------------------------------------------
+//Testing start spawn----------------------------------------------------------------
 //		GameObject startSpawn = GameObject.FindGameObjectWithTag ("startSpawn");
 //		bool spawned = false;
 //		Vector2 startSpawns = new Vector2();
@@ -38,11 +29,14 @@ public class spawnManagerScript : MonoBehaviour
 //		}
 		//------------------------------------------------------------------------------------
 
-//		spawnPoints = GameObject.FindGameObjectsWithTag ("spawnPoints");
-//		foreach(GameObject GO in spawnPoints)
-//		{
-//			allSpawns.Add(GO, spawnWeight);
-//		}
+		//Aquiring all spawnPoints in the scene
+		spawnPoints = GameObject.FindGameObjectsWithTag ("spawnPoints");
+
+		//Putting spawns in a dictionary to associate spawn with its weight for choosing spawnPoint when spawn is requested
+		foreach(GameObject GO in spawnPoints)
+		{
+			allSpawns.Add(GO, spawnWeight);
+		}
 	}
 
 	void Update () 
@@ -54,23 +48,6 @@ public class spawnManagerScript : MonoBehaviour
 		{
 			checkSpawn(playerGO);
 		}
-		if(Input.GetKeyDown(KeyCode.I))
-		{
-			Debug.Log(allSpawns.Count);
-			spawnPoints.TrimToSize();
-			Debug.Log(spawnPoints.Count);
-		}
-		if(Input.GetKeyDown(KeyCode.H))
-		{
-			foreach(GameObject GO in spawnPoints)
-			{
-				Debug.Log(GO.name);
-			}
-		}
-		if(Input.GetKeyDown(KeyCode.C))
-		{
-			Debug.Log("-------------------------------------------------------------");
-		}
 	}
 
 	void checkSpawn(GameObject _requestor)
@@ -78,6 +55,7 @@ public class spawnManagerScript : MonoBehaviour
 		//_requestor.tag = "Blue";
 
 		//grabbing playerDetect script to access it's spawnWeight
+		//Might change this to recieve an array to avoid having to access script directly
 		playerDetect spawnWeight;
 		//iterating through all spawns
 		foreach(GameObject spawnP in spawnPoints)
@@ -95,67 +73,141 @@ public class spawnManagerScript : MonoBehaviour
 
 	void spawn(GameObject playerSpawning)
 	{
+		//used if multiple spawn points have the same weight
 		bool multiple = false;
 		//int posSpawncount = 0;
-		spawnPoints.TrimToSize ();
-		for(int i = 0; i < spawnPoints.Count; i++)
+
+		//going through all spawnPoints in array spawnPoints
+		foreach(GameObject GO in spawnPoints)
 		{
+			//if multiple spawnPoints have the same weight
 			if(multiple)
 			{
-				if(allSpawns[spawnPoints[i] as GameObject] > allSpawns[finalSpawnPos])
+				//if current spawnPoint, GO, has a higher spawnWeight
+				if(allSpawns[GO] > allSpawns[finalSpawnPos])
 				{
-					finalSpawnPos = spawnPoints[i] as GameObject;
+					//the finalSpawn is changed to GO
+					finalSpawnPos = GO;
+					//multiple is set to false
 					multiple = false;
-					//posSpawncount = 0;
+					//posSpawnPoints is cleared
+					possibleSpawns.Clear();
 				}
-				else if(allSpawns[spawnPoints[i] as GameObject] == allSpawns[finalSpawnPos])
+				//if current spawn has same weight
+				else if(allSpawns[GO] == allSpawns[finalSpawnPos])
 				{
-					possibleSpawns.Add(spawnPoints[i] as GameObject);
+					//add to list possibleSpawns
+					possibleSpawns.Add(GO);
 					//posSpawncount++;
 				}
 			}
+			//if multiple is false
 			else
 			{
+				//if finalSpawn isn't set
 				if(finalSpawnPos == null)
 				{
-					finalSpawnPos = spawnPoints[i] as GameObject;
+					//finalSpawn is set to current spawn
+					finalSpawnPos = GO;
 				}
+				//if finalSpawn is set
 				else
 				{
-					if(allSpawns[spawnPoints[i] as GameObject] == allSpawns[finalSpawnPos])
+					//if currentSpawn has same weight as finalSpawn and finalSpawn isn't the same object as currentSpawn
+					if(allSpawns[GO] == allSpawns[finalSpawnPos] && finalSpawnPos != GO)
 					{
+						//set multiple to true
 						multiple = true;
-						//possibleSpawns = new GameObject[8];
+						//Adds finalSpawn to possibleSpawns
 						possibleSpawns.Add(finalSpawnPos);
-						possibleSpawns.Add(spawnPoints[i] as GameObject);
-						//posSpawncount = 2;
+						//Adds currentSpawn to possibleSpawns
+						possibleSpawns.Add(GO);
 					}
-					else if(allSpawns[spawnPoints[i] as GameObject] > allSpawns[finalSpawnPos])
+					//if currentSpawns spawnWeight is greater
+					else if(allSpawns[GO] > allSpawns[finalSpawnPos])
 					{
-						finalSpawnPos = spawnPoints[i] as GameObject;
+						//finalSpawn is set to currentSpawn
+						finalSpawnPos = GO;
 					}
 				}
 			}
 		}
+//-----------------------------------------------------------------------------------------------------------------------
+		//For some reason I didnt think to use foreach
+		//Dumb me, fixed it up top. Leaving this part in for now just in case top doesn't work right
+//		for(int i = 0; i < spawnPoints.Length; i++)
+//		{
+//			if(multiple)
+//			{
+//				if(allSpawns[spawnPoints[i]] > allSpawns[finalSpawnPos])
+//				{
+//					finalSpawnPos = spawnPoints[i];
+//					multiple = false;
+//					//posSpawncount = 0;
+//				}
+//				else if(allSpawns[spawnPoints[i]] == allSpawns[finalSpawnPos])
+//				{
+//					possibleSpawns.Add(spawnPoints[i]);
+//					//posSpawncount++;
+//				}
+//			}
+//			else
+//			{
+//				if(finalSpawnPos == null)
+//				{
+//					finalSpawnPos = spawnPoints[i];
+//				}
+//				else
+//				{
+//					if(allSpawns[spawnPoints[i]] == allSpawns[finalSpawnPos])
+//					{
+//						multiple = true;
+//						//possibleSpawns = new GameObject[8];
+//						possibleSpawns.Add(finalSpawnPos);
+//						possibleSpawns.Add(spawnPoints[i]);
+//						//posSpawncount = 2;
+//					}
+//					else if(allSpawns[spawnPoints[i]] > allSpawns[finalSpawnPos])
+//					{
+//						finalSpawnPos = spawnPoints[i];
+//					}
+//				}
+//			}
+//		}
+//---------------------------------------------------------------------------------------------------------------------------
 
+		//if multiple is true
 		if(multiple)
 		{
-			possibleSpawns.TrimToSize();
+			//Make sure possibleSpawns count is accurate
+			possibleSpawns.TrimExcess();
+			//Get a random number to choose spawnPoint randomly
 			int randNum = Random.Range(0, possibleSpawns.Count - 1);
-			GameObject.Instantiate (playerSpawning, (possibleSpawns[randNum] as GameObject).transform.position, Quaternion.identity);
+			//Stand-in for actual spawning. Need to add check for different classes
+			GameObject.Instantiate (playerSpawning, possibleSpawns[randNum].transform.position, Quaternion.identity);
+			//Goes through each spawnPoint and request them to resetspawn so weight is accurate next time spawn is requested
 			foreach(GameObject GO in spawnPoints)
 			{
 				GO.SendMessage("resetWeight");
 			}
+			//Clear possibleSpawns so old spawns aren't included in new calculation
 			possibleSpawns.Clear();
+			//Make sure multiple is set to false
+			multiple = false;
 		}
 		else
 		{
+			//Stand-in for actual spawning. Need to add check for different classes
 			GameObject.Instantiate (playerSpawning, finalSpawnPos.transform.position, Quaternion.identity);
+			//Goes through each spawnPoint and request them to resetspawn so weight is accurate next time spawn is requested
 			foreach(GameObject GO in spawnPoints)
 			{
 				GO.SendMessage("resetWeight");
 			}
+			//Clear possibleSpawns so old spawns aren't included in new calculation
+			possibleSpawns.Clear();
+			//Make sure multiple is set to false
+			multiple = false;
 		}
 	}
 }

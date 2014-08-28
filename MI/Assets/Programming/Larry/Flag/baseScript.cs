@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class flagManager : MonoBehaviour {
+public class baseScript : MonoBehaviour {
 
 	GameObject teamFlag;
 	GameObject enemyFlag;
