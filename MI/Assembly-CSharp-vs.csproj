@@ -19,7 +19,7 @@
 	<DebugType>full</DebugType>
 	<Optimize>false</Optimize>
 	<OutputPath>Temp\bin\Debug\</OutputPath>
-	<DefineConstants>DEBUG;TRACE;UNITY_4_5_2;UNITY_4_5;UNITY_STANDALONE_WIN;ENABLE_MICROPHONE;ENABLE_TEXTUREID_MAP;ENABLE_UNITYEVENTS;ENABLE_NEW_HIERARCHY ;ENABLE_AUDIO_FMOD;UNITY_STANDALONE;ENABLE_MONO;ENABLE_TERRAIN;ENABLE_SUBSTANCE;ENABLE_GENERICS;INCLUDE_WP8SUPPORT;ENABLE_MOVIES;ENABLE_WWW;ENABLE_IMAGEEFFECTS;ENABLE_WEBCAM;INCLUDE_METROSUPPORT;RENDER_SOFTWARE_CURSOR;ENABLE_NETWORK;ENABLE_PHYSICS;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_2D_PHYSICS;ENABLE_SHADOWS;ENABLE_AUDIO;ENABLE_NAVMESH_CARVING;ENABLE_DUCK_TYPING;ENABLE_SINGLE_INSTANCE_BUILD_SETTING;ENABLE_PROFILER;UNITY_EDITOR;UNITY_EDITOR_WIN;UNITY_TEAM_LICENSE;UNITY_PRO_LICENSE</DefineConstants>
+	<DefineConstants>DEBUG;TRACE;UNITY_4_5_1;UNITY_4_5;UNITY_STANDALONE_WIN;ENABLE_MICROPHONE;ENABLE_TEXTUREID_MAP;ENABLE_UNITYEVENTS;ENABLE_NEW_HIERARCHY ;ENABLE_AUDIO_FMOD;UNITY_STANDALONE;ENABLE_MONO;ENABLE_TERRAIN;ENABLE_SUBSTANCE;ENABLE_GENERICS;INCLUDE_WP8SUPPORT;ENABLE_MOVIES;ENABLE_WWW;ENABLE_IMAGEEFFECTS;ENABLE_WEBCAM;INCLUDE_METROSUPPORT;RENDER_SOFTWARE_CURSOR;ENABLE_NETWORK;ENABLE_PHYSICS;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_2D_PHYSICS;ENABLE_SHADOWS;ENABLE_AUDIO;ENABLE_NAVMESH_CARVING;ENABLE_DUCK_TYPING;ENABLE_SINGLE_INSTANCE_BUILD_SETTING;ENABLE_PROFILER;UNITY_EDITOR;UNITY_EDITOR_WIN;UNITY_PRO_LICENSE</DefineConstants>
 	<ErrorReport>prompt</ErrorReport>
 	<WarningLevel>4</WarningLevel>
 	<NoWarn>0169</NoWarn>
@@ -46,6 +46,48 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Level Design\Plugins\Resources\Scripts\Blink.cs" />
+     <Compile Include="Assets\Level Design\Plugins\Resources\Scripts\ControlGameObject.cs" />
+     <Compile Include="Assets\Level Design\Plugins\Resources\Scripts\UpdateValues.cs" />
+     <Compile Include="Assets\Level Design\Plugins\SharpUnit\AssemblyInfo.cs" />
+     <Compile Include="Assets\Level Design\Plugins\SharpUnit\Assert.cs" />
+     <Compile Include="Assets\Level Design\Plugins\SharpUnit\TestCase.cs" />
+     <Compile Include="Assets\Level Design\Plugins\SharpUnit\TestException.cs" />
+     <Compile Include="Assets\Level Design\Plugins\SharpUnit\TestReporter.cs" />
+     <Compile Include="Assets\Level Design\Plugins\SharpUnit\TestResult.cs" />
+     <Compile Include="Assets\Level Design\Plugins\SharpUnit\TestSuite.cs" />
+     <Compile Include="Assets\Level Design\Plugins\SharpUnit\UnitTest.cs" />
+     <Compile Include="Assets\Level Design\Plugins\SharpUnit\Unity3D_TestReporter.cs" />
+     <Compile Include="Assets\Level Design\Plugins\SharpUnit\Unity3D_TestRunner.cs" />
+     <Compile Include="Assets\Level Design\Plugins\Sphero\CalibrateButton.cs" />
+     <Compile Include="Assets\Level Design\Plugins\Sphero\Joystick.cs" />
+     <Compile Include="Assets\Level Design\Plugins\Sphero\MonoPInvokeCallbackAttribute.cs" />
+     <Compile Include="Assets\Level Design\Plugins\Sphero\NoSpheroConnectedView.cs" />
+     <Compile Include="Assets\Level Design\Plugins\Sphero\Sphero.cs" />
+     <Compile Include="Assets\Level Design\Plugins\Sphero\SpheroAccelerometerData.cs" />
+     <Compile Include="Assets\Level Design\Plugins\Sphero\SpheroAndroid.cs" />
+     <Compile Include="Assets\Level Design\Plugins\Sphero\SpheroAttitudeData.cs" />
+     <Compile Include="Assets\Level Design\Plugins\Sphero\SpheroBackEMFData.cs" />
+     <Compile Include="Assets\Level Design\Plugins\Sphero\SpheroConnectionView.cs" />
+     <Compile Include="Assets\Level Design\Plugins\Sphero\SpheroDataStreamingMask.cs" />
+     <Compile Include="Assets\Level Design\Plugins\Sphero\SpheroDeviceAsyncMessage.cs" />
+     <Compile Include="Assets\Level Design\Plugins\Sphero\SpheroDeviceMessage.cs" />
+     <Compile Include="Assets\Level Design\Plugins\Sphero\SpheroDeviceMessageDecoder.cs" />
+     <Compile Include="Assets\Level Design\Plugins\Sphero\SpheroDeviceMessenger.cs" />
+     <Compile Include="Assets\Level Design\Plugins\Sphero\SpheroDeviceNotification.cs" />
+     <Compile Include="Assets\Level Design\Plugins\Sphero\SpheroDeviceSensorsAsyncData.cs" />
+     <Compile Include="Assets\Level Design\Plugins\Sphero\SpheroDeviceSensorsData.cs" />
+     <Compile Include="Assets\Level Design\Plugins\Sphero\SpheroGyroData.cs" />
+     <Compile Include="Assets\Level Design\Plugins\Sphero\SpheroIOS.cs" />
+     <Compile Include="Assets\Level Design\Plugins\Sphero\SpheroLocatorData.cs" />
+     <Compile Include="Assets\Level Design\Plugins\Sphero\SpheroManager.cs" />
+     <Compile Include="Assets\Level Design\Plugins\Sphero\SpheroProvider.cs" />
+     <Compile Include="Assets\Level Design\Plugins\Sphero\SpheroProviderAndroid.cs" />
+     <Compile Include="Assets\Level Design\Plugins\Sphero\SpheroProviderEditor.cs" />
+     <Compile Include="Assets\Level Design\Plugins\Sphero\SpheroProviderIOS.cs" />
+     <Compile Include="Assets\Level Design\Plugins\Sphero\SpheroQuaternionData.cs" />
+     <Compile Include="Assets\Level Design\Plugins\Sphero\SpheroSensorData.cs" />
+     <Compile Include="Assets\Level Design\Plugins\SpheroTests\SpheroDeviceSensorsAsyncDataTests.cs" />
      <Compile Include="Assets\Programming\Andrew\playerController\Scripts\CamCtrl.cs" />
      <Compile Include="Assets\Programming\Andrew\playerController\Scripts\CamFollow.cs" />
      <Compile Include="Assets\Programming\Andrew\playerController\Scripts\CharacterMove.cs" />
@@ -79,6 +121,9 @@
      <None Include="Assets\Programming\Marcus\Standard Assets\Particles\Sources\Shaders\Particle Alpha Blend (Queue +100).shader" />
      <None Include="Assets\Programming\Marcus\Shaders\cutoffAlphaShader.shader" />
      <None Include="Assets\Programming\Marcus\Shaders\cutoffSecondaryShader.shader" />
+ <Reference Include="JsonFx.Json">
+ <HintPath>C:/Users/Blaine/Desktop/MarsInitiative-master/MarsInitiative/MI/Assets/Level Design/Plugins/Sphero/JsonFx.Json.dll</HintPath>
+ </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
