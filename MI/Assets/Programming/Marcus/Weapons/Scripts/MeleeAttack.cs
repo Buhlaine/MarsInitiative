@@ -20,6 +20,8 @@ public class MeleeAttack : MonoBehaviour
 	void attack()
 	{
 		//anim controller to send make the player swing or fist bump
+
+		//if audio is attached
 		if (audio)
 		{
 			if (!audio.isPlaying)
