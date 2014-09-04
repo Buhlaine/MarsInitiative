@@ -19,11 +19,11 @@ public class MasterData : MonoBehaviour{
 	}
 }
 
-public class Player{
+public class NetworkPlayerModule{
 	int playerNumber;
 	NetworkViewID NVID;
 	
-	Player(int _playerNumber, NetworkViewID _NVID){
+	NetworkPlayerModule(int _playerNumber, NetworkViewID _NVID){
 		playerNumber = _playerNumber;
 		NVID = _NVID;
 	}

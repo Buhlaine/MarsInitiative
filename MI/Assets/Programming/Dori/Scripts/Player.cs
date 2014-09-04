@@ -19,7 +19,7 @@ public class Player : MonoBehaviour
 	public Transform bulletSpawn;
 	private XPTracker xptracker;
 	private DuckScript duck;
-	
+
 	void Start()
 	{
 		health = 100;

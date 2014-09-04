@@ -1,26 +1,13 @@
-<<<<<<< HEAD
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workspace />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Programming\Andrew\Network\MasterData.cs">
     <Files>
-      <File FileName="Assets\Programming\Andrew\Network\MasterData.cs" Line="18" Column="3" />
+      <File FileName="Assets\Programming\Dori\Scripts\Player.cs" Line="4" Column="14" />
+      <File FileName="Assets\Programming\Andrew\Network\MasterData.cs" Line="26" Column="21" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-=======
-﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Programming\Marcus\Weapons\Scripts\MeleeAttack.cs">
-    <Files>
-      <File FileName="Assets\Programming\Marcus\Weapons\Scripts\MeleeAttack.cs" Line="30" Column="23" />
-    </Files>
-  </MonoDevelop.Ide.Workbench>
-  <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
-  </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
->>>>>>> Marcus
 </Properties>
