@@ -33,7 +33,6 @@ public class DefenseAmmoRegen : MonoBehaviour
 	void Update()
 	{
 		if (Input.GetKeyDown(KeyCode.E) && !isRegen) {
-			player.SendMessage("CheckRegenAmount", currentAbilityLevel);
 			isRegen = true;
 		}
 		
@@ -47,10 +46,10 @@ public class DefenseAmmoRegen : MonoBehaviour
 		if (isRegen) {
 			regenCounter += 1 * Time.deltaTime;
 
-			player.SendMessage("AmmoRegen", regenAmount);
+			player.SendMessage("AmmoRegen", currentAbilityLevel);
 			
 			foreach (GameObject teammates in BlueInRadius) {
-				teammates.SendMessage ("AmmoRegen", regenAmount);
+				teammates.SendMessage ("AmmoRegen", currentAbilityLevel);
 			}
 		}
 	}
@@ -83,11 +82,6 @@ public class DefenseAmmoRegen : MonoBehaviour
 		}
 	}
 
-	void RecieveRegenAmount(int _amount)
-	{
-		regenAmount = _amount;
-	}
-	
 	void OnTriggerEnter(Collider other) 
 	{
 		GameObject[] teammates = GameObject.FindGameObjectsWithTag ("Blue");

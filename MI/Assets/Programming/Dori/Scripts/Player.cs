@@ -15,8 +15,10 @@ public class Player : MonoBehaviour
 	public float speed;
 	public float defaultSpeed = 5.0f;
 
+	public Rigidbody bullet;
+	public Transform bulletSpawn;
 	private XPTracker xptracker;
-	private GameObject ammoObject;
+	private DuckScript duck;
 	
 	void Start()
 	{
@@ -29,13 +31,12 @@ public class Player : MonoBehaviour
 		speed = defaultSpeed;
 
 		xptracker = GameObject.FindGameObjectWithTag ("XPTracker").GetComponent<XPTracker> ();
+		duck = GameObject.FindGameObjectWithTag ("Duck").GetComponent<DuckScript> ();
 
 		// When player logs in, send a message to XPTracker with this players name to be stored into a team list
 		ArrayList playerInfo = new ArrayList();
 		playerInfo.Add (this.gameObject.name);
 		playerInfo.Add (this.gameObject.tag);
-
-		ammoObject = this.gameObject.transform.FindChild ("AmmoRegen").gameObject;
 
 		xptracker.SendMessage ("StorePlayer", playerInfo);
 	}
@@ -47,7 +48,7 @@ public class Player : MonoBehaviour
 			OnKill ();
 		}
 
-		// Test Character Controls
+		// Test Character Controls (DELETE LATER)
 		if (Input.GetKey (KeyCode.W)) {
 			transform.Translate (Vector3.forward * speed * Time.deltaTime);
 		}
@@ -60,13 +61,17 @@ public class Player : MonoBehaviour
 		if (Input.GetKey (KeyCode.D)) {
 			transform.Translate (Vector3.right * speed * Time.deltaTime);
 		}
+		if (Input.GetButtonDown ("Fire1")) {
+			Rigidbody clone;
+			clone = Instantiate (bullet, bulletSpawn.transform.position, transform.rotation) as Rigidbody;
+			clone.velocity = transform.TransformDirection(Vector3.forward * 50);
+		}
 	}
 
 	// XP SECTION
 	void OnKill()
 	{
 		string player = this.gameObject.name;
-
 		ArrayList data = new ArrayList();
 
 		// store data into an array to be sent to the XPTracker
@@ -75,6 +80,18 @@ public class Player : MonoBehaviour
 
 		xptracker.SendMessage ("UpdateXP", data);
 		kills += 1;
+	}
+
+	void OnKillDuck()
+	{
+		// If this player killed the duck, send info of this player that killed the duck
+		string player = this.gameObject.name;
+		ArrayList data = new ArrayList ();
+
+		data.Add (player);
+		data.Add (xp);
+
+		xptracker.SendMessage ("CompleteLevel", data);
 	}
 
 	void OnDeath()
@@ -90,18 +107,22 @@ public class Player : MonoBehaviour
 	void ReceiveLevelUp()
 	{
 		level += 1;
+		// Open up menu to allow the player to select the ability to level up? 
+		// GUI.SendMessage ("AbilityLevelUp");
 	}
 	
 	void RestartXPCounter(int _leftOverXP)
 	{
+		// Left over XP is calculated
 		xp = 0;
 		xp += _leftOverXP;
 	}
 
 	// SUPPORT CLASS SECTION
-	void ApplySpeedBoost(float _speedBoostAmount)
+	void ApplySpeedBoost(int _abilityLevel)
 	{
-		speed = _speedBoostAmount + defaultSpeed;
+		float speedBoostAmount = defaultSpeed * 0.15f;
+		speed = defaultSpeed + speedBoostAmount;
 	}
 
 	void DefaultSpeed()
@@ -109,26 +130,34 @@ public class Player : MonoBehaviour
 		speed = defaultSpeed;
 	}
 
-	void HealthRegen(float _regenAmount)
+	void HealthRegen(int _abilityLevel)
 	{
-		health += _regenAmount * Time.deltaTime;
+		float regenAmount = 0.0f;
 
-		if (health >= maxHealth) 
-		{
+		if (_abilityLevel == 1) {
+			regenAmount = maxHealth * 0.06f;
+		}
+		if (_abilityLevel == 2) {
+			regenAmount = maxHealth * 0.12f;
+		}
+		if (_abilityLevel == 3) {
+			regenAmount = maxHealth * 0.24f;
+		}
+
+		// Is this correct?
+		health += regenAmount * Time.deltaTime;
+
+		if (health >= maxHealth) {
 			health = maxHealth;
 		}
 	}
 
 	// TEST DEFENSE SECTION
-	void AmmoRegen(float _amount)
-	{
-		ammo += _amount;
-	}
-
-	void CheckRegenAmount(int _abilityLevel)
+	void AmmoRegen(float _abilityLevel)
 	{
 		float regenAmount = 0.0f;
-
+		
+		// Check regenAmount based on player ability level
 		if (_abilityLevel == 1) {
 			regenAmount = maxAmmo * 0.06f;
 		}
@@ -138,8 +167,13 @@ public class Player : MonoBehaviour
 		if (_abilityLevel == 3) {
 			regenAmount = maxAmmo * 0.24f;
 		}
-
-		ammoObject.SendMessage ("RecieveRegenAmount", regenAmount);
+		
+		// Is this correct? Ammo reaches insane levels.
+		ammo += regenAmount;
+		
+		if(ammo >= maxAmmo) {
+			ammo = maxAmmo;
+		}
 	}
 	
 	// TEST OFFENSE SECTION

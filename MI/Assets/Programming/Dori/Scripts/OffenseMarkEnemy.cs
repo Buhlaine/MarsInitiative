@@ -55,6 +55,7 @@ public class OffenseMarkEnemy : MonoBehaviour
 			markCounter += 1.0f * Time.deltaTime;
 
 			Debug.Log("Sending " + marked + " to GUI");
+			// Send message to GUI with the marked enemies information (transform.name) so that the enemy can be followed on the minimap ... don't know if will work
 			// GUI.SendMessage("MarkEnemy", marked);
 		}
 

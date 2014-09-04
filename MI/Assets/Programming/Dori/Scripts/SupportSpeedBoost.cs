@@ -4,14 +4,14 @@ using System.Collections.Generic;
 
 public class SupportSpeedBoost : MonoBehaviour 
 {
-	public float speedBoostAmount;
 	public float boostCounter;
+	public float boostDuration;
 	public float boostDurationUpgrade = 10.0f;
 	public float boostRadiusUpgrade = 0.5f;
-	public float speedBoostDuration;
 	public int currentAbilityLevel;
 
-	public bool isBoosted = false;
+	public bool isBoosted;
+	public bool hasChanged;
 
 	public Player player;
 	public SphereCollider sphereCollider;
@@ -23,7 +23,6 @@ public class SupportSpeedBoost : MonoBehaviour
 	{
 		currentAbilityLevel = 1;
 		boostCounter = 0;
-		speedBoostAmount = player.defaultSpeed * 0.15f;
 		sphereCollider.enabled = true;
 
 		sphereCollider = this.gameObject.transform.GetComponent<SphereCollider> ();
@@ -33,26 +32,12 @@ public class SupportSpeedBoost : MonoBehaviour
 
 	void Update()
 	{
-		// Duration time is set based on ability level
-		if (currentAbilityLevel == 1) {
-			sphereCollider.radius += boostRadiusUpgrade;
-			speedBoostDuration += boostDurationUpgrade;
-		}
-		if (currentAbilityLevel == 2) {
-			sphereCollider.radius += boostRadiusUpgrade;
-			speedBoostDuration += boostDurationUpgrade;
-		}
-		if (currentAbilityLevel == 3) {
-			sphereCollider.radius += boostRadiusUpgrade;
-			speedBoostDuration += boostDurationUpgrade;
-		}
-
 		if (Input.GetKeyDown (KeyCode.Q) && !isBoosted) {
 			isBoosted = true;
 		}
 
 		// Reset counter
-		if (boostCounter >= speedBoostDuration) {
+		if (boostCounter >= boostDuration) {
 			boostCounter = 0;
 			isBoosted = false;
 		}
@@ -61,12 +46,12 @@ public class SupportSpeedBoost : MonoBehaviour
 		if (isBoosted) {
 			boostCounter += 1 * Time.deltaTime;
 
-			player.SendMessage("ApplySpeedBoost", speedBoostAmount);
+			player.SendMessage("ApplySpeedBoost", currentAbilityLevel);
 
 			foreach (GameObject teammates in BlueInRadius) {
 				// Store players within range into a second list 
 				BlueBoosted.Add (teammates);
-				teammates.SendMessage ("ApplySpeedBoost", speedBoostAmount);
+				teammates.SendMessage ("ApplySpeedBoost", currentAbilityLevel);
 			}
 		}
 		// Reset speed to default speed
@@ -78,6 +63,34 @@ public class SupportSpeedBoost : MonoBehaviour
 			}
 			// Clear the second list for a new batch of players in range
 			BlueBoosted.Clear();
+		}
+	}
+
+	void CheckStats()
+	{
+		if (currentAbilityLevel == 1) {
+			boostDuration = boostDurationUpgrade;
+			sphereCollider.radius = boostRadiusUpgrade;
+		}
+		if (currentAbilityLevel == 2) {
+			boostDuration += boostDurationUpgrade;
+			sphereCollider.radius += boostRadiusUpgrade;
+		}
+		if (currentAbilityLevel == 3) {
+			boostDuration += boostDurationUpgrade;
+			sphereCollider.radius += boostRadiusUpgrade;
+		}
+		
+		hasChanged = false;
+	}
+	
+	void Changed()
+	{
+		hasChanged = true;
+		
+		if (hasChanged) {
+			Debug.Log ("Checking Stats...");
+			CheckStats();
 		}
 	}
 

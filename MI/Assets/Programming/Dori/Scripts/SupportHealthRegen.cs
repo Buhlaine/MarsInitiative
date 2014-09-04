@@ -6,12 +6,14 @@ public class SupportHealthRegen : MonoBehaviour
 {
 	public float regenAmount;
 	public float regenCounter;
+	public float regenAmountUpgrade;
 	public float regenDurationUpgrade = 10.0f;
 	public float regenRadiusUpgrade = 0.5f;
 	public float regenDuration;
 	public int currentAbilityLevel;
 	
 	public bool isRegen;
+	public bool hasChanged;
 
 	private Player player;
 	private SphereCollider sphereCollider;
@@ -28,25 +30,8 @@ public class SupportHealthRegen : MonoBehaviour
 
 	void Update()
 	{
-		// Sphere Collider radius and regenAmount changes depending on player level
-		if (currentAbilityLevel == 1) {
-			regenDuration += regenDurationUpgrade;
-			sphereCollider.radius += regenRadiusUpgrade;
-			regenAmount = player.GetComponent<Player>().maxHealth * 0.06f;
-		}
-		if (currentAbilityLevel == 2) {
-			regenDuration += regenDurationUpgrade;
-			sphereCollider.radius += regenRadiusUpgrade;
-			regenAmount = player.GetComponent<Player>().maxHealth * 0.12f;
-		}
-		if (currentAbilityLevel == 3) {
-			regenDuration += regenDurationUpgrade;
-			sphereCollider.radius += regenRadiusUpgrade;
-			regenAmount = player.GetComponent<Player>().maxHealth * 0.24f;
-		}
-
 		// Initiate counter and health regeneration upon hitting 'E' while regenFlag or selfHeal equals true
-		if (Input.GetKeyDown(KeyCode.E)) {
+		if (Input.GetKeyDown(KeyCode.E) && !isRegen) {
 			isRegen = true;
 		}
 
@@ -60,12 +45,45 @@ public class SupportHealthRegen : MonoBehaviour
 		if (isRegen) {
 			regenCounter += 1 * Time.deltaTime;
 			
-			player.SendMessage("HealthRegen", regenAmount);
+			player.SendMessage("HealthRegen", currentAbilityLevel);
 			
 			foreach (GameObject teammates in BlueInRadius) {
-				teammates.SendMessage ("HealthRegen", regenAmount);
+				teammates.SendMessage ("HealthRegen", currentAbilityLevel);
 			}
 		}
+	}
+
+	void CheckStats()
+	{
+		if (currentAbilityLevel == 1) {
+			regenDuration = regenDurationUpgrade;
+			sphereCollider.radius = regenRadiusUpgrade;
+		}
+		if (currentAbilityLevel == 2) {
+			regenDuration += regenDurationUpgrade;
+			sphereCollider.radius += regenRadiusUpgrade;
+		}
+		if (currentAbilityLevel == 3) {
+			regenDuration = regenDuration + regenDurationUpgrade;
+			sphereCollider.radius += regenRadiusUpgrade;
+		}
+		
+		hasChanged = false;
+	}
+
+	void Changed()
+	{
+		hasChanged = true;
+		
+		if (hasChanged) {
+			Debug.Log ("Checking Stats...");
+			CheckStats();
+		}
+	}
+
+	void RecieveRegenAmount(int _amount)
+	{
+		regenAmount = _amount;
 	}
 
 	void OnTriggerEnter(Collider other) 

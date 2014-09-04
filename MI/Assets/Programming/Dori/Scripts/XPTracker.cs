@@ -8,6 +8,7 @@ public class XPTracker : MonoBehaviour
 	public int killXP = 32;
 	public int leftOverXP;
 	public int currentXP;
+	public int DuckXP;
 	
 	private Dictionary<string, string> playerList = new Dictionary<string, string>();
 	
@@ -18,17 +19,11 @@ public class XPTracker : MonoBehaviour
 
 	void UpdateXP(ArrayList _data)
 	{
-		foreach (var str in playerList) {
-			Debug.Log (str);
-		}
-
 		// unpack array into a string "player", and an int "xp" to be used for checking xp and sending player level update messages / leftover xp
 		string player = _data[0].ToString();
 		int xp = (int) _data[1];
 
 		currentXP = xp;
-
-		Debug.Log (player.ToString () + " . " + xp);
 
 		if (xp < maxXP) {
 			GameObject.Find(player).SendMessage("AddXP", killXP);
@@ -37,14 +32,32 @@ public class XPTracker : MonoBehaviour
 		{
 			leftOverXP = currentXP - maxXP;
 
-			Debug.Log(player);
 			GameObject.Find(player).SendMessage ("RestartXPCounter", leftOverXP);
-			Debug.Log ("Leftover XP heading back to player: " + leftOverXP);
-			// This should be sent when the player chooses the ability to level up. Maybe GUI should send this to player?
+			// Changed calls CheckStats and is based on currentAbilityLevel in the affected gameObjects. Should happen after the player has chosen
+			// an ability to upgrade
 			GameObject.Find (player).transform.GetChild(0).SendMessage ("Changed");
 			GameObject.Find (player).transform.GetChild(1).SendMessage ("Changed");
-			GameObject.Find(player).SendMessage ("ReceiveLevelUp");
+
+			GameObject.Find(player).SendMessage ("ReceiveLevelUp"); // General level ... NOT ability level
 		}
+
+		// reset
+		player = null;
+	}
+
+	void CompleteLevel(ArrayList _data)
+	{
+		// For killing the duck
+		string player = _data [0].ToString ();
+		int xp = (int) _data [1];
+
+		currentXP = xp;
+		DuckXP = maxXP - currentXP;
+		// Changed calls CheckStats and is based on currentAbilityLevel in the affected gameObjects. Should happen after the player has chosen
+		// an ability to upgrade
+		GameObject.Find (player).transform.GetChild(0).SendMessage ("Changed");
+		GameObject.Find (player).transform.GetChild(1).SendMessage ("Changed");
+		GameObject.Find(player).SendMessage ("ReceiveLevelUp");
 
 		// reset
 		player = null;
