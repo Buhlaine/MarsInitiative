@@ -14,7 +14,9 @@ public class MasterData : MonoBehaviour{
 	
 	
 	[RPC]
-	void RegisterPlayer(int _playerNumber, NetworkViewID _NVID);
+	void RegisterPlayer(int _playerNumber, NetworkViewID _NVID){
+
+	}
 }
 
 public class Player{
