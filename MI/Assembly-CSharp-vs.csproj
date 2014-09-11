@@ -49,11 +49,11 @@
      <Compile Include="Assets\Game Design\Prefabs\ActivationTimer.cs" />
      <Compile Include="Assets\Programming\Andrew\Network\MasterData.cs" />
      <Compile Include="Assets\Programming\Andrew\Network\NetworkLobby.cs" />
-     <Compile Include="Assets\Programming\Andrew\playerController\Scripts\CamCtrl.cs" />
-     <Compile Include="Assets\Programming\Andrew\playerController\Scripts\CamFollow.cs" />
-     <Compile Include="Assets\Programming\Andrew\playerController\Scripts\CharacterMove.cs" />
-     <Compile Include="Assets\Programming\Andrew\playerController\Scripts\Jumper.cs" />
-     <Compile Include="Assets\Programming\Andrew\playerController\Standard Assets\Character Controllers\Sources\Scripts\MouseLook.cs" />
+     <Compile Include="Assets\Programming\Andrew\Scripts\CamCtrl.cs" />
+     <Compile Include="Assets\Programming\Andrew\Scripts\CamFollow.cs" />
+     <Compile Include="Assets\Programming\Andrew\Scripts\Jumper.cs" />
+     <Compile Include="Assets\Programming\Andrew\Scripts\MouseLook.cs" />
+     <Compile Include="Assets\Programming\Andrew\Scripts\NetworkCheck.cs" />
      <Compile Include="Assets\Programming\Dori\Scripts\DefenseAddShield.cs" />
      <Compile Include="Assets\Programming\Dori\Scripts\DefenseAmmoRegen.cs" />
      <Compile Include="Assets\Programming\Dori\Scripts\DemoTeammate.cs" />
