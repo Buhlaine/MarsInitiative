@@ -62,7 +62,7 @@ public class grenadeExplosionScript : MonoBehaviour
 				}
 				else if (isDot)
 				{
-						//StartCoroutine(dotDmg(dotTic,hit));
+						
 					doDotDmg(hit);
 				}
 				hit.rigidbody.AddExplosionForce(force, grenadePosition, explosionRadius, explosiveLift);
@@ -79,6 +79,11 @@ public class grenadeExplosionScript : MonoBehaviour
 	void doDotDmg(Collider hit)
 	{
 		hit.SendMessageUpwards ("ApplyDotDamage",creationTime, SendMessageOptions.DontRequireReceiver);
+	}
+
+	float getCreationTime()
+	{
+		return creationTime;
 	}
 
 	IEnumerator dotDmg(float seconds, Collider hit)

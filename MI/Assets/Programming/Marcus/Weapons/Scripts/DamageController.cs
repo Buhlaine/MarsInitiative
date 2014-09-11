@@ -38,20 +38,24 @@ public class DamageController : MonoBehaviour {
 
 	void ApplyDotDamage(float creationTime)
 	{
-		//for (float i = creationTime; i <= (dotDuration+creationTime); i += Time.deltaTime)
-		//{
 		StartCoroutine(doDotDmg(creationTime, dotTic));
-		//}
+	}
+
+	void endDotDamage()
+	{
+		StopAllCoroutines ();
 	}
 
 	IEnumerator doDotDmg(float creationTime, float seconds)
 	{
-		Debug.Log ("coroutine" + seconds);
-		Debug.Log(dotDuration);
 		for (float i = creationTime; i <= (dotDuration+creationTime); i += Time.deltaTime)
 		{
 			if(isDamaging)
 			{
+				if (hitPoints <= 0)
+				{
+					Destroy(this.gameObject, deathDelay);
+				}
 				hitPoints -= dotDmg;
 				isDamaging = false;
 				yield return new WaitForSeconds (seconds);

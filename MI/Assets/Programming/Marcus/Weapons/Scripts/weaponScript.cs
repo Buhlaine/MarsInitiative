@@ -8,12 +8,14 @@ public class weaponScript : MonoBehaviour {
 	public float force = 10.0f;          //how much force the gun gives/how much it will push something back
 	public int damage = 10;              //damage of the weapon
 	public int bulletsPerClip = 15;      //how many bullets are in the clip
+	public bool isShotgun = false;       //toggle if the weapon is a shotgun or not
+	public int pelletsPerBullet = 1;	 //how many pellets are shot per bullet simulating a shotgun
 	public int clips = 10;               //how many clips the player has
 	public float reloadSpeed = 0.5f;      //how long it takes to reload the gun
 	private ParticleEmitter hitParticles;//visual feedback of the gun shooting
-	public Renderer muzzleFlash;         //used to see the gun firing the bullet
+	public Renderer muzzleFlash;//used to see the gun firing the bullet
+	[Range(0.5f,4.0f)]
 	public float spread = 0.0f;          //used for the base spread of the bullets
-	public float maxSpread = 4.0f;       //tell where the max spread will stop
 	public bool fullAuto = true;         //switch to turn on and off hold down to fire
 
 	//public AnimationCurve spreadCurve;  //use this to implament curve based accuracy instead of linear
@@ -24,6 +26,8 @@ public class weaponScript : MonoBehaviour {
 	public float fireRateUpgrade = 1.0f;
 	public int bullPerClipUpgrade = 1;
 	public float maxSpreadUpgrade = 0.1f;
+	private float shotSpread;                 //used for shotgun type spread of pellets
+	private float maxSpread = 4.0f;       	  //tell where the max spread will stop
 
 	private int bulletsLeft = 0;         //store how many bullets left in a clip
 	private int looseBullets = 0;        //stores the amount of bullets left in a clip after a manual reload
@@ -132,6 +136,7 @@ public class weaponScript : MonoBehaviour {
 	//this functions checks if we can fire then does so
 	void Fire()
 	{
+
 		if (bulletsLeft == 0)
 		{
 			return;
@@ -147,50 +152,13 @@ public class weaponScript : MonoBehaviour {
 		//keeps the gun firing until the fire time is used up
 		while (nextFireTime < Time.time && bulletsLeft != 0)
 		{
-			FireOneShot();
-			nextFireTime += fireRate;
-		}
-	}
-
-	//called for every bullet shot
-	void FireOneShot()
-	{
-		//simple shot that hits the same point every time
-		//Vector3 fireDirection = transform.TransformDirection(Vector3.forward);
-
-		//shoots a forward vector with a randomized spread
-		Vector3 fireDirection = transform.TransformDirection(Random.Range(-maxSpread, maxSpread) * spread, Random.Range(-maxSpread, maxSpread) * spread, 1);
-		RaycastHit hit;
-
-		//check if something was hit
-		if (Physics.Raycast(transform.position, fireDirection,out hit, range))
-		{
-			//if there is a rigid body apply force to it
-			if(hit.rigidbody)
+			for(int i = 0; i < pelletsPerBullet; i++)
 			{
-				hit.rigidbody.AddForceAtPosition(force * fireDirection, hit.point);
+				FireOneShot();
+				nextFireTime += fireRate;
 			}
-
-			//spawn particles at the point the ray hit
-			if (hitParticles)
-			{
-				ParticleEmitter newParticles = Instantiate(hitParticles, hit.point, Quaternion.FromToRotation(Vector3.up, hit.normal)) as ParticleEmitter;
-				hitParticles.transform.position = hit.point;
-				hitParticles.transform.rotation = Quaternion.FromToRotation(Vector3.up, hit.normal);
-				hitParticles.Emit();
-				newParticles.GetComponent<ParticleAnimator>().autodestruct = true;
-				Destroy(newParticles.gameObject,0.5f);
-			}
-
-			//send damage message to the hit object
-			hit.collider.SendMessageUpwards("ApplyDamage", damage, SendMessageOptions.DontRequireReceiver);
+			bulletsLeft--;
 		}
-
-		bulletsLeft--;
-
-		//this tells the LateUpdate function that we shot and to enable the audio and muzzle flash
-		m_LastFrameShot = Time.frameCount;
-		enabled = true;
 
 		//this allows the gun to reload automatically if the clip is empty
 		if (bulletsLeft == 0)
@@ -198,7 +166,107 @@ public class weaponScript : MonoBehaviour {
 			Reload();
 		}
 
+	}
 
+	//called for every bullet shot
+	void FireOneShot()
+	{
+		//this block of code is for anthing that is not a shotgun
+		if(!isShotgun)
+		{
+			//simple shot that hits the same point every time
+			//Vector3 fireDirection = transform.TransformDirection(Vector3.forward);
+
+			//shoots a forward vector with a randomized spread
+			Vector3 fireDirection = transform.TransformDirection(Random.Range(-maxSpread, maxSpread) * spread * Time.deltaTime, Random.Range(-maxSpread, maxSpread) * spread * Time.deltaTime, 1);
+			RaycastHit hit;
+
+			//check if something was hit
+			if (Physics.Raycast(transform.position, fireDirection,out hit, range))
+			{
+				//if there is a rigid body apply force to it
+				if(hit.rigidbody)
+				{
+					hit.rigidbody.AddForceAtPosition(force * fireDirection, hit.point);
+				}
+
+				//spawn particles at the point the ray hit
+				if (hitParticles)
+				{
+					ParticleEmitter newParticles = Instantiate(hitParticles, hit.point, Quaternion.FromToRotation(Vector3.up, hit.normal)) as ParticleEmitter;
+					hitParticles.transform.position = hit.point;
+					hitParticles.transform.rotation = Quaternion.FromToRotation(Vector3.up, hit.normal);
+					hitParticles.Emit();
+					newParticles.GetComponent<ParticleAnimator>().autodestruct = true;
+					Destroy(newParticles.gameObject,0.5f);
+				}
+
+				//send damage message to the hit object
+				hit.collider.SendMessageUpwards("ApplyDamage", damage, SendMessageOptions.DontRequireReceiver);
+			}
+
+
+
+			//this tells the LateUpdate function that we shot and to enable the audio and muzzle flash
+			m_LastFrameShot = Time.frameCount;
+			enabled = true;
+
+		}
+		//this block of code is for shotgun firing
+		else if (isShotgun)
+		{
+			LayerMask layerMask = 1 << 8; //grabbing the eighth layer
+			layerMask = ~layerMask;       //inverting the layer mask so it hits everything but 8 
+
+			RaycastHit[] hits;
+			Vector3 direction = SprayDirection();
+
+			hits = Physics.RaycastAll(transform.position,direction,range,layerMask);
+			System.Array.Sort(hits,Comparison);
+
+
+			for (int i = 0; i < hits.Length; i++)
+			{
+				RaycastHit hit = hits[i];
+
+				//apply force to a rigid body
+				if(hit.rigidbody)
+				{
+					hit.rigidbody.AddForceAtPosition(force * direction, hit.point);
+				}
+
+				//place the particle at the point of collision
+				if(hitParticles)
+				{
+					ParticleEmitter newParticles = Instantiate(hitParticles, hit.point, Quaternion.LookRotation(hit.normal)) as ParticleEmitter;
+					hitParticles.transform.position = hit.point;
+					hitParticles.transform.rotation = Quaternion.LookRotation(hit.normal);
+					hitParticles.Emit();
+					newParticles.GetComponent<ParticleAnimator>().autodestruct = true;
+					Destroy(newParticles.gameObject,0.5f);
+				}
+
+				//apply damage to the kit object
+				hit.collider.SendMessageUpwards("ApplyDamage",damage,SendMessageOptions.DontRequireReceiver);
+			}
+		}
+
+
+	}
+
+	Vector3 SprayDirection()
+	{
+		float vectX = (1.0f - 2.0f * Random.value) * 0.2f;
+		float vectY = (1.0f - 2.0f * Random.value) * 0.2f;
+		return gameObject.transform.TransformDirection(new Vector3(vectX,vectY,1.0f));
+		//return Camera.main.transform.TransformDirection(vectX,vectY,1.0f);
+	}
+
+	int Comparison(RaycastHit x, RaycastHit y)
+	{
+		float xDistance = x.distance;
+		float yDistance = y.distance;
+		return (int)(xDistance - yDistance);
 	}
 
 
