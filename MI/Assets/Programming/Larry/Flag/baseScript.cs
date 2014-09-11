@@ -64,10 +64,10 @@ public class baseScript : MonoBehaviour {
 	void Update () 
 	{
 		//testing flag cap amount
-		if(Input.GetKeyDown(KeyCode.Q))
-		{
-			Debug.Log(flagCaps);
-		}
+//		if(Input.GetKeyDown(KeyCode.Q))
+//		{
+//			Debug.Log(flagCaps);
+//		}
 	}
 
 	void OnTriggerStay(Collider colliderInfo)

@@ -58,30 +58,30 @@ public class spawnManagerScript : MonoBehaviour
 		//Testing Purposes
 		//Remove input when in game use
 		//Player request to spawn
-		if(Input.GetKeyDown(KeyCode.Q))
-		{
-			for(int i = 0; i < 8; i++)
-			{
-				Debug.Log(i);
-				checkSpawn(thisGO);
-			}
-		}
-		if(Input.GetKeyDown(KeyCode.P))
-		{
-			checkSpawn(thisGO);
-		}
-		if(Input.GetKeyDown(KeyCode.G))
-		{
-			setGameBegin();
-		}
+//		if(Input.GetKeyDown(KeyCode.Q))
+//		{
+//			for(int i = 0; i < 8; i++)
+//			{
+//				Debug.Log(i);
+//				checkSpawn(thisGO);
+//			}
+//		}
+//		if(Input.GetKeyDown(KeyCode.P))
+//		{
+//			checkSpawn(thisGO);
+//		}
+//		if(Input.GetKeyDown(KeyCode.G))
+//		{
+//			setGameBegin();
+//		}
 	}
 
 	void checkSpawn(GameObject _requestor)
 	{
-		Debug.Log (gameBegin);
+		//Debug.Log (gameBegin);
 		if(gameBegin)
 		{
-			Debug.Log("--------------ljksdhfjhsdfjkhdflkjslkjf");
+			//Debug.Log("--------------ljksdhfjhsdfjkhdflkjslkjf");
 			//_requestor.tag = "Red";
 			//grabbing playerDetect script to access it's spawnWeight
 			//Might change this to recieve an array to avoid having to access script directly
@@ -307,7 +307,7 @@ public class spawnManagerScript : MonoBehaviour
 
 	void setGameBegin()
 	{
-		Debug.Log ("++++++++++++++++++++++++++ljkhsdfkhsdfojfdjsoidjoifjds");
+		//Debug.Log ("++++++++++++++++++++++++++ljkhsdfkhsdfojfdjsoidjoifjds");
 		gameBegin = !gameBegin;
 	}
 }
