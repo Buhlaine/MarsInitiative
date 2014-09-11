@@ -29,7 +29,21 @@ public class flagScript : MonoBehaviour {
 			enemyTeam = "Blue";
 			homeTeam = "Red";
 		}
-		homePos = this.transform.position;
+
+		GameObject[] flagInitTest = GameObject.FindGameObjectsWithTag ("flagInit");
+		Vector3 dist1 = flagInitTest [0].transform.position - this.transform.position;
+		Vector3 dist2 = flagInitTest [1].transform.position - this.transform.position;
+
+		if(dist1.sqrMagnitude < dist2.sqrMagnitude)
+		{
+			homePos = flagInitTest[0].transform.position;
+		}
+		else
+		{
+			homePos = flagInitTest[1].transform.position;
+		}
+
+		this.transform.position = homePos;
 	}
 	
 	// Update is called once per frame
@@ -38,7 +52,7 @@ public class flagScript : MonoBehaviour {
 		//if flag taken, follow enemy
 		if(follow)
 		{
-			this.transform.position = enemyPlayer.transform.position + fudgeFactor;
+			this.transform.position = enemyPlayer.transform.position;
 			enemyPlayer.SendMessage("setCarriedFlag", this.gameObject as GameObject);
 		}
 
@@ -77,15 +91,14 @@ public class flagScript : MonoBehaviour {
 	void flagReturn(GameObject _requestor)
 	{
 		//return flag to base
-		//this.transform.position = homePos;
+		this.transform.position = homePos;
 		//set follow to false so it stays at base
-		//follow = false;
+		follow = false;
 		//set returned to true to avoid adding more than once to enemy flagCaps
 		returned = true;
 		//telling enemyBase to add to flagCaps
-		teambase.SendMessage ("flagReturned", this.gameObject as GameObject);
+		teambase.SendMessage ("flagReturned");
 		_requestor.SendMessage ("capFlag", returned);
-		Destroy (this.gameObject);
 	}
 
 	//setting teamBase so it can return

@@ -4,14 +4,14 @@ using System.Collections.Generic;
 
 public class baseScript : MonoBehaviour {
 
-	List<GameObject> teamFlags = new List<GameObject> ();
+	GameObject teamFlag;
+	GameObject enemyFlag;
 	GameObject enemyBase;
 	string teamTag;
 	string enemyTag;
 	bool flagHere = true;
 	int flagCaps = 5;
 	int addAmount = 1;
-	GameObject carriedFlag;
 	//GameObject carriedFlag;
 
 	// Use this for initialization
@@ -19,7 +19,6 @@ public class baseScript : MonoBehaviour {
 	{
 		//gathering flags on map
 		GameObject[] flagTest = GameObject.FindGameObjectsWithTag ("Flag");
-		//Gathering Bases
 		GameObject[] baseTest = GameObject.FindGameObjectsWithTag ("Base");
 
 		//Setting Enemy base
@@ -30,69 +29,35 @@ public class baseScript : MonoBehaviour {
 				enemyBase =  bases;
 			}
 		}
+		Vector3 dist1 = flagTest [0].transform.position - this.transform.position;
+		Vector3 dist2 = flagTest [1].transform.position - this.transform.position;
 
-		//Used for determining team/enemy tag
-		Vector3 dist1 = new Vector3 ();
-		Vector3 dist2 = new Vector3 ();
-		GameObject closestFlag = new GameObject ();
-
-		teamFlags.TrimExcess();
-		foreach(GameObject flag in flagTest)
+		if(dist1.sqrMagnitude < dist2.sqrMagnitude)
 		{
-			if(closestFlag == null)
-			{
-				closestFlag = flag;
-			}
-			else
-			{
-				dist1 = flag.transform.position - this.gameObject.transform.position;
-				dist2 = closestFlag.transform.position - this.gameObject.transform.position;
-				if(dist1.magnitude < dist2.magnitude)
-				{
-					closestFlag = flag;
-				}
-			}
-		}
-
-		dist2 = closestFlag.transform.position - this.gameObject.transform.position;
-		if(closestFlag.name == "blueFlagObj")
-		{
-			teamTag = "Blue";
-			enemyTag = "Red";
+			teamFlag = flagTest[0];
+			enemyFlag = flagTest[1];
 		}
 		else
 		{
+			teamFlag = flagTest[1];
+			enemyFlag = flagTest[0];
+		}
+
+		if(teamFlag.name == "blueFlagObj")
+		{
+			this.renderer.material.color = Color.blue;
+			teamTag = "Blue";
+			enemyTag = "Red";
+		}
+		else if(teamFlag.name == "redFlagObj")
+		{
+			this.renderer.material.color = Color.red;
 			teamTag = "Red";
 			enemyTag = "Blue";
 		}
 
-		foreach(GameObject flag in flagTest)
-		{
-			if(flag.gameObject.name == closestFlag.gameObject.name)
-			{
-				teamFlags.Add(flag);
-			}
-		}
+		teamFlag.SendMessage ("setTeamBase", this.gameObject as GameObject);
 
-		foreach(GameObject flag in teamFlags)
-		{
-			flag.SendMessage("setTeamBase", this.gameObject as GameObject);
-		}
-
-		//Testing Purposes
-		if(teamTag == "Blue")
-		{
-			renderer.material.color = Color.blue;
-		}
-		else
-		{
-			renderer.material.color = Color.red;
-		}
-
-		foreach(GameObject flag in teamFlags)
-		{
-			flag.SendMessage("setColor", this.renderer.material.color);
-		}
 	}
 	
 	// Update is called once per frame
@@ -101,7 +66,7 @@ public class baseScript : MonoBehaviour {
 		//testing flag cap amount
 		if(Input.GetKeyDown(KeyCode.Q))
 		{
-			Debug.Log(enemyTag);
+			Debug.Log(flagCaps);
 		}
 	}
 
@@ -114,7 +79,7 @@ public class baseScript : MonoBehaviour {
 			//if enemy, flag is captured, follow enemy
 			if(colliderInfo.tag == enemyTag)
 			{
-				teamFlags[0].SendMessage("followPlayer", colliderInfo.gameObject as GameObject);
+				teamFlag.SendMessage("followPlayer", colliderInfo.gameObject as GameObject);
 				//setting carrying on enemy player
 				colliderInfo.SendMessage("obtainedFlag");
 				flagHere = false;
@@ -131,13 +96,13 @@ public class baseScript : MonoBehaviour {
 
 	void capFlagRequest(GameObject _requstor)
 	{
+		//FIX THIS SHIT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+		//----------------------------------------------------------------------------
 		//checking to see if flag is returned to keep from adding more than one to flagCaps
-		//enemyFlag.SendMessage ("flagReturn", this.gameObject as GameObject);
-		carriedFlag.SendMessage ("flagReturn", this.gameObject as GameObject);
+		enemyFlag.SendMessage ("flagReturn", this.gameObject as GameObject);
 		//turning off flag carrying on team to avoid adding more than once to flagCcaps
 		_requstor.SendMessage ("notCarrying");
-
-		//this.transform.forward = transform.InverseTransformDirection (this.transform.forward);
 	}
 
 	void capFlag(bool flagReturned)
@@ -155,15 +120,8 @@ public class baseScript : MonoBehaviour {
 		flagCaps += energyAmount;
 	}
 	
-	void flagReturned(GameObject flagObj)
+	void flagReturned()
 	{
 		flagHere = true;
-		teamFlags.Remove (flagObj);
-		Destroy (flagObj);
-	}
-
-	void setCarriedFlag(GameObject flagCarried)
-	{
-		carriedFlag = flagCarried;
 	}
 }
