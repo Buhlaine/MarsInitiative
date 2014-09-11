@@ -53,9 +53,11 @@
      <Compile Include="Assets\Programming\Andrew\playerController\Standard Assets\Character Controllers\Sources\Scripts\ThirdPersonCamera.js" />
      <Compile Include="Assets\Programming\Andrew\playerController\Standard Assets\Character Controllers\Sources\Scripts\ThirdPersonController.js" />
      <Compile Include="Assets\Programming\Marcus\Standard Assets\Particles\Legacy Particles\TimedObjectDestructor.js" />
+     <Compile Include="Assets\Programming\Ramon\bomb\LifeBar.js" />
      <None Include="Assets\Programming\Marcus\Shaders\cutoffRGBShader.shader" />
      <None Include="Assets\Programming\Marcus\Standard Assets\Particles\Sources\Shaders\Particle Alpha Blend (Queue +100).shader" />
      <None Include="Assets\Programming\Marcus\Shaders\cutoffAlphaShader.shader" />
+     <None Include="Assets\Programming\Ramon\bomb\twosideperpixel.shader" />
      <None Include="Assets\Programming\Marcus\Shaders\cutoffSecondaryShader.shader" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

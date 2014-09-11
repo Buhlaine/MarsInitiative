@@ -47,6 +47,8 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Game Design\Prefabs\ActivationTimer.cs" />
+     <Compile Include="Assets\Programming\Andrew\Network\MasterData.cs" />
+     <Compile Include="Assets\Programming\Andrew\Network\NetworkLobby.cs" />
      <Compile Include="Assets\Programming\Andrew\playerController\Scripts\CamCtrl.cs" />
      <Compile Include="Assets\Programming\Andrew\playerController\Scripts\CamFollow.cs" />
      <Compile Include="Assets\Programming\Andrew\playerController\Scripts\CharacterMove.cs" />
@@ -62,7 +64,7 @@
      <Compile Include="Assets\Programming\Dori\Scripts\SupportHealthRegen.cs" />
      <Compile Include="Assets\Programming\Dori\Scripts\SupportSpeedBoost.cs" />
      <Compile Include="Assets\Programming\Dori\Scripts\XPTracker.cs" />
-     <Compile Include="Assets\Programming\Larry\Flag\flagManager.cs" />
+     <Compile Include="Assets\Programming\Larry\Flag\baseScript.cs" />
      <Compile Include="Assets\Programming\Larry\Flag\flagScript.cs" />
      <Compile Include="Assets\Programming\Larry\Spawn\playerDetect.cs" />
      <Compile Include="Assets\Programming\Larry\Spawn\spawnManagerScript.cs" />
@@ -73,12 +75,17 @@
      <Compile Include="Assets\Programming\Marcus\Weapons\Scripts\grenadeExplosionScript.cs" />
      <Compile Include="Assets\Programming\Marcus\Weapons\Scripts\grenadeScript.cs" />
      <Compile Include="Assets\Programming\Marcus\Weapons\Scripts\weaponScript.cs" />
-     <Compile Include="Assets\Programming\Ramon\expbar.cs" />
-     <Compile Include="Assets\Programming\Ramon\followplayer.cs" />
-     <Compile Include="Assets\Programming\Ramon\minimap.cs" />
+     <Compile Include="Assets\Programming\Ramon\bomb\bombscript.cs" />
+     <Compile Include="Assets\Programming\Ramon\bomb\bombtimer.cs" />
+     <Compile Include="Assets\Programming\Ramon\expbar\lifebar.cs" />
+     <Compile Include="Assets\Programming\Ramon\minimap\map.cs" />
+     <Compile Include="Assets\Programming\Ramon\minimap\mapgrouppequeno.cs" />
+     <Compile Include="Assets\Programming\Ramon\minimap\tutorialminimap.cs" />
+     <Compile Include="Assets\Programming\Ramon\playertag\PlayerTag.cs" />
      <None Include="Assets\Programming\Marcus\Shaders\cutoffRGBShader.shader" />
      <None Include="Assets\Programming\Marcus\Standard Assets\Particles\Sources\Shaders\Particle Alpha Blend (Queue +100).shader" />
      <None Include="Assets\Programming\Marcus\Shaders\cutoffAlphaShader.shader" />
+     <None Include="Assets\Programming\Ramon\bomb\twosideperpixel.shader" />
      <None Include="Assets\Programming\Marcus\Shaders\cutoffSecondaryShader.shader" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
