@@ -96,7 +96,6 @@ public class DefenseAddShield : MonoBehaviour
 		hasChanged = true;
 		
 		if (hasChanged) {
-			Debug.Log ("Checking Stats...");
 			CheckStats();
 		}
 	}

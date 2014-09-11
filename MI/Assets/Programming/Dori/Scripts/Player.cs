@@ -15,10 +15,13 @@ public class Player : MonoBehaviour
 	public float speed;
 	public float defaultSpeed = 5.0f;
 
+	public bool isShooting;
 	public Rigidbody bullet;
 	public Transform bulletSpawn;
 	private XPTracker xptracker;
 	private DuckScript duck;
+
+	RaycastHit checkDuckInfo;
 
 	void Start()
 	{
@@ -61,10 +64,31 @@ public class Player : MonoBehaviour
 		if (Input.GetKey (KeyCode.D)) {
 			transform.Translate (Vector3.right * speed * Time.deltaTime);
 		}
+
+		// Demo shooting ability (DELETE AFTER TESTING)
 		if (Input.GetButtonDown ("Fire1")) {
 			Rigidbody clone;
+			isShooting = true;
 			clone = Instantiate (bullet, bulletSpawn.transform.position, transform.rotation) as Rigidbody;
 			clone.velocity = transform.TransformDirection(Vector3.forward * 50);
+			clone.name = "Bullet";
+		}
+		else 
+		{
+			isShooting = false;
+		}
+
+		// Shoot a raycast at area in front of player. If object == duck than check if health == 0. If duck health == 0, then this player has 
+		// killed the duck and deserves that sweet XP.
+		Vector3 forwardRay = transform.TransformDirection (Vector3.forward);
+		if (Physics.Raycast(transform.position, forwardRay, out checkDuckInfo, 10.0f)) { // last parameter should be actual weapon's range. 10 for testing.
+			if(checkDuckInfo.transform.name == "Duck" && isShooting) {
+				checkDuckInfo.transform.SendMessage("WhoKillMe", this.gameObject.name); // Apply damage to the duck, as well as the name of this player. 
+				checkDuckInfo.transform.gameObject.SendMessage("Damage", 10.0f); // Should be actual weapon's damage. 10 for testing.
+
+				// the name of the player will be saved by the duck as the current playe doing damage to the duck. If the ducks health reaches 0 while a name is saved, then
+				// that player will be rewarded with sweet sweet points.
+			}
 		}
 	}
 
@@ -84,7 +108,7 @@ public class Player : MonoBehaviour
 
 	void OnKillDuck()
 	{
-		// If this player killed the duck, send info of this player that killed the duck
+		// If this player killed the duck - send info of this player that killed the duck
 		string player = this.gameObject.name;
 		ArrayList data = new ArrayList ();
 
