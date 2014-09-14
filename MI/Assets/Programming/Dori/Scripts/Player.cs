@@ -11,6 +11,8 @@ public class Player : MonoBehaviour
 	public int maxHealth = 100;
 	public int maxAmmo = 100;
 
+	public string enemyTag;
+
 	public float health;
 	public float speed;
 	public float defaultSpeed = 5.0f;
@@ -19,9 +21,29 @@ public class Player : MonoBehaviour
 	public Rigidbody bullet;
 	public Transform bulletSpawn;
 	private XPTracker xptracker;
-	private DuckScript duck;
 
 	RaycastHit checkDuckInfo;
+
+	void Awake()
+	{
+		// TODO Redo tags to fit new standard
+		// Player tag = "Player"
+		// Teammate tag = "Teammate"
+		// Enemy tag = "Enemy"
+
+		this.gameObject.tag = "Player";
+
+		// Will players be able to choose team?
+		// Store Blue players in list. If the player is in the blue list as well, then all others in list are player's teammates.
+		// vice versa for red players
+//		if (gameObject.tag == "Blue") {
+//			enemyTag = "Red";
+//
+//		}
+//		if (gameObject.tag == "Red") {
+//			enemyTag = "Blue";
+//		}
+	}
 
 	void Start()
 	{
@@ -34,7 +56,6 @@ public class Player : MonoBehaviour
 		speed = defaultSpeed;
 
 		xptracker = GameObject.FindGameObjectWithTag ("XPTracker").GetComponent<XPTracker> ();
-		duck = GameObject.FindGameObjectWithTag ("Duck").GetComponent<DuckScript> ();
 
 		// When player logs in, send a message to XPTracker with this players name to be stored into a team list
 		ArrayList playerInfo = new ArrayList();
@@ -131,6 +152,7 @@ public class Player : MonoBehaviour
 	void ReceiveLevelUp()
 	{
 		level += 1;
+		// TODO Ability level ups
 		// Open up menu to allow the player to select the ability to level up? 
 		// GUI.SendMessage ("AbilityLevelUp");
 	}

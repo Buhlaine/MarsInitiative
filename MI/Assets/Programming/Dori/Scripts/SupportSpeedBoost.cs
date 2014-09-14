@@ -97,7 +97,7 @@ public class SupportSpeedBoost : MonoBehaviour
 	void OnTriggerEnter(Collider other) 
 	{
 		// Adding players within the range to a list 
-		GameObject[] teammates = GameObject.FindGameObjectsWithTag ("Blue");
+		GameObject[] teammates = GameObject.FindGameObjectsWithTag ("Teammate");
 		// Checking for whether there are teammates within the set radius
 		foreach (var str in teammates) {
 			if (other.gameObject == str) { 
@@ -109,7 +109,7 @@ public class SupportSpeedBoost : MonoBehaviour
 	void OnTriggerExit(Collider other)
 	{
 		// Delete the teammates who are not within range
-		GameObject[] teammates = GameObject.FindGameObjectsWithTag ("Blue");
+		GameObject[] teammates = GameObject.FindGameObjectsWithTag ("Teammate");
 		// Checking for whether there are teammates within the set radius
 		foreach (var str in teammates) {
 			if (other.gameObject == str) { 

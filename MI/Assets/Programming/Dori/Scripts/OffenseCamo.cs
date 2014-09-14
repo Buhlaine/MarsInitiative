@@ -98,7 +98,7 @@ public class OffenseCamo : MonoBehaviour
 
 	void OnTriggerEnter(Collider other) 
 	{
-		GameObject[] teammates = GameObject.FindGameObjectsWithTag ("Blue");
+		GameObject[] teammates = GameObject.FindGameObjectsWithTag ("Teammate");
 		// Adding teammates within the set radius
 		foreach (var str in teammates) {
 			if (other.gameObject == str) { 
@@ -109,7 +109,7 @@ public class OffenseCamo : MonoBehaviour
 	
 	void OnTriggerExit(Collider other)
 	{
-		GameObject[] teammates = GameObject.FindGameObjectsWithTag ("Blue");
+		GameObject[] teammates = GameObject.FindGameObjectsWithTag ("Teammate");
 		// Delete the teammates who are not within range
 		foreach (var str in teammates) {
 			if (other.gameObject == str) { 

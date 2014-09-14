@@ -88,7 +88,7 @@ public class SupportHealthRegen : MonoBehaviour
 
 	void OnTriggerEnter(Collider other) 
 	{
-		GameObject[] teammates = GameObject.FindGameObjectsWithTag ("Blue");
+		GameObject[] teammates = GameObject.FindGameObjectsWithTag ("Teammate");
 		// Checking for whether there are teammates within the set radius
 		foreach (var str in teammates) {
 			if (other.gameObject == str) { 
@@ -99,7 +99,7 @@ public class SupportHealthRegen : MonoBehaviour
 	
 	void OnTriggerExit(Collider other)
 	{
-		GameObject[] teammates = GameObject.FindGameObjectsWithTag ("Blue");
+		GameObject[] teammates = GameObject.FindGameObjectsWithTag ("Teammate");
 		// Delete the teammates who are not within the radius of the player
 		foreach (var str in teammates) {
 			if (other.gameObject == str) { 

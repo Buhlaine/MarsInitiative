@@ -26,7 +26,7 @@ public class OffenseMarkEnemy : MonoBehaviour
 
 		// Fire a raycast in front of the player and gather hit info
 		if(Physics.Raycast(transform.position, Vector3.forward, out hitInfo, 5.0f)) {
-			if(hitInfo.transform.tag == "Red") {
+			if(hitInfo.transform.tag == "Enemy") {
 				// Assign the target to variable marked
 				marked = hitInfo.transform.name;
 			}
@@ -55,6 +55,7 @@ public class OffenseMarkEnemy : MonoBehaviour
 			markCounter += 1.0f * Time.deltaTime;
 
 			Debug.Log("Sending " + marked + " to GUI");
+			// TODO Offense Class mark enemy
 			// Send message to GUI with the marked enemies information (transform.name) so that the enemy can be followed on the minimap ... don't know if will work
 			// GUI.SendMessage("MarkEnemy", marked);
 		}
