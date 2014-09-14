@@ -11,31 +11,24 @@ public class Player : MonoBehaviour
 	public int maxHealth = 100;
 	public int maxAmmo = 100;
 
-	public string enemyTag;
+	public string abilityOne;
+	public string abilityTwo;
 
 	public float health;
 	public float speed;
 	public float defaultSpeed = 5.0f;
 
 	public bool isShooting;
-	public Rigidbody bullet;
-	public Transform bulletSpawn;
+//	public Rigidbody bullet;
+//	public Transform bulletSpawn;
 	private XPTracker xptracker;
 
 	RaycastHit checkDuckInfo;
 
 	void Awake()
 	{
-		// TODO Redo tags to fit new standard
-		// Player tag = "Player"
-		// Teammate tag = "Teammate"
-		// Enemy tag = "Enemy"
-
 		this.gameObject.tag = "Player";
 
-		// Will players be able to choose team?
-		// Store Blue players in list. If the player is in the blue list as well, then all others in list are player's teammates.
-		// vice versa for red players
 //		if (gameObject.tag == "Blue") {
 //			enemyTag = "Red";
 //
@@ -68,36 +61,36 @@ public class Player : MonoBehaviour
 	void Update()
 	{
 		// Simulating when player scores a kill
-		if (Input.GetKeyDown (KeyCode.Space)) {
+		if (Input.GetKeyDown (KeyCode.J)) {
 			OnKill ();
 		}
 
 		// Test Character Controls (DELETE LATER)
-		if (Input.GetKey (KeyCode.W)) {
-			transform.Translate (Vector3.forward * speed * Time.deltaTime);
-		}
-		if (Input.GetKey (KeyCode.S)) {
-			transform.Translate (-Vector3.forward * speed * Time.deltaTime);
-		}
-		if (Input.GetKey (KeyCode.A)) {
-			transform.Translate (-Vector3.right * speed * Time.deltaTime);
-		}
-		if (Input.GetKey (KeyCode.D)) {
-			transform.Translate (Vector3.right * speed * Time.deltaTime);
-		}
+//		if (Input.GetKey (KeyCode.W)) {
+//			transform.Translate (Vector3.forward * speed * Time.deltaTime);
+//		}
+//		if (Input.GetKey (KeyCode.S)) {
+//			transform.Translate (-Vector3.forward * speed * Time.deltaTime);
+//		}
+//		if (Input.GetKey (KeyCode.A)) {
+//			transform.Translate (-Vector3.right * speed * Time.deltaTime);
+//		}
+//		if (Input.GetKey (KeyCode.D)) {
+//			transform.Translate (Vector3.right * speed * Time.deltaTime);
+//		}
 
 		// Demo shooting ability (DELETE AFTER TESTING)
-		if (Input.GetButtonDown ("Fire1")) {
-			Rigidbody clone;
-			isShooting = true;
-			clone = Instantiate (bullet, bulletSpawn.transform.position, transform.rotation) as Rigidbody;
-			clone.velocity = transform.TransformDirection(Vector3.forward * 50);
-			clone.name = "Bullet";
-		}
-		else 
-		{
-			isShooting = false;
-		}
+//		if (Input.GetButtonDown ("Fire1")) {
+//			Rigidbody clone;
+//			isShooting = true;
+//			clone = Instantiate (bullet, bulletSpawn.transform.position, transform.rotation) as Rigidbody;
+//			clone.velocity = transform.TransformDirection(Vector3.forward * 50);
+//			clone.name = "Bullet";
+//		}
+//		else 
+//		{
+//			isShooting = false;
+//		}
 
 		// Shoot a raycast at area in front of player. If object == duck than check if health == 0. If duck health == 0, then this player has 
 		// killed the duck and deserves that sweet XP.
@@ -113,15 +106,28 @@ public class Player : MonoBehaviour
 		}
 	}
 
+	void AbilityOne(string _nameOfActiveAbility)
+	{
+		abilityOne = _nameOfActiveAbility;
+	}
+
+	void AbilityTwo(string _nameOfActiveAbility)
+	{
+		abilityTwo = _nameOfActiveAbility;
+	}
+
 	// XP SECTION
 	void OnKill()
 	{
+		Debug.Log ("OnKill");
 		string player = this.gameObject.name;
 		ArrayList data = new ArrayList();
 
 		// store data into an array to be sent to the XPTracker
 		data.Add(player);
 		data.Add(xp);
+		data.Add (abilityOne);
+		data.Add (abilityTwo);
 
 		xptracker.SendMessage ("UpdateXP", data);
 		kills += 1;
@@ -135,6 +141,8 @@ public class Player : MonoBehaviour
 
 		data.Add (player);
 		data.Add (xp);
+		data.Add (abilityOne);
+		data.Add (abilityTwo);
 
 		xptracker.SendMessage ("CompleteLevel", data);
 	}

@@ -24,8 +24,10 @@ public class DefenseAmmoRegen : MonoBehaviour
 		currentAbilityLevel = 1;
 
 		sphereCollider = transform.GetComponent<SphereCollider> ();
-		string ability = this.gameObject.transform.parent.gameObject.name;
-		player = GameObject.Find (ability).GetComponent<Player>();
+		string parent = this.gameObject.transform.parent.gameObject.name;
+		player = GameObject.Find (parent).GetComponent<Player>();
+
+		player.SendMessage ("AbilityTwo", this.gameObject.name);
 
 		CheckStats ();
 	}

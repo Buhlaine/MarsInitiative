@@ -13,9 +13,16 @@ public class OffenseMarkEnemy : MonoBehaviour
 	public bool isMarking;
 	public bool hasChanged;
 
+	private Player player;
+
 	void Start()
 	{
 		currentAbilityLevel = 1;
+
+		string parent = this.gameObject.transform.parent.gameObject.name;
+		player = GameObject.Find (parent).GetComponent<Player>();
+
+		player.SendMessage ("AbilityTwo", this.gameObject.name);
 
 		CheckStats ();
 	}
@@ -33,17 +40,6 @@ public class OffenseMarkEnemy : MonoBehaviour
 		}
 		else if(!isMarking) {
 			marked = null;
-		}
-
-		// Set duration of mark depending on ability level
-		if(currentAbilityLevel == 1) {
-			markDuration += markDurationUpgrade;
-		}
-		if(currentAbilityLevel == 2) {
-			markDuration += markDurationUpgrade;
-		}
-		if(currentAbilityLevel == 3) {
-			markDuration += markDurationUpgrade;
 		}
 
 		// Start Counter

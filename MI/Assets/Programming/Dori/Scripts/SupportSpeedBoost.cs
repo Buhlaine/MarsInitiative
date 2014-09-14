@@ -18,16 +18,21 @@ public class SupportSpeedBoost : MonoBehaviour
 	private List<GameObject> BlueInRadius = new List<GameObject>();
 	// Store boosted players into a second list, so that they can keep the boost outside of the player's range
 	private List<GameObject> BlueBoosted = new List<GameObject>();
-
+	
 	void Start()
 	{
 		currentAbilityLevel = 1;
 		boostCounter = 0;
 		sphereCollider.enabled = true;
+		sphereCollider.radius = 2;
 
 		sphereCollider = this.gameObject.transform.GetComponent<SphereCollider> ();
-		string ability = this.gameObject.transform.parent.gameObject.name;
-		player = GameObject.Find (ability).GetComponent<Player>();
+		string parent = this.gameObject.transform.parent.gameObject.name;
+		player = GameObject.Find (parent).GetComponent<Player>();
+
+		player.SendMessage ("AbilityOne", this.gameObject.name);
+
+		CheckStats ();
 	}
 
 	void Update()

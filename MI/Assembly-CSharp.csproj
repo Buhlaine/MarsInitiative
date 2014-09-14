@@ -49,14 +49,8 @@
      <Compile Include="Assets\Game Design\Prefabs\ActivationTimer.cs" />
      <Compile Include="Assets\Programming\Andrew\Network\MasterData.cs" />
      <Compile Include="Assets\Programming\Andrew\Network\NetworkLobby.cs" />
-     <Compile Include="Assets\Programming\Andrew\Scripts\CamCtrl.cs" />
-     <Compile Include="Assets\Programming\Andrew\Scripts\CamFollow.cs" />
-     <Compile Include="Assets\Programming\Andrew\Scripts\Jumper.cs" />
-     <Compile Include="Assets\Programming\Andrew\Scripts\MouseLook.cs" />
-     <Compile Include="Assets\Programming\Andrew\Scripts\NetworkCheck.cs" />
      <Compile Include="Assets\Programming\Dori\Scripts\DefenseAddShield.cs" />
      <Compile Include="Assets\Programming\Dori\Scripts\DefenseAmmoRegen.cs" />
-     <Compile Include="Assets\Programming\Dori\Scripts\DemoTeammate.cs" />
      <Compile Include="Assets\Programming\Dori\Scripts\DuckScript.cs" />
      <Compile Include="Assets\Programming\Dori\Scripts\OffenseCamo.cs" />
      <Compile Include="Assets\Programming\Dori\Scripts\OffenseMarkEnemy.cs" />
@@ -77,6 +71,7 @@
      <Compile Include="Assets\Programming\Marcus\Weapons\Scripts\weaponScript.cs" />
      <Compile Include="Assets\Programming\Ramon\bomb\bombscript.cs" />
      <Compile Include="Assets\Programming\Ramon\bomb\bombtimer.cs" />
+     <Compile Include="Assets\Programming\Ramon\chat\mychat.cs" />
      <Compile Include="Assets\Programming\Ramon\expbar\lifebar.cs" />
      <Compile Include="Assets\Programming\Ramon\minimap\map.cs" />
      <Compile Include="Assets\Programming\Ramon\minimap\mapgrouppequeno.cs" />

@@ -31,6 +31,8 @@ public class OffenseCamo : MonoBehaviour
 		float sixpercent = player.defaultSpeed * 0.06f;
 		decreasedSpeed = player.defaultSpeed - sixpercent;
 
+		player.SendMessage ("AbilityOne", this.gameObject.name);
+
 		CheckStats ();
 	}
 

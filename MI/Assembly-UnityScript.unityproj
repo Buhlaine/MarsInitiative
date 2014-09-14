@@ -47,9 +47,6 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Game Design\Particle_Resources\Scripts\Operate.js" />
-     <Compile Include="Assets\Programming\Andrew\Scripts\CharacterMotor.js" />
-     <Compile Include="Assets\Programming\Andrew\Scripts\FPSInputController.js" />
-     <Compile Include="Assets\Programming\Andrew\Scripts\PlatformInputController.js" />
      <Compile Include="Assets\Programming\Marcus\Standard Assets\Particles\Legacy Particles\TimedObjectDestructor.js" />
      <Compile Include="Assets\Programming\Ramon\bomb\LifeBar.js" />
      <None Include="Assets\Programming\Marcus\Shaders\cutoffRGBShader.shader" />

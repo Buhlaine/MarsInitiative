@@ -13,7 +13,8 @@ public class DefenseAddShield : MonoBehaviour
 	
 	public bool isShielded;
 	public bool hasChanged;
-	
+
+	private Player player;
 	private SphereCollider sphereCollider;
 	private List<GameObject> BlueInRadius = new List<GameObject>();	
 	// Second list to store shielded players
@@ -24,6 +25,10 @@ public class DefenseAddShield : MonoBehaviour
 		currentAbilityLevel = 1;
 
 		sphereCollider = this.transform.GetComponent<SphereCollider> ();
+		string parent = this.gameObject.transform.parent.gameObject.name;
+		player = GameObject.Find (parent).GetComponent<Player>();
+
+		player.SendMessage ("AbilityOne", this.gameObject.name);
 
 		CheckStats ();
 	}
@@ -59,7 +64,7 @@ public class DefenseAddShield : MonoBehaviour
 		// Reset and turn off sphere collider
 		if (!isShielded) {
 			sphereCollider.enabled = false;
-			gameObject.layer = LayerMask.NameToLayer("Default");
+			gameObject.transform.parent.gameObject.layer = LayerMask.NameToLayer("Default");
 			
 			foreach (GameObject teammates in BlueShielded) {
 				sphereCollider.enabled = false;

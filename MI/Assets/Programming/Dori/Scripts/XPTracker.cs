@@ -44,6 +44,8 @@ public class XPTracker : MonoBehaviour
 		// unpack array into a string "player", and an int "xp" to be used for checking xp and sending player level update messages / leftover xp
 		string player = _data[0].ToString();
 		int xp = (int) _data[1];
+		string abilityOne = _data[2].ToString();
+		string abilityTwo = _data[3].ToString();
 
 		currentXP = xp;
 
@@ -57,8 +59,8 @@ public class XPTracker : MonoBehaviour
 			GameObject.Find(player).SendMessage ("RestartXPCounter", leftOverXP);
 			// Changed calls CheckStats and is based on currentAbilityLevel in the affected gameObjects. Should happen after the player has chosen
 			// an ability to upgrade
-			GameObject.Find (player).transform.GetChild(0).SendMessage ("Changed");
-			GameObject.Find (player).transform.GetChild(1).SendMessage ("Changed");
+			GameObject.Find (player).transform.Find(abilityOne).SendMessage ("Changed");
+			GameObject.Find (player).transform.Find(abilityTwo).SendMessage ("Changed");
 
 			GameObject.Find(player).SendMessage ("ReceiveLevelUp"); // General level ... NOT ability level
 		}
@@ -72,13 +74,15 @@ public class XPTracker : MonoBehaviour
 		// For killing the duck
 		string player = _data [0].ToString ();
 		int xp = (int) _data [1];
+		string abilityOne = _data[2].ToString();
+		string abilityTwo = _data[3].ToString();
 
 		currentXP = xp;
 		DuckXP = maxXP - currentXP;
 		// Changed calls CheckStats and is based on currentAbilityLevel in the affected gameObjects. Should happen after the player has chosen
 		// an ability to upgrade
-		GameObject.Find (player).transform.GetChild(0).SendMessage ("Changed");
-		GameObject.Find (player).transform.GetChild(1).SendMessage ("Changed");
+		GameObject.Find (player).transform.Find(abilityOne).SendMessage ("Changed");
+		GameObject.Find (player).transform.Find(abilityTwo).SendMessage ("Changed");
 		GameObject.Find(player).SendMessage ("ReceiveLevelUp");
 
 		// reset

@@ -18,7 +18,7 @@ public class SupportHealthRegen : MonoBehaviour
 	private Player player;
 	private SphereCollider sphereCollider;
 	private List<GameObject> BlueInRadius = new List<GameObject>();	
-
+	
 	void Start()
 	{
 		sphereCollider = this.gameObject.transform.GetComponent<SphereCollider> ();
@@ -26,6 +26,10 @@ public class SupportHealthRegen : MonoBehaviour
 		player = GameObject.Find (ability).GetComponent<Player>();
 	
 		currentAbilityLevel = 1;
+
+		player.SendMessage ("AbilityTwo", this.gameObject.name);
+
+		CheckStats ();
 	}
 
 	void Update()
