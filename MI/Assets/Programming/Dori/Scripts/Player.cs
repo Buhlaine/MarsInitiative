@@ -5,6 +5,7 @@ public class Player : MonoBehaviour
 {
 	public float ammo;
 	public int xp;
+	public int xPPoints;
 	public int kills;
 	public int deaths;
 	public int level;
@@ -43,6 +44,7 @@ public class Player : MonoBehaviour
 		health = 100;
 		ammo = 10; 
 		xp = 0;
+		xPPoints = 0;
 		kills = 0;
 		deaths = 0;
 		level = 1;
@@ -160,9 +162,10 @@ public class Player : MonoBehaviour
 	void ReceiveLevelUp()
 	{
 		level += 1;
+		xPPoints += 1;
 		// TODO Ability level ups
-		// Open up menu to allow the player to select the ability to level up? 
-		// GUI.SendMessage ("AbilityLevelUp");
+		// Send to Ramon with total points collected, so the player can spend points on upgrades
+		// GUI.SendMessage ("AbilityLevelUp", xpPoints);
 	}
 	
 	void RestartXPCounter(int _leftOverXP)
