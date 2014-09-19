@@ -4,28 +4,29 @@ using System.Collections;
 public class weaponScript : MonoBehaviour {
 
 	public float range = 10000.0f;         //how far the gun can shoot
-	public float fireRate = 1.0f;        //how fast the gun shoots
+	public float[] fireRate = {1.0f};        //how fast the gun shoots
 	public float force = 10.0f;          //how much force the gun gives/how much it will push something back
-	public int damage = 10;              //damage of the weapon
-	public int bulletsPerClip = 15;      //how many bullets are in the clip
+	public int[] damage = {10};              //damage of the weapon
+	public int[] bulletsPerClip = {15};      //how many bullets are in the clip
 	public bool isShotgun = false;       //toggle if the weapon is a shotgun or not
 	public int pelletsPerBullet = 1;	 //how many pellets are shot per bullet simulating a shotgun
 	public int clips = 10;               //how many clips the player has
-	public float reloadSpeed = 0.5f;      //how long it takes to reload the gun
+	public float[] reloadSpeed = {0.5f};      //how long it takes to reload the gun
 	private ParticleEmitter hitParticles;//visual feedback of the gun shooting
 	public Renderer muzzleFlash;//used to see the gun firing the bullet
 	[Range(0.5f,4.0f)]
-	public float spread = 0.0f;          //used for the base spread of the bullets
+	public float[] spread = {0.0f};          //used for the base spread of the bullets
 	public bool fullAuto = true;         //switch to turn on and off hold down to fire
 
 	//public AnimationCurve spreadCurve;  //use this to implament curve based accuracy instead of linear
 
 	//variables for upgrades
-	public enum statGroups{damage, speed, clipSize, accuracy};
+	/*public enum statGroups{damage, speed, clipSize, accuracy};
 	public int damageUpgrade = 1;
 	public float fireRateUpgrade = 1.0f;
 	public int bullPerClipUpgrade = 1;
-	public float maxSpreadUpgrade = 0.1f;
+	public float maxSpreadUpgrade = 0.1f;*/
+
 	private float shotSpread;                 //used for shotgun type spread of pellets
 	private float maxSpread = 4.0f;       	  //tell where the max spread will stop
 
@@ -33,6 +34,11 @@ public class weaponScript : MonoBehaviour {
 	private int looseBullets = 0;        //stores the amount of bullets left in a clip after a manual reload
 	private float nextFireTime = 0.0f;   //helps to regulate the rate of fire based on time instead of computer speed
 	private int m_LastFrameShot = -1;    //also regulates the fire rate
+	private int statsLevel = 0;              //regulates variables based on stat level of character
+
+	//variables for sniper skill shot
+	private bool sniperSkillShot = false;
+
 
 	// Use this for initialization
 	void Start () {
@@ -44,7 +50,7 @@ public class weaponScript : MonoBehaviour {
 		{
 			hitParticles.emit = false;
 		}
-		bulletsLeft = bulletsPerClip;
+		bulletsLeft = bulletsPerClip[statsLevel];
 
 
 	}
@@ -85,9 +91,9 @@ public class weaponScript : MonoBehaviour {
 			Debug.Log(looseBullets);
 		}
 
-		if (looseBullets >= bulletsPerClip) 
+		if (looseBullets >= bulletsPerClip[statsLevel]) 
 		{
-			looseBullets -= bulletsPerClip;
+			looseBullets -= bulletsPerClip[statsLevel];
 			clips++;
 		}
 	}
@@ -139,12 +145,13 @@ public class weaponScript : MonoBehaviour {
 
 		if (bulletsLeft == 0)
 		{
+			Reload();
 			return;
 		}
 
 		//if there is more than one bullet between the last frame and current frame, reset the fire time
 		//this is to regulate the fore rate to be based off of time
-		if (Time.time - fireRate > nextFireTime)
+		if (Time.time - fireRate[statsLevel] > nextFireTime)
 		{
 			nextFireTime = Time.time - Time.deltaTime;
 		}
@@ -155,7 +162,7 @@ public class weaponScript : MonoBehaviour {
 			for(int i = 0; i < pelletsPerBullet; i++)
 			{
 				FireOneShot();
-				nextFireTime += fireRate;
+				nextFireTime += fireRate[statsLevel];
 			}
 			bulletsLeft--;
 		}
@@ -163,7 +170,7 @@ public class weaponScript : MonoBehaviour {
 		//this allows the gun to reload automatically if the clip is empty
 		if (bulletsLeft == 0)
 		{
-			Reload();
+			//Reload();
 		}
 
 	}
@@ -174,43 +181,49 @@ public class weaponScript : MonoBehaviour {
 		//this block of code is for anthing that is not a shotgun
 		if(!isShotgun)
 		{
-			//simple shot that hits the same point every time
-			//Vector3 fireDirection = transform.TransformDirection(Vector3.forward);
-
-			//shoots a forward vector with a randomized spread
-			Vector3 fireDirection = transform.TransformDirection(Random.Range(-maxSpread, maxSpread) * spread * Time.deltaTime, Random.Range(-maxSpread, maxSpread) * spread * Time.deltaTime, 1);
-			RaycastHit hit;
-
-			//check if something was hit
-			if (Physics.Raycast(transform.position, fireDirection,out hit, range))
+			if(sniperSkillShot) //if the sniper explosive shot is active
 			{
-				//if there is a rigid body apply force to it
-				if(hit.rigidbody)
-				{
-					hit.rigidbody.AddForceAtPosition(force * fireDirection, hit.point);
-				}
 
-				//spawn particles at the point the ray hit
-				if (hitParticles)
-				{
-					ParticleEmitter newParticles = Instantiate(hitParticles, hit.point, Quaternion.FromToRotation(Vector3.up, hit.normal)) as ParticleEmitter;
-					hitParticles.transform.position = hit.point;
-					hitParticles.transform.rotation = Quaternion.FromToRotation(Vector3.up, hit.normal);
-					hitParticles.Emit();
-					newParticles.GetComponent<ParticleAnimator>().autodestruct = true;
-					Destroy(newParticles.gameObject,0.5f);
-				}
-
-				//send damage message to the hit object
-				hit.collider.SendMessageUpwards("ApplyDamage", damage, SendMessageOptions.DontRequireReceiver);
 			}
+			else //regular shots
+			{
+				//simple shot that hits the same point every time
+				//Vector3 fireDirection = transform.TransformDirection(Vector3.forward);
+
+				//shoots a forward vector with a randomized spread
+				Vector3 fireDirection = transform.TransformDirection(Random.Range(-maxSpread, maxSpread) * spread[statsLevel] * Time.deltaTime, Random.Range(-maxSpread, maxSpread) * spread[statsLevel] * Time.deltaTime, 1);
+				RaycastHit hit;
+
+				//check if something was hit
+				if (Physics.Raycast(transform.position, fireDirection,out hit, range))
+				{
+					//if there is a rigid body apply force to it
+					if(hit.rigidbody)
+					{
+						hit.rigidbody.AddForceAtPosition(force * fireDirection, hit.point);
+					}
+
+					//spawn particles at the point the ray hit
+					if (hitParticles)
+					{
+						ParticleEmitter newParticles = Instantiate(hitParticles, hit.point, Quaternion.FromToRotation(Vector3.up, hit.normal)) as ParticleEmitter;
+						hitParticles.transform.position = hit.point;
+						hitParticles.transform.rotation = Quaternion.FromToRotation(Vector3.up, hit.normal);
+						hitParticles.Emit();
+						newParticles.GetComponent<ParticleAnimator>().autodestruct = true;
+						Destroy(newParticles.gameObject,0.5f);
+					}
+
+					//send damage message to the hit object
+					hit.collider.SendMessageUpwards("ApplyDamage", damage[statsLevel], SendMessageOptions.DontRequireReceiver);
+				}
 
 
 
-			//this tells the LateUpdate function that we shot and to enable the audio and muzzle flash
-			m_LastFrameShot = Time.frameCount;
-			enabled = true;
-
+				//this tells the LateUpdate function that we shot and to enable the audio and muzzle flash
+				m_LastFrameShot = Time.frameCount;
+				enabled = true;
+			}
 		}
 		//this block of code is for shotgun firing
 		else if (isShotgun)
@@ -247,7 +260,7 @@ public class weaponScript : MonoBehaviour {
 				}
 
 				//apply damage to the kit object
-				hit.collider.SendMessageUpwards("ApplyDamage",damage,SendMessageOptions.DontRequireReceiver);
+				hit.collider.SendMessageUpwards("ApplyDamage",damage[statsLevel],SendMessageOptions.DontRequireReceiver);
 			}
 		}
 
@@ -273,7 +286,7 @@ public class weaponScript : MonoBehaviour {
 	void Reload()
 	{
 		//we want the actual reloading of the bullets to wait for the reloadSpeed
-		StartCoroutine(Wait(reloadSpeed));
+		StartCoroutine(Wait(reloadSpeed[statsLevel]));
 
 	}
 
@@ -295,7 +308,7 @@ public class weaponScript : MonoBehaviour {
 		if(clips > 0)
 		{
 			clips--;
-			bulletsLeft = bulletsPerClip;
+			bulletsLeft = bulletsPerClip[statsLevel];
 		}
 		else if (clips == 0 && looseBullets > 0)
 		{
@@ -304,8 +317,19 @@ public class weaponScript : MonoBehaviour {
 		}
 	}
 
+	void StatsLevelup()
+	{
+		statsLevel++;
+	}
 
-	void editStats(int updateStat)
+	void sniperSkillActivate()
+	{
+		sniperSkillShot = true;
+	}
+
+
+
+	/*void editStats(int updateStat)
 	{
 
 		switch (updateStat)
@@ -330,24 +354,7 @@ public class weaponScript : MonoBehaviour {
 			break;
 		}
 
-		/*if (updateStat == 0)
-		{
-			damage += damageUpgrade;
-		}
-		else if (updateStat == 1)
-		{
-			fireRate += fireRateUpgrade;
-		}
-		else if (updateStat == 2)
-		{
-			bulletsPerClip += bullPerClipUpgrade;
-		}
-		else if (updateStat == 3)
-		{
-			maxSpread -= maxSpreadUpgrade;
-		}*/
-
-	}
+	}*/
 
 
 } 

@@ -3,8 +3,9 @@ using System.Collections;
 
 public class MeleeAttack : MonoBehaviour 
 {
-	public float meleeDamage;
+	public float[] meleeDamage;
 	public float punchForce;
+	private int statsLevel = 0;              //regulates variables based on stat level of character
 
 
 
@@ -39,11 +40,19 @@ public class MeleeAttack : MonoBehaviour
 	void OnCollisionEnter(Collision other)
 	{
 		//see of the collider hits something and apply damage
-		other.collider.SendMessageUpwards("ApplyDamage", meleeDamage, SendMessageOptions.DontRequireReceiver);
+		other.collider.SendMessageUpwards("ApplyDamage", meleeDamage[statsLevel], SendMessageOptions.DontRequireReceiver);
 
 		if(other.rigidbody)
 		{
 			other.rigidbody.AddForce(Vector3.forward*punchForce);
 		}
 	}
+
+	void StatsLevelup()
+	{
+		statsLevel++;
+	}
+
+
+
 }

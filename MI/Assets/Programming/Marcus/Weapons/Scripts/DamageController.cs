@@ -3,7 +3,7 @@ using System.Collections;
 
 public class DamageController : MonoBehaviour {
 
-	public int hitPoints = 100;
+	public int[] hitPoints = {100};
 	public float deathDelay = 0.0f;
 	public Transform explosion;
 
@@ -12,6 +12,7 @@ public class DamageController : MonoBehaviour {
 	float dotDuration = 5.0f;
 	int dotDmg = 1;
 	private bool isDamaging;
+	private int statsLevel = 0;              //regulates variables based on stat level of character
 
 	void Start()
 	{
@@ -22,18 +23,18 @@ public class DamageController : MonoBehaviour {
 	int ApplyDamage(int damage)
 	{
 		//check if object is already dead
-		if (hitPoints <= 0)
+		if (hitPoints[statsLevel] <= 0)
 		{
 			return 0;
 		}
 
-		hitPoints -= damage;
+		hitPoints[statsLevel] -= damage;
 
-		if (hitPoints <= 0)
+		if (hitPoints[statsLevel] <= 0)
 		{
 			Destroy(this.gameObject, deathDelay);
 		}
-		return hitPoints;
+		return hitPoints[statsLevel];
 	}
 
 	void ApplyDotDamage(float creationTime)
@@ -52,11 +53,11 @@ public class DamageController : MonoBehaviour {
 		{
 			if(isDamaging)
 			{
-				if (hitPoints <= 0)
+				if (hitPoints[statsLevel] <= 0)
 				{
 					Destroy(this.gameObject, deathDelay);
 				}
-				hitPoints -= dotDmg;
+				hitPoints[statsLevel] -= dotDmg;
 				isDamaging = false;
 				yield return new WaitForSeconds (seconds);
 				isDamaging = true;

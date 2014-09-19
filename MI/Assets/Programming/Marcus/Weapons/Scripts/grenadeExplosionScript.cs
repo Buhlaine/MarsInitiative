@@ -9,7 +9,7 @@ public class grenadeExplosionScript : MonoBehaviour
 	public float explosionRadius = 5.0f;
 	public float force = 10.0f;
 	public float explosiveLift = 1.0f;
-	public float damage = 100.0f;
+	public float[] damage = {100.0f};
 	public float speedReduction;  //the amount a player is slowed in the dot field
 	public bool isDot = false;
 	public bool isConcussion = false;
@@ -21,7 +21,7 @@ public class grenadeExplosionScript : MonoBehaviour
 	private Vector3 targetPosition;  //grabs where the grenade target is in the grenade blast
 	private float targetDistance;    //gets the distance of the target from the center of the blast
 	private float proximity;
-
+	private int statsLevel = 0;              //regulates variables based on stat level of character
 
 
 	void Awake () 
@@ -58,7 +58,7 @@ public class grenadeExplosionScript : MonoBehaviour
 				proximity = 1 - (targetDistance/explosionRadius);
 				if (isConcussion)
 				{
-					damage *= proximity;
+					damage[statsLevel] *= proximity;
 				}
 				else if (isDot)
 				{
@@ -66,7 +66,7 @@ public class grenadeExplosionScript : MonoBehaviour
 					doDotDmg(hit);
 				}
 				hit.rigidbody.AddExplosionForce(force, grenadePosition, explosionRadius, explosiveLift);
-				hit.collider.SendMessageUpwards("ApplyDamage", damage, SendMessageOptions.DontRequireReceiver);
+				hit.collider.SendMessageUpwards("ApplyDamage", damage[statsLevel], SendMessageOptions.DontRequireReceiver);
 
 			}
 		}
@@ -92,12 +92,17 @@ public class grenadeExplosionScript : MonoBehaviour
 		{ 
 			Debug.Log ("coroutine" + seconds);
 			Debug.Log(dotDuration);
-			hit.collider.SendMessageUpwards("ApplyDamage", damage, SendMessageOptions.DontRequireReceiver);
+			hit.collider.SendMessageUpwards("ApplyDamage", damage[statsLevel], SendMessageOptions.DontRequireReceiver);
 			hit.collider.SendMessageUpwards("slowField", speedReduction, SendMessageOptions.DontRequireReceiver);
 			yield return new WaitForSeconds (seconds);
 
 		}
 
+	}
+
+	void StatsLevelup()
+	{
+		statsLevel++;
 	}
 
 }
