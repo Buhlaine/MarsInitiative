@@ -11,6 +11,8 @@ public class SupportPulseRadar : MonoBehaviour
 	public float[] pulseDamage;
 	public float[] pulseDuration;
 	public float[] pulseRadius;
+
+	public float damageCounter;
 	
 	public bool isPulse;
 	public bool startCooldown;
@@ -63,12 +65,12 @@ public class SupportPulseRadar : MonoBehaviour
 			foreach (var enemy in EnemyInRadius) {
 				enemy.SendMessage("PulseRadar", true);
 				// Sending damage in "pulses"
-//				for(float i = 0; i < 10; i += 1.0f * Time.deltaTime) {
-//					if (i%2 == 0) {
-//						Debug.Log ("Pulse Damage!" + i);
-//						enemy.SendMessage("PulseDamage", pulseDamage[currentAbilityLevel]);
-//					}
-//				}
+				damageCounter += 1.0f * Time.deltaTime;
+				if (damageCounter >= 5) { // Not sure if works
+					Debug.Log ("Pulse Damage!");
+					damageCounter = 0;
+					enemy.SendMessage("PulseDamage", pulseDamage[currentAbilityLevel]);
+				}
 			}
 		}
 
@@ -81,12 +83,10 @@ public class SupportPulseRadar : MonoBehaviour
 
 	void OnTriggerEnter(Collider other)
 	{
-		Debug.Log ("Boom");
 		GameObject[] enemies = GameObject.FindGameObjectsWithTag ("Enemy");
 		// Adding enemies to a list if they're within range
 		foreach (var enemy in enemies) {
-			if (other.gameObject == enemy) { 
-				Debug.Log ("Added: " + other.gameObject);
+			if (other.gameObject == enemy) {
 				EnemyInRadius.Add(other.gameObject);
 			}
 		}
