@@ -51,11 +51,16 @@
      <Compile Include="Assets\Programming\Andrew\Network\NetworkLobby.cs" />
      <Compile Include="Assets\Programming\Dori\Scripts\DefenseAddShield.cs" />
      <Compile Include="Assets\Programming\Dori\Scripts\DefenseAmmoRegen.cs" />
+     <Compile Include="Assets\Programming\Dori\Scripts\DefenseCharge.cs" />
+     <Compile Include="Assets\Programming\Dori\Scripts\Demo.cs" />
      <Compile Include="Assets\Programming\Dori\Scripts\DuckScript.cs" />
      <Compile Include="Assets\Programming\Dori\Scripts\OffenseCamo.cs" />
+     <Compile Include="Assets\Programming\Dori\Scripts\OffenseChainShot.cs" />
      <Compile Include="Assets\Programming\Dori\Scripts\OffenseMarkEnemy.cs" />
      <Compile Include="Assets\Programming\Dori\Scripts\Player.cs" />
      <Compile Include="Assets\Programming\Dori\Scripts\SupportHealthRegen.cs" />
+     <Compile Include="Assets\Programming\Dori\Scripts\SupportPulseRadar.cs" />
+     <Compile Include="Assets\Programming\Dori\Scripts\SupportRestock.cs" />
      <Compile Include="Assets\Programming\Dori\Scripts\SupportSpeedBoost.cs" />
      <Compile Include="Assets\Programming\Dori\Scripts\XPTracker.cs" />
      <Compile Include="Assets\Programming\Larry\Flag\baseScript.cs" />
