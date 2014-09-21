@@ -5,86 +5,103 @@ using System.Collections.Generic;
 public class OffenseMarkEnemy : MonoBehaviour 
 {
 	public int currentAbilityLevel;
-	public float markDuration = 0.0f;
 	public float markCounter;
+	public float cooldownCounter;
+	public float cooldownPeriod;
 	public string marked;
-	public float markDurationUpgrade = 10.0f;
+	public float[] markDuration;
+	public float[] markRadius;
 
 	public bool isMarking;
-	public bool hasChanged;
+	public bool startCooldown;
 
 	private Player player;
+	private SphereCollider sphereCollider;
+	public List<GameObject> EnemiesInRadius = new List<GameObject>();
+	public List<GameObject> EnemiesMarked = new List<GameObject>();
 
 	void Start()
 	{
-		currentAbilityLevel = 1;
+		currentAbilityLevel = 0;
+		cooldownPeriod = 16.0f;
 
 		string parent = this.gameObject.transform.parent.gameObject.name;
 		player = GameObject.Find (parent).GetComponent<Player>();
+		sphereCollider = GetComponent<SphereCollider> ();
 
 		player.SendMessage ("AbilityTwo", this.gameObject.name);
-
-		CheckStats ();
 	}
 	
 	void Update()
 	{
-		RaycastHit hitInfo;
-
-		// Fire a raycast in front of the player and gather hit info
-		if(Physics.Raycast(transform.position, Vector3.forward, out hitInfo, 5.0f)) {
-			if(hitInfo.transform.tag == "Enemy") {
-				// Assign the target to variable marked
-				marked = hitInfo.transform.name;
-			}
-		}
-		else if(!isMarking) {
-			marked = null;
-		}
+		sphereCollider.radius = markRadius [currentAbilityLevel];
 
 		// Start Counter
-		if(Input.GetKeyDown(KeyCode.Q) && marked != null) {
+		if(Input.GetKeyDown(KeyCode.Q) && !startCooldown) {
 			isMarking = true;
 		}
 
 		if (isMarking) {
 			markCounter += 1.0f * Time.deltaTime;
 
-			Debug.Log("Sending " + marked + " to GUI");
-			// TODO Offense Class mark enemy
-			// Send message to GUI with the marked enemies information (transform.name) so that the enemy can be followed on the minimap ... don't know if will work
-			// GUI.SendMessage("MarkEnemy", marked);
+			foreach (GameObject enemies in EnemiesInRadius) {
+				EnemiesMarked.Add (enemies);
+			}
+			foreach (GameObject enemies in EnemiesMarked) {
+				enemies.SendMessage("Marked", true);
+			}
 		}
 
-		if(markCounter >= markDuration) {
+		// Start ability counter
+		if(markCounter >= markDuration[currentAbilityLevel]) {
 			markCounter = 0;
 			isMarking = false;
 			marked = null;
+			startCooldown = true;
+
+			foreach (GameObject enemies in EnemiesMarked) {
+				enemies.SendMessage ("Marked", false);
+			}
+			// Clear 
+			EnemiesMarked.Clear();
+		}
+
+		// Start cool down
+		if(startCooldown) {
+			cooldownCounter += 1.0f * Time.deltaTime;
+		}
+		
+		if (cooldownCounter >= cooldownPeriod) {
+			startCooldown = false;
+			cooldownCounter = 0;
 		}
 	}
 
-	void CheckStats()
-	{
-		if (currentAbilityLevel == 1) {
-			markDuration = markDurationUpgrade;
-		}
-		if (currentAbilityLevel == 2) {
-			markDuration += markDurationUpgrade;
-		}
-		if (currentAbilityLevel == 3) {
-			markDuration += markDurationUpgrade;
-		}
-		
-		hasChanged = false;
-	}
-	
 	void Changed()
 	{
-		hasChanged = true;
-		
-		if (hasChanged) {
-			Debug.Log ("Checking Stats...");
-			CheckStats();
+		currentAbilityLevel += 1;
+	}
+
+	void OnTriggerEnter(Collider other) 
+	{
+		GameObject[] enemies = GameObject.FindGameObjectsWithTag ("Enemy");
+		// Adding enemies within the set radius
+		foreach (var str in enemies) {
+			if (other.gameObject == str) { 
+				EnemiesInRadius.Add(other.gameObject);
+				Debug.Log ("Adding: " + str);
+			}
+		}
+	}
+	
+	void OnTriggerExit(Collider other)
+	{
+		GameObject[] enemies = GameObject.FindGameObjectsWithTag ("Enemy");
+		// Delete the enemies who are not within range
+		foreach (var str in enemies) {
+			if (other.gameObject == str) { 
+				EnemiesInRadius.Remove(other.gameObject);
+			}
 		}
 	}
 }

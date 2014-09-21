@@ -6,13 +6,13 @@ public class DefenseAddShield : MonoBehaviour
 {
 	public int currentAbilityLevel;
 	public float shieldCounter;
-	public float shieldDuration = 0.0f;
-	public float shieldRadius;
-	public float shieldUpgradeAmount = 10.0f;
-	public float shieldUpgradeRadius = 1.0f;
-	
+	public float cooldownCounter;
+	public float cooldownPeriod;
+	public float[] shieldDuration;
+	public float[] shieldRadius;
+
 	public bool isShielded;
-	public bool hasChanged;
+	public bool startCooldown;
 
 	private Player player;
 	private SphereCollider sphereCollider;
@@ -22,32 +22,43 @@ public class DefenseAddShield : MonoBehaviour
 
 	void Start()
 	{
-		currentAbilityLevel = 1;
+		currentAbilityLevel = 0;
+		cooldownPeriod = 20.0f;
 
 		sphereCollider = this.transform.GetComponent<SphereCollider> ();
 		string parent = this.gameObject.transform.parent.gameObject.name;
 		player = GameObject.Find (parent).GetComponent<Player>();
 
 		player.SendMessage ("AbilityOne", this.gameObject.name);
-
-		CheckStats ();
 	}
 
 	void Update()
 	{
-		if (Input.GetKeyDown (KeyCode.Q) && !isShielded) {
+		sphereCollider.radius = shieldRadius [currentAbilityLevel];
+
+		if (Input.GetKeyDown (KeyCode.Q) && !isShielded && !startCooldown) {
 			isShielded = true;
 		}
 
-		// Reset Counter
-		if (shieldCounter >= shieldDuration) {
-			shieldCounter = 0;
+		// Reset Counter and start cool down
+		if (shieldCounter >= shieldDuration[currentAbilityLevel]) {
+			startCooldown = true;
 			isShielded = false;
+			shieldCounter = 0;
+		}
+
+		if(startCooldown) {
+			cooldownCounter += 1.0f * Time.deltaTime;
+		}
+
+		if (cooldownCounter >= cooldownPeriod) {
+			startCooldown = false;
+			cooldownCounter = 0;
 		}
 		
 		// Start counter
 		if (isShielded) {
-			shieldCounter += 1 * Time.deltaTime;
+			shieldCounter += 1.0f * Time.deltaTime;
 
 			// Turn sphere colliders on (they are on layermask "Ignore Raycast")
 			sphereCollider.enabled = true;
@@ -56,6 +67,9 @@ public class DefenseAddShield : MonoBehaviour
 			foreach (GameObject teammates in BlueInRadius) {
 				// Store players within range into a second list 
 				BlueShielded.Add (teammates);
+			}
+
+			foreach (GameObject teammates in BlueShielded) {
 				sphereCollider.enabled = true;
 				teammates.gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
 			}
@@ -75,34 +89,9 @@ public class DefenseAddShield : MonoBehaviour
 		}
 	}
 
-	void CheckStats()
-	{
-		if (currentAbilityLevel == 1) {
-			shieldDuration = shieldUpgradeAmount;
-			sphereCollider.radius = shieldUpgradeRadius;
-			shieldRadius = sphereCollider.radius;
-		}
-		if (currentAbilityLevel == 2) {
-			shieldDuration += shieldUpgradeAmount;
-			sphereCollider.radius += shieldUpgradeRadius;
-			shieldRadius = sphereCollider.radius;
-		}
-		if (currentAbilityLevel == 3) {
-			shieldDuration += shieldUpgradeAmount;
-			sphereCollider.radius += shieldUpgradeRadius;
-			shieldRadius = sphereCollider.radius;
-		}
-
-		hasChanged = false;
-	}
-
 	void Changed()
 	{
-		hasChanged = true;
-		
-		if (hasChanged) {
-			CheckStats();
-		}
+		currentAbilityLevel += 1;
 	}
 	
 	void OnTriggerEnter(Collider other) 
@@ -110,7 +99,7 @@ public class DefenseAddShield : MonoBehaviour
 		GameObject[] teammates = GameObject.FindGameObjectsWithTag ("Teammate");
 		// Checking for whether there are teammates within the set radius
 		foreach (var str in teammates) {
-			if (other.gameObject == str) { 
+			if(other.gameObject == str) {
 				BlueInRadius.Add(other.gameObject);
 			}
 		}
@@ -121,7 +110,7 @@ public class DefenseAddShield : MonoBehaviour
 		GameObject[] teammates = GameObject.FindGameObjectsWithTag ("Teammate");
 		// Delete the teammates who are not within the radius of the player
 		foreach (var str in teammates) {
-			if (other.gameObject == str) { 
+			if(other.gameObject == str) {
 				BlueInRadius.Remove(other.gameObject);
 			}
 		}

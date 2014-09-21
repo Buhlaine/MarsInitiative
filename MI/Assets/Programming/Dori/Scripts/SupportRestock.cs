@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class DefenseAmmoRegen : MonoBehaviour 
+public class SupportRestock : MonoBehaviour 
 {
 	public int currentAbilityLevel;
 	public float regenCounter;
@@ -11,46 +11,42 @@ public class DefenseAmmoRegen : MonoBehaviour
 	public float[] regenAmount;
 	public float[] regenDuration;
 	public float[] regenRadius;
-//	public float regenAmountUpgrade = 0.6f;
-//	public float regenDurationUpgrade = 5.0f;
-//	public float regenRadiusUpgrade = 0.5f;
 	
 	public bool isRegen;
-//	public bool hasChanged;
 	public bool startCooldown;
 	
 	private Player player;
 	private SphereCollider sphereCollider;
 	private List<GameObject> BlueInRadius = new List<GameObject>();	
-
+	
 	void Start()
 	{
+		sphereCollider = this.gameObject.transform.GetComponent<SphereCollider> ();
+		string ability = this.gameObject.transform.parent.gameObject.name;
+		player = GameObject.Find (ability).GetComponent<Player>();
+		
 		currentAbilityLevel = 0;
-		cooldownPeriod = 18.0f;
-
-		sphereCollider = transform.GetComponent<SphereCollider> ();
-		string parent = this.gameObject.transform.parent.gameObject.name;
-		player = GameObject.Find (parent).GetComponent<Player>();
-
-		player.SendMessage ("AbilityTwo", this.gameObject.name);
-
-//		CheckStats ();
+		cooldownPeriod = 15.0f;
+		
+		player.SendMessage ("AbilityOne", this.gameObject.name);
 	}
-
+	
 	void Update()
 	{
+		sphereCollider.radius = regenRadius [currentAbilityLevel];
+
+		// Initiate counter and health/ammo regeneration
 		if (Input.GetKeyDown(KeyCode.E) && !isRegen && !startCooldown) {
 			isRegen = true;
-			sphereCollider.radius = regenRadius[currentAbilityLevel];
 		}
-		
-		// Reset counter
+
+		// Reset Counter and start cool down
 		if (regenCounter >= regenDuration[currentAbilityLevel]) {
 			startCooldown = true;
 			isRegen = false;
 			regenCounter = 0;
 		}
-
+		
 		if(startCooldown) {
 			cooldownCounter += 1.0f * Time.deltaTime;
 		}
@@ -60,46 +56,30 @@ public class DefenseAmmoRegen : MonoBehaviour
 			cooldownCounter = 0;
 		}
 		
+		// Reset counter
+		if (regenCounter >= regenDuration[currentAbilityLevel]) {
+			regenCounter = 0;
+			isRegen = false;
+			startCooldown = true;
+		}
+		
 		// Start counter
 		if (isRegen) {
 			regenCounter += 1 * Time.deltaTime;
-
-			player.SendMessage("AmmoRegen", currentAbilityLevel);
+			
+			player.SendMessage("Restock", regenAmount[currentAbilityLevel]);
 			
 			foreach (GameObject teammates in BlueInRadius) {
-				teammates.SendMessage ("AmmoRegen", currentAbilityLevel);
+				teammates.SendMessage ("Restock", regenAmount[currentAbilityLevel]);
 			}
 		}
 	}
-
-//	void CheckStats()
-//	{
-//		if (currentAbilityLevel == 1) {
-//			regenDuration = regenDurationUpgrade;
-//			sphereCollider.radius = regenRadiusUpgrade;
-//		}
-//		if (currentAbilityLevel == 2) {
-//			regenDuration += regenDurationUpgrade;
-//			sphereCollider.radius += regenRadiusUpgrade;
-//		}
-//		if (currentAbilityLevel == 3) {
-//			regenDuration = regenDuration + regenDurationUpgrade;
-//			sphereCollider.radius += regenRadiusUpgrade;
-//		}
-//
-//		hasChanged = false;
-//	}
-
+	
 	void Changed()
 	{
-//		hasChanged = true;
 		currentAbilityLevel += 1;
-
-//		if (hasChanged) {
-//			CheckStats();
-//		}
 	}
-
+	
 	void OnTriggerEnter(Collider other) 
 	{
 		GameObject[] teammates = GameObject.FindGameObjectsWithTag ("Teammate");

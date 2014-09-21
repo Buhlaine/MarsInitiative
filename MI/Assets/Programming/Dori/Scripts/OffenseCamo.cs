@@ -5,24 +5,23 @@ using System.Collections.Generic;
 public class OffenseCamo : MonoBehaviour 
 {
 	public int currentAbilityLevel;
+	public float cooldownCounter;
+	public float cooldownPeriod;
 	public float decreasedSpeed;
 	public float camoCounter;
-	public float camoDuration = 0.0f;
-	public float camoDurationUpdrade = 10.0f;
-	public float camoRadiusUpgrade = 1.0f;
+	public float[] camoDuration;
+	public string target;
 	
 	public bool isCamo;
-	public bool hasChanged;
+	public bool startCooldown;
 
 	private Player player;
 	private SphereCollider sphereCollider;
-	private List<GameObject> BlueInRadius = new List<GameObject>();
-	// Store boosted players into a second list, so that they can keep the camo outside of the player's range
-	private List<GameObject> BlueCamo = new List<GameObject>();
 
 	void Start()
 	{
-		currentAbilityLevel = 1;
+		currentAbilityLevel = 0;
+		cooldownPeriod = 26.0f;
 
 		sphereCollider = this.gameObject.transform.GetComponent<SphereCollider> ();
 		string ability = this.gameObject.transform.parent.gameObject.name;
@@ -32,20 +31,43 @@ public class OffenseCamo : MonoBehaviour
 		decreasedSpeed = player.defaultSpeed - sixpercent;
 
 		player.SendMessage ("AbilityOne", this.gameObject.name);
-
-		CheckStats ();
 	}
 
 	void Update()
 	{
-		if(Input.GetKeyDown (KeyCode.E)) {
+		if(Input.GetKeyDown (KeyCode.E) && !startCooldown && !isCamo) {
 			isCamo = true;
 		}
 
+		RaycastHit hitInfo;
+		
+		// Fire a raycast in front of the player and gather hit info
+		if(currentAbilityLevel >= 1) {
+			if(Physics.Raycast(transform.position, Vector3.forward, out hitInfo, 5.0f)) {
+				if(hitInfo.transform.tag == "Teammate") {
+					// Assign the target to variable marked
+					target = hitInfo.transform.name;
+				}
+			}
+			else if(!isCamo) {
+				target = null;
+			}
+		}
+
 		// Reset Counter
-		if(camoCounter >= camoDuration) {
-			camoCounter = 0;
+		if(camoCounter >= camoDuration[currentAbilityLevel]) {
+			startCooldown = true;
 			isCamo = false;
+			camoCounter = 0;
+		}
+
+		if(startCooldown) {
+			cooldownCounter += 1.0f * Time.deltaTime;
+		}
+		
+		if (cooldownCounter >= cooldownPeriod) {
+			startCooldown = false;
+			cooldownCounter = 0;
 		}
 
 		if(isCamo) {
@@ -53,70 +75,24 @@ public class OffenseCamo : MonoBehaviour
 
 			player.SendMessage("PersonalCamo", decreasedSpeed);
 
-			foreach (GameObject teammates in BlueInRadius) {
-				BlueCamo.Add (teammates);
-				teammates.SendMessage("PersonalCamo", decreasedSpeed);
+			if(target != null && currentAbilityLevel >= 1) {
+				GameObject.Find(target).SendMessage("PersonalCamo", decreasedSpeed);
+				Debug.Log (target + " is invisible now.");
 			}
 		}
 
 		if(!isCamo) {
 			player.SendMessage ("PersonalCamoOff");
-			
-			foreach (GameObject teammates in BlueCamo) {
-				teammates.SendMessage ("PersonalCamoOff");
-			}
-			// Clear 
-			BlueCamo.Clear();
-		}
-	}
 
-	void CheckStats()
-	{
-		if (currentAbilityLevel == 1) {
-			camoDuration = camoDurationUpdrade;
-			sphereCollider.radius = camoRadiusUpgrade;
+			if(target != null && currentAbilityLevel >= 1) {
+				GameObject.Find(target).SendMessage("PersonalCamoOff");
+				Debug.Log (target + " is visible now.");
+			}
 		}
-		if (currentAbilityLevel == 2) {
-			camoDuration += camoDurationUpdrade;
-			sphereCollider.radius += camoRadiusUpgrade;
-		}
-		if (currentAbilityLevel == 3) {
-			camoDuration += camoDurationUpdrade;
-			sphereCollider.radius += camoRadiusUpgrade;
-		}
-		
-		hasChanged = false;
 	}
 	
 	void Changed()
 	{
-		hasChanged = true;
-		
-		if (hasChanged) {
-			Debug.Log ("Checking Stats...");
-			CheckStats();
-		}
-	}
-
-	void OnTriggerEnter(Collider other) 
-	{
-		GameObject[] teammates = GameObject.FindGameObjectsWithTag ("Teammate");
-		// Adding teammates within the set radius
-		foreach (var str in teammates) {
-			if (other.gameObject == str) { 
-				BlueInRadius.Add(other.gameObject);
-			}
-		}
-	}
-	
-	void OnTriggerExit(Collider other)
-	{
-		GameObject[] teammates = GameObject.FindGameObjectsWithTag ("Teammate");
-		// Delete the teammates who are not within range
-		foreach (var str in teammates) {
-			if (other.gameObject == str) { 
-				BlueInRadius.Remove(other.gameObject);
-			}
-		}
+		currentAbilityLevel += 1;
 	}
 }

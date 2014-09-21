@@ -20,8 +20,6 @@ public class Player : MonoBehaviour
 	public float defaultSpeed = 5.0f;
 
 	public bool isShooting;
-//	public Rigidbody bullet;
-//	public Transform bulletSpawn;
 	private XPTracker xptracker;
 
 	RaycastHit checkDuckInfo;
@@ -29,14 +27,6 @@ public class Player : MonoBehaviour
 	void Awake()
 	{
 		this.gameObject.tag = "Player";
-
-//		if (gameObject.tag == "Blue") {
-//			enemyTag = "Red";
-//
-//		}
-//		if (gameObject.tag == "Red") {
-//			enemyTag = "Blue";
-//		}
 	}
 
 	void Start()
@@ -68,31 +58,18 @@ public class Player : MonoBehaviour
 		}
 
 		// Test Character Controls (DELETE LATER)
-//		if (Input.GetKey (KeyCode.W)) {
-//			transform.Translate (Vector3.forward * speed * Time.deltaTime);
-//		}
-//		if (Input.GetKey (KeyCode.S)) {
-//			transform.Translate (-Vector3.forward * speed * Time.deltaTime);
-//		}
-//		if (Input.GetKey (KeyCode.A)) {
-//			transform.Translate (-Vector3.right * speed * Time.deltaTime);
-//		}
-//		if (Input.GetKey (KeyCode.D)) {
-//			transform.Translate (Vector3.right * speed * Time.deltaTime);
-//		}
-
-		// Demo shooting ability (DELETE AFTER TESTING)
-//		if (Input.GetButtonDown ("Fire1")) {
-//			Rigidbody clone;
-//			isShooting = true;
-//			clone = Instantiate (bullet, bulletSpawn.transform.position, transform.rotation) as Rigidbody;
-//			clone.velocity = transform.TransformDirection(Vector3.forward * 50);
-//			clone.name = "Bullet";
-//		}
-//		else 
-//		{
-//			isShooting = false;
-//		}
+		if (Input.GetKey (KeyCode.W)) {
+			transform.Translate (Vector3.forward * speed * Time.deltaTime);
+		}
+		if (Input.GetKey (KeyCode.S)) {
+			transform.Translate (-Vector3.forward * speed * Time.deltaTime);
+		}
+		if (Input.GetKey (KeyCode.A)) {
+			transform.Translate (-Vector3.right * speed * Time.deltaTime);
+		}
+		if (Input.GetKey (KeyCode.D)) {
+			transform.Translate (Vector3.right * speed * Time.deltaTime);
+		}
 
 		// Shoot a raycast at area in front of player. If object == duck than check if health == 0. If duck health == 0, then this player has 
 		// killed the duck and deserves that sweet XP.
@@ -163,9 +140,39 @@ public class Player : MonoBehaviour
 	{
 		level += 1;
 		xPPoints += 1;
-		// TODO Ability level ups
-		// Send to Ramon with total points collected, so the player can spend points on upgrades
-		// GUI.SendMessage ("AbilityLevelUp", xpPoints);
+
+		int levelUpEvent = 1; // might change depending...
+
+		ArrayList data = new ArrayList();
+
+		data.Add (gameObject.name);
+		data.Add (levelUpEvent);
+
+		gameObject.SendMessage ("UpperCornerEvent", data);
+	}
+
+	// Golden Functions HERE
+	void AbilityOneLevelUp()
+	{
+		// Sending a level up to ability one
+		gameObject.transform.Find (abilityOne).SendMessage ("Changed");
+	}
+
+	void AbilityTwoLevelUp()
+	{
+		// Sending a level up to ability two
+		gameObject.transform.Find (abilityTwo).SendMessage ("Changed");
+	}
+
+	void StatsLevelUp()
+	{
+		// Sending a level up for stats 
+		gameObject.SendMessage ("Changed");
+	}
+
+	void Changed()
+	{
+		// stat level ups
 	}
 	
 	void RestartXPCounter(int _leftOverXP)
@@ -176,63 +183,51 @@ public class Player : MonoBehaviour
 	}
 
 	// SUPPORT CLASS SECTION
-	void ApplySpeedBoost(int _abilityLevel)
+	void PulseRadar(bool _onoroff)
 	{
-		float speedBoostAmount = defaultSpeed * 0.15f;
-		speed = defaultSpeed + speedBoostAmount;
+		if (_onoroff == true) {
+
+		}
+
+		if (_onoroff == false) {
+
+		}
+	}
+	
+	void PulseDamage(float _damage)
+	{
+		health -= _damage; // TODO NOT WORKING (PULSE DAMAGE)
 	}
 
-	void DefaultSpeed()
+	void Restock(int _regenIndex)
 	{
-		speed = defaultSpeed;
-	}
-
-	void HealthRegen(int _abilityLevel)
-	{
-		float regenAmount = 0.0f;
-
-		if (_abilityLevel == 1) {
-			regenAmount = maxHealth * 0.06f;
-		}
-		if (_abilityLevel == 2) {
-			regenAmount = maxHealth * 0.12f;
-		}
-		if (_abilityLevel == 3) {
-			regenAmount = maxHealth * 0.24f;
-		}
-
-		// Is this correct?
-		health += regenAmount * Time.deltaTime;
-
 		if (health >= maxHealth) {
 			health = maxHealth;
+		}
+		else {
+			health += _regenIndex * Time.deltaTime;
+		}
+
+		if (ammo >= maxAmmo) {
+			ammo = maxAmmo;
+		}
+		else {
+			ammo += _regenIndex * Time.deltaTime;
 		}
 	}
 
 	// TEST DEFENSE SECTION
-	void AmmoRegen(float _abilityLevel)
+	void Charge(bool _onoroff) 
 	{
-		float regenAmount = 0.0f;
-		
-		// Check regenAmount based on player ability level
-		if (_abilityLevel == 1) {
-			regenAmount = maxAmmo * 0.06f;
+		if (_onoroff == true) {
+
 		}
-		if (_abilityLevel == 2) {
-			regenAmount = maxAmmo * 0.12f;
-		}
-		if (_abilityLevel == 3) {
-			regenAmount = maxAmmo * 0.24f;
-		}
-		
-		// Is this correct? Ammo reaches insane levels.
-		ammo += regenAmount;
-		
-		if(ammo >= maxAmmo) {
-			ammo = maxAmmo;
+
+		if (_onoroff == false) {
+
 		}
 	}
-	
+
 	// TEST OFFENSE SECTION
 	void PersonalCamo(float _speed)
 	{
@@ -248,5 +243,12 @@ public class Player : MonoBehaviour
 		renderer.material.shader = Shader.Find("Diffuse");
 		gameObject.renderer.material.SetColor("_Color", Color.blue);
 		speed = defaultSpeed;
+	}
+
+	void ChainShot(string _chainShotSender)
+	{
+		if (Input.GetButtonDown("Fire1")) {
+			GameObject.Find (_chainShotSender).SendMessage ("Off");
+		}
 	}
 }
