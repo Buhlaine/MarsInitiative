@@ -17,6 +17,7 @@ public class weaponScript : MonoBehaviour {
 	[Range(0.5f,4.0f)]
 	public float[] spread = {0.0f};          //used for the base spread of the bullets
 	public bool fullAuto = true;         //switch to turn on and off hold down to fire
+	public GameObject SniperSkillPrefab; //the electric explosion prefab for the sniper skill shot
 
 	//public AnimationCurve spreadCurve;  //use this to implament curve based accuracy instead of linear
 
@@ -181,49 +182,53 @@ public class weaponScript : MonoBehaviour {
 		//this block of code is for anthing that is not a shotgun
 		if(!isShotgun)
 		{
+			//simple shot that hits the same point every time
+			//Vector3 fireDirection = transform.TransformDirection(Vector3.forward);
+			
+			//shoots a forward vector with a randomized spread
+			Vector3 fireDirection = transform.TransformDirection(Random.Range(-maxSpread, maxSpread) * spread[statsLevel] * Time.deltaTime, Random.Range(-maxSpread, maxSpread) * spread[statsLevel] * Time.deltaTime, 1);
+			RaycastHit hit;
+			
+			//check if something was hit
+			if (Physics.Raycast(transform.position, fireDirection,out hit, range))
+			{
+				//if there is a rigid body apply force to it
+				if(hit.rigidbody)
+				{
+					hit.rigidbody.AddForceAtPosition(force * fireDirection, hit.point);
+				}
+
+				//spawn particles at the point the ray hit
+				if (hitParticles)
+				{
+					ParticleEmitter newParticles = Instantiate(hitParticles, hit.point, Quaternion.FromToRotation(Vector3.up, hit.normal)) as ParticleEmitter;
+					hitParticles.transform.position = hit.point;
+					hitParticles.transform.rotation = Quaternion.FromToRotation(Vector3.up, hit.normal);
+					hitParticles.Emit();
+					newParticles.GetComponent<ParticleAnimator>().autodestruct = true;
+					Destroy(newParticles.gameObject,0.5f);
+				}
+
 			if(sniperSkillShot) //if the sniper explosive shot is active
 			{
-
+					//instantiate electric blast at hit location then turn off the sniper skill
+					GameObject sniperShot = Instantiate(SniperSkillPrefab, hit.point,Quaternion.identity) as GameObject;
+					sniperSkillShot = false;
 			}
 			else //regular shots
 			{
-				//simple shot that hits the same point every time
-				//Vector3 fireDirection = transform.TransformDirection(Vector3.forward);
 
-				//shoots a forward vector with a randomized spread
-				Vector3 fireDirection = transform.TransformDirection(Random.Range(-maxSpread, maxSpread) * spread[statsLevel] * Time.deltaTime, Random.Range(-maxSpread, maxSpread) * spread[statsLevel] * Time.deltaTime, 1);
-				RaycastHit hit;
-
-				//check if something was hit
-				if (Physics.Raycast(transform.position, fireDirection,out hit, range))
-				{
-					//if there is a rigid body apply force to it
-					if(hit.rigidbody)
-					{
-						hit.rigidbody.AddForceAtPosition(force * fireDirection, hit.point);
-					}
-
-					//spawn particles at the point the ray hit
-					if (hitParticles)
-					{
-						ParticleEmitter newParticles = Instantiate(hitParticles, hit.point, Quaternion.FromToRotation(Vector3.up, hit.normal)) as ParticleEmitter;
-						hitParticles.transform.position = hit.point;
-						hitParticles.transform.rotation = Quaternion.FromToRotation(Vector3.up, hit.normal);
-						hitParticles.Emit();
-						newParticles.GetComponent<ParticleAnimator>().autodestruct = true;
-						Destroy(newParticles.gameObject,0.5f);
-					}
-
-					//send damage message to the hit object
-					hit.collider.SendMessageUpwards("ApplyDamage", damage[statsLevel], SendMessageOptions.DontRequireReceiver);
-				}
-
-
-
-				//this tells the LateUpdate function that we shot and to enable the audio and muzzle flash
-				m_LastFrameShot = Time.frameCount;
-				enabled = true;
+				//send damage message to the hit object
+				hit.collider.SendMessageUpwards("ApplyDamage", damage[statsLevel], SendMessageOptions.DontRequireReceiver);
 			}
+
+
+
+
+			}
+			//this tells the LateUpdate function that we shot and to enable the audio and muzzle flash
+			m_LastFrameShot = Time.frameCount;
+			enabled = true;
 		}
 		//this block of code is for shotgun firing
 		else if (isShotgun)
