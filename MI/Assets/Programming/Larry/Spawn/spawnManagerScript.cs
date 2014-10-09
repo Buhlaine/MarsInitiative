@@ -30,11 +30,11 @@ public class spawnManagerScript : MonoBehaviour
 
 		foreach(GameObject spawnStart in allStartSpawn)
 		{
-			if(spawnStart.gameObject.name.Contains("Blue"))
+			if(spawnStart.gameObject.name.Contains("Blue") || spawnStart.gameObject.name.Contains("blue"))
 			{
 				blueStart.Add(spawnStart);
 			}
-			else if(spawnStart.gameObject.name.Contains("Red"))
+			else if(spawnStart.gameObject.name.Contains("Red") || spawnStart.gameObject.name.Contains("red"))
 			{
 				redStart.Add(spawnStart);
 			}
@@ -58,22 +58,26 @@ public class spawnManagerScript : MonoBehaviour
 		//Testing Purposes
 		//Remove input when in game use
 		//Player request to spawn
-//		if(Input.GetKeyDown(KeyCode.Q))
-//		{
-//			for(int i = 0; i < 8; i++)
-//			{
-//				Debug.Log(i);
-//				checkSpawn(thisGO);
-//			}
-//		}
-//		if(Input.GetKeyDown(KeyCode.P))
-//		{
-//			checkSpawn(thisGO);
-//		}
-//		if(Input.GetKeyDown(KeyCode.G))
-//		{
-//			setGameBegin();
-//		}
+		if(Input.GetKeyDown(KeyCode.Q))
+		{
+			for(int i = 0; i < 8; i++)
+			{
+				Debug.Log(i);
+				checkSpawn(thisGO);
+			}
+		}
+		if(Input.GetKeyDown(KeyCode.P))
+		{
+			checkSpawn(thisGO);
+		}
+		if(Input.GetKeyDown(KeyCode.G))
+		{
+			setGameBegin();
+		}
+		if(Input.GetKeyDown(KeyCode.H))
+		{
+			Debug.Log(gameBegin);
+		}
 	}
 
 	void checkSpawn(GameObject _requestor)
@@ -267,7 +271,7 @@ public class spawnManagerScript : MonoBehaviour
 				//Stand-in for actual spawning. Need to add check for different classes
 				if(playerClass == "scout")
 					GameObject.Instantiate (scout, possibleSpawns[randNum].transform.position, Quaternion.identity);
-				else if(playerClass == "")
+				else if(playerClass == "trooper")
 					GameObject.Instantiate (trooper, possibleSpawns[randNum].transform.position, Quaternion.identity);
 				else if(playerClass == "heavy")
 					GameObject.Instantiate (heavy, possibleSpawns[randNum].transform.position, Quaternion.identity);
