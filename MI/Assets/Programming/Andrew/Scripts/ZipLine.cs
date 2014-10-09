@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public class ZipLine : MonoBehaviour {
 
@@ -17,7 +18,8 @@ public class ZipLine : MonoBehaviour {
 	
 	void OnDrawGizmos(){
 		Gizmos.color = Color.red;
-		Gizmos.DrawLine(this.transform.position,target.transform.position);
+		Gizmos.DrawLine(this.transform.position+(Vector3.up*0.5f),target.transform.position);
+
 	}
 	
 	void OnTriggerStay(Collider collider){
