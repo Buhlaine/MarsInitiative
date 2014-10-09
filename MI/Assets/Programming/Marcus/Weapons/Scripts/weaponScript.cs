@@ -21,13 +21,6 @@ public class weaponScript : MonoBehaviour {
 
 	//public AnimationCurve spreadCurve;  //use this to implament curve based accuracy instead of linear
 
-	//variables for upgrades
-	/*public enum statGroups{damage, speed, clipSize, accuracy};
-	public int damageUpgrade = 1;
-	public float fireRateUpgrade = 1.0f;
-	public int bullPerClipUpgrade = 1;
-	public float maxSpreadUpgrade = 0.1f;*/
-
 	private float shotSpread;                 //used for shotgun type spread of pellets
 	private float maxSpread = 4.0f;       	  //tell where the max spread will stop
 
@@ -332,34 +325,6 @@ public class weaponScript : MonoBehaviour {
 		sniperSkillShot = true;
 	}
 
-
-
-	/*void editStats(int updateStat)
-	{
-
-		switch (updateStat)
-		{
-		case 0:
-			damage += damageUpgrade;
-			break;
-		case 1:
-			fireRate += fireRateUpgrade;
-			break;
-		case 2:
-			bulletsPerClip += bullPerClipUpgrade;
-			break;
-		case 3:
-			maxSpread -= maxSpreadUpgrade;
-			break;
-		case 4:
-			break;
-		case 5:
-			break;
-		default:
-			break;
-		}
-
-	}*/
 
 
 } 

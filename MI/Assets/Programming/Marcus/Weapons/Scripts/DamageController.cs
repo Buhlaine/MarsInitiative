@@ -1,4 +1,12 @@
-﻿using UnityEngine;
+﻿/*
+ * this script is needed on any object that has health and dies
+ * 
+ * 
+ * 
+ * */
+
+
+using UnityEngine;
 using System.Collections;
 
 public class DamageController : MonoBehaviour {
@@ -18,7 +26,6 @@ public class DamageController : MonoBehaviour {
 	{
 		isDamaging = true;
 	}
-	
 
 	int ApplyDamage(int damage)
 	{

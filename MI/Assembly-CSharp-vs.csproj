@@ -19,7 +19,7 @@
 	<DebugType>full</DebugType>
 	<Optimize>false</Optimize>
 	<OutputPath>Temp\bin\Debug\</OutputPath>
-	<DefineConstants>DEBUG;TRACE;UNITY_4_5_2;UNITY_4_5;UNITY_STANDALONE_WIN;ENABLE_MICROPHONE;ENABLE_TEXTUREID_MAP;ENABLE_UNITYEVENTS;ENABLE_NEW_HIERARCHY ;ENABLE_AUDIO_FMOD;UNITY_STANDALONE;ENABLE_MONO;ENABLE_TERRAIN;ENABLE_SUBSTANCE;ENABLE_GENERICS;INCLUDE_WP8SUPPORT;ENABLE_MOVIES;ENABLE_WWW;ENABLE_IMAGEEFFECTS;ENABLE_WEBCAM;INCLUDE_METROSUPPORT;RENDER_SOFTWARE_CURSOR;ENABLE_NETWORK;ENABLE_PHYSICS;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_2D_PHYSICS;ENABLE_SHADOWS;ENABLE_AUDIO;ENABLE_NAVMESH_CARVING;ENABLE_DUCK_TYPING;ENABLE_SINGLE_INSTANCE_BUILD_SETTING;ENABLE_PROFILER;UNITY_EDITOR;UNITY_EDITOR_WIN;UNITY_PRO_LICENSE</DefineConstants>
+	<DefineConstants>DEBUG;TRACE;UNITY_4_5_1;UNITY_4_5;UNITY_STANDALONE_WIN;ENABLE_MICROPHONE;ENABLE_TEXTUREID_MAP;ENABLE_UNITYEVENTS;ENABLE_NEW_HIERARCHY ;ENABLE_AUDIO_FMOD;UNITY_STANDALONE;ENABLE_MONO;ENABLE_TERRAIN;ENABLE_SUBSTANCE;ENABLE_GENERICS;INCLUDE_WP8SUPPORT;ENABLE_MOVIES;ENABLE_WWW;ENABLE_IMAGEEFFECTS;ENABLE_WEBCAM;INCLUDE_METROSUPPORT;RENDER_SOFTWARE_CURSOR;ENABLE_NETWORK;ENABLE_PHYSICS;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_2D_PHYSICS;ENABLE_SHADOWS;ENABLE_AUDIO;ENABLE_NAVMESH_CARVING;ENABLE_DUCK_TYPING;ENABLE_SINGLE_INSTANCE_BUILD_SETTING;ENABLE_PROFILER;UNITY_EDITOR;UNITY_EDITOR_WIN;UNITY_TEAM_LICENSE;UNITY_PRO_LICENSE</DefineConstants>
 	<ErrorReport>prompt</ErrorReport>
 	<WarningLevel>4</WarningLevel>
 	<NoWarn>0169</NoWarn>
@@ -39,20 +39,28 @@
 	<Reference Include="System.Core" />
 	<Reference Include="System.Xml.Linq" />
 	<Reference Include="UnityEngine">
-	  <HintPath>E:/Unity/Editor/Data/Managed/UnityEngine.dll</HintPath>
+	  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/Managed/UnityEngine.dll</HintPath>
 	</Reference>
 	<Reference Include="UnityEditor">
-	  <HintPath>E:/Unity/Editor/Data/Managed/UnityEditor.dll</HintPath>
+	  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/Managed/UnityEditor.dll</HintPath>
 	</Reference>
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Game Design\Prefabs\ActivationTimer.cs" />
      <Compile Include="Assets\Programming\Andrew\Network\MasterData.cs" />
      <Compile Include="Assets\Programming\Andrew\Network\NetworkLobby.cs" />
+     <Compile Include="Assets\Programming\Andrew\Scripts\CamCtrl.cs" />
+     <Compile Include="Assets\Programming\Andrew\Scripts\CamFollow.cs" />
+     <Compile Include="Assets\Programming\Andrew\Scripts\Jumper.cs" />
+     <Compile Include="Assets\Programming\Andrew\Scripts\MouseLook.cs" />
+     <Compile Include="Assets\Programming\Andrew\Scripts\NetworkCheck.cs" />
+     <Compile Include="Assets\Programming\Andrew\Scripts\ZipLine.cs" />
+     <Compile Include="Assets\Programming\Andrew\Scripts\ZiplinePlayerControl.cs" />
      <Compile Include="Assets\Programming\Dori\Scripts\DefenseAddShield.cs" />
      <Compile Include="Assets\Programming\Dori\Scripts\DefenseAmmoRegen.cs" />
      <Compile Include="Assets\Programming\Dori\Scripts\DefenseCharge.cs" />
      <Compile Include="Assets\Programming\Dori\Scripts\Demo.cs" />
+     <Compile Include="Assets\Programming\Dori\Scripts\DemoTeammate.cs" />
      <Compile Include="Assets\Programming\Dori\Scripts\DuckScript.cs" />
      <Compile Include="Assets\Programming\Dori\Scripts\OffenseCamo.cs" />
      <Compile Include="Assets\Programming\Dori\Scripts\OffenseChainShot.cs" />
@@ -70,10 +78,14 @@
      <Compile Include="Assets\Programming\Marcus\Weapons\Scripts\DamageController.cs" />
      <Compile Include="Assets\Programming\Marcus\Weapons\Scripts\MeleeAttack.cs" />
      <Compile Include="Assets\Programming\Marcus\Weapons\Scripts\WeaponsManager.cs" />
+     <Compile Include="Assets\Programming\Marcus\Weapons\Scripts\dotDmgCtrl.cs" />
      <Compile Include="Assets\Programming\Marcus\Weapons\Scripts\dotGrenadeDmgScript.cs" />
+     <Compile Include="Assets\Programming\Marcus\Weapons\Scripts\forceEmit.cs" />
      <Compile Include="Assets\Programming\Marcus\Weapons\Scripts\grenadeExplosionScript.cs" />
      <Compile Include="Assets\Programming\Marcus\Weapons\Scripts\grenadeScript.cs" />
+     <Compile Include="Assets\Programming\Marcus\Weapons\Scripts\sniperExplosiveBullet.cs" />
      <Compile Include="Assets\Programming\Marcus\Weapons\Scripts\weaponScript.cs" />
+     <Compile Include="Assets\Programming\Marcus\animControllers\animationScripts\heavyAnimCtrlScript.cs" />
      <Compile Include="Assets\Programming\Ramon\bomb\bombscript.cs" />
      <Compile Include="Assets\Programming\Ramon\bomb\bombtimer.cs" />
      <Compile Include="Assets\Programming\Ramon\chat\mychat.cs" />
@@ -82,6 +94,9 @@
      <Compile Include="Assets\Programming\Ramon\minimap\mapgrouppequeno.cs" />
      <Compile Include="Assets\Programming\Ramon\minimap\tutorialminimap.cs" />
      <Compile Include="Assets\Programming\Ramon\playertag\PlayerTag.cs" />
+     <Compile Include="Assets\Programming\Ramon\upperside_popup\misc_text.cs" />
+     <Compile Include="Assets\Programming\Ramon\weapons_display\guns_display.cs" />
+     <Compile Include="Assets\receivers.cs" />
      <None Include="Assets\Programming\Marcus\Shaders\cutoffRGBShader.shader" />
      <None Include="Assets\Programming\Marcus\Standard Assets\Particles\Sources\Shaders\Particle Alpha Blend (Queue +100).shader" />
      <None Include="Assets\Programming\Marcus\Shaders\cutoffAlphaShader.shader" />
