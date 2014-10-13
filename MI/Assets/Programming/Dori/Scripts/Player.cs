@@ -3,7 +3,9 @@ using System.Collections;
 
 public class Player : MonoBehaviour 
 {
+	public float health;
 	public float ammo;
+	public float speed;
 	public int xp;
 	public int xPPoints;
 	public int kills;
@@ -11,13 +13,10 @@ public class Player : MonoBehaviour
 	public int level;
 	public int maxHealth = 100;
 	public int maxAmmo = 100;
+	public float defaultSpeed = 5.0f;
 
 	public string abilityOne;
 	public string abilityTwo;
-
-	public float health;
-	public float speed;
-	public float defaultSpeed = 5.0f;
 
 	public bool isShooting;
 	private XPTracker xptracker;
@@ -53,23 +52,23 @@ public class Player : MonoBehaviour
 	void Update()
 	{
 		// Simulating when player scores a kill
-		if (Input.GetKeyDown (KeyCode.J)) {
-			OnKill ();
-		}
-
-		// Test Character Controls (DELETE LATER)
-		if (Input.GetKey (KeyCode.W)) {
-			transform.Translate (Vector3.forward * speed * Time.deltaTime);
-		}
-		if (Input.GetKey (KeyCode.S)) {
-			transform.Translate (-Vector3.forward * speed * Time.deltaTime);
-		}
-		if (Input.GetKey (KeyCode.A)) {
-			transform.Translate (-Vector3.right * speed * Time.deltaTime);
-		}
-		if (Input.GetKey (KeyCode.D)) {
-			transform.Translate (Vector3.right * speed * Time.deltaTime);
-		}
+//		if (Input.GetKeyDown (KeyCode.J)) {
+//			OnKill ();
+//		}
+//
+//		// Test Character Controls (DELETE LATER)
+//		if (Input.GetKey (KeyCode.W)) {
+//			transform.Translate (Vector3.forward * speed * Time.deltaTime);
+//		}
+//		if (Input.GetKey (KeyCode.S)) {
+//			transform.Translate (-Vector3.forward * speed * Time.deltaTime);
+//		}
+//		if (Input.GetKey (KeyCode.A)) {
+//			transform.Translate (-Vector3.right * speed * Time.deltaTime);
+//		}
+//		if (Input.GetKey (KeyCode.D)) {
+//			transform.Translate (Vector3.right * speed * Time.deltaTime);
+//		}
 
 		// Shoot a raycast at area in front of player. If object == duck than check if health == 0. If duck health == 0, then this player has 
 		// killed the duck and deserves that sweet XP.
@@ -170,11 +169,6 @@ public class Player : MonoBehaviour
 		gameObject.SendMessage ("Changed");
 	}
 
-	void Changed()
-	{
-		// stat level ups
-	}
-	
 	void RestartXPCounter(int _leftOverXP)
 	{
 		// Left over XP is calculated
@@ -185,18 +179,12 @@ public class Player : MonoBehaviour
 	// SUPPORT CLASS SECTION
 	void PulseRadar(bool _onoroff)
 	{
-		if (_onoroff == true) {
-
-		}
-
-		if (_onoroff == false) {
-
-		}
+		Debug.Log ("Marking!");
 	}
 	
 	void PulseDamage(float _damage)
 	{
-		health -= _damage; // TODO NOT WORKING (PULSE DAMAGE)
+		health -= _damage;
 	}
 
 	void Restock(int _regenIndex)
@@ -217,32 +205,23 @@ public class Player : MonoBehaviour
 	}
 
 	// TEST DEFENSE SECTION
-	void Charge(bool _onoroff) 
+	void Charge(int _duration) 
 	{
-		if (_onoroff == true) {
-
-		}
-
-		if (_onoroff == false) {
-
-		}
+		Debug.Log ("Charging!");
 	}
 
 	// TEST OFFENSE SECTION
-	void PersonalCamo(float _speed)
+	void PersonalCamo()
 	{
-		// Turn on "invisible" shader and decrease player speed
-		gameObject.renderer.material.shader = Shader.Find ("Camo");
-		speed = _speed;
-		Debug.Log ("Speed decreased by 6%: " + speed);
+		// Turn on "invisible" shader
+		renderer.material.shader = Shader.Find ("Camo");
 	}
 	
 	void PersonalCamoOff()
 	{
-		//Turn off "invisible" shader and reset speed to default
+		// Change shader back to default
 		renderer.material.shader = Shader.Find("Diffuse");
-		gameObject.renderer.material.SetColor("_Color", Color.blue);
-		speed = defaultSpeed;
+		gameObject.renderer.material.SetColor("_Color", Color.blue); // For testing
 	}
 
 	void ChainShot(string _chainShotSender)

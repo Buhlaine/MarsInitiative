@@ -2,7 +2,23 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class DefenseAddShield : MonoBehaviour 
+/* This ability should block all projectiles for the player and teammates within the set radius. 
+ * Sets the player and teammate layer to "Ignore Raycast"
+ * Ability Level 1 = Duration(3) Radius(4)
+ * Ability Level 2 = Duration(3) Radius(8)
+ * Ability Level 3 = Duration(4) Radius(8)
+ * Cooldown Period = 25 seconds at all three levels
+ * 
+ * This ability should stay active on all teammates that are within the player's radius when the player
+ * activates the ability (i.e if they leave the radius after the shield has been activated - they keep 
+ * the shield even if they leave the player's radius. This is in contrast to Restock, where teammates
+ * must stay within the player's radius to keep getting restocked.
+ * 
+ * This is done by storing teammates within the player's radius inside one list, and teammates whose shields
+ * are active in another list.
+*/
+
+public class DefenseShield : MonoBehaviour 
 {
 	public int currentAbilityLevel;
 	public float shieldCounter;
@@ -16,24 +32,28 @@ public class DefenseAddShield : MonoBehaviour
 
 	private Player player;
 	private SphereCollider sphereCollider;
+
+	// Create two lists to store teammates in player's radius, and teammates with active shields
 	private List<GameObject> BlueInRadius = new List<GameObject>();	
-	// Second list to store shielded players
 	private List<GameObject> BlueShielded = new List<GameObject>();
 
 	void Start()
 	{
+		// Create references and set values
 		currentAbilityLevel = 0;
-		cooldownPeriod = 20.0f;
+		cooldownPeriod = 24.0f;
 
 		sphereCollider = this.transform.GetComponent<SphereCollider> ();
 		string parent = this.gameObject.transform.parent.gameObject.name;
 		player = GameObject.Find (parent).GetComponent<Player>();
 
+		// Set this ability as "ability one" on the player (determined by the player's class)
 		player.SendMessage ("AbilityOne", this.gameObject.name);
 	}
 
 	void Update()
 	{
+		// Set the radius of the sphere collider to the pre-determined amount
 		sphereCollider.radius = shieldRadius [currentAbilityLevel];
 
 		if (Input.GetKeyDown (KeyCode.Q) && !isShielded && !startCooldown) {
@@ -98,8 +118,8 @@ public class DefenseAddShield : MonoBehaviour
 	{
 		GameObject[] teammates = GameObject.FindGameObjectsWithTag ("Teammate");
 		// Checking for whether there are teammates within the set radius
-		foreach (var str in teammates) {
-			if(other.gameObject == str) {
+		foreach (var teammate in teammates) {
+			if(other.tag == "Teammate") {
 				BlueInRadius.Add(other.gameObject);
 			}
 		}
@@ -107,9 +127,8 @@ public class DefenseAddShield : MonoBehaviour
 	
 	void OnTriggerExit(Collider other)
 	{
-		GameObject[] teammates = GameObject.FindGameObjectsWithTag ("Teammate");
 		// Delete the teammates who are not within the radius of the player
-		foreach (var str in teammates) {
+		foreach (var str in BlueInRadius) {
 			if(other.gameObject == str) {
 				BlueInRadius.Remove(other.gameObject);
 			}

@@ -2,15 +2,15 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class OffenseCamo : MonoBehaviour 
+public class OffenseCloak : MonoBehaviour 
 {
 	public int currentAbilityLevel;
 	public float cooldownCounter;
 	public float cooldownPeriod;
-	public float decreasedSpeed;
 	public float camoCounter;
 	public float[] camoDuration;
 	public string target;
+	public string invisible;
 	
 	public bool isCamo;
 	public bool startCooldown;
@@ -20,6 +20,7 @@ public class OffenseCamo : MonoBehaviour
 
 	void Start()
 	{
+		// Set references and values
 		currentAbilityLevel = 0;
 		cooldownPeriod = 26.0f;
 
@@ -27,9 +28,7 @@ public class OffenseCamo : MonoBehaviour
 		string ability = this.gameObject.transform.parent.gameObject.name;
 		player = GameObject.Find (ability).GetComponent<Player>();
 
-		float sixpercent = player.defaultSpeed * 0.06f;
-		decreasedSpeed = player.defaultSpeed - sixpercent;
-
+		// Set this ability as "ability one" on the player (determined by the player's class)
 		player.SendMessage ("AbilityOne", this.gameObject.name);
 	}
 
@@ -37,20 +36,20 @@ public class OffenseCamo : MonoBehaviour
 	{
 		if(Input.GetKeyDown (KeyCode.E) && !startCooldown && !isCamo) {
 			isCamo = true;
+			invisible = target;
 		}
 
 		RaycastHit hitInfo;
-		
 		// Fire a raycast in front of the player and gather hit info
-		if(currentAbilityLevel >= 1) {
-			if(Physics.Raycast(transform.position, Vector3.forward, out hitInfo, 5.0f)) {
+		if(currentAbilityLevel >= 1 && !isCamo) {
+			if(Physics.Raycast(transform.position, Vector3.forward, out hitInfo, 50.0f)) {
 				if(hitInfo.transform.tag == "Teammate") {
 					// Assign the target to variable marked
 					target = hitInfo.transform.name;
 				}
-			}
-			else if(!isCamo) {
-				target = null;
+				else {
+					target = null;
+				}
 			}
 		}
 
@@ -73,20 +72,21 @@ public class OffenseCamo : MonoBehaviour
 		if(isCamo) {
 			camoCounter += 1.0f * Time.deltaTime;
 
-			player.SendMessage("PersonalCamo", decreasedSpeed);
+			player.SendMessage("PersonalCamo");
 
 			if(target != null && currentAbilityLevel >= 1) {
-				GameObject.Find(target).SendMessage("PersonalCamo", decreasedSpeed);
-				Debug.Log (target + " is invisible now.");
+				GameObject.Find(invisible).SendMessage("PersonalCamo");
+				Debug.Log (invisible + " is invisible now.");
 			}
 		}
 
-		if(!isCamo) {
+		if(!isCamo && target == null) {
 			player.SendMessage ("PersonalCamoOff");
 
-			if(target != null && currentAbilityLevel >= 1) {
-				GameObject.Find(target).SendMessage("PersonalCamoOff");
-				Debug.Log (target + " is visible now.");
+			if(invisible != null && currentAbilityLevel >= 1) {
+				GameObject.Find(invisible).SendMessage("PersonalCamoOff");
+				Debug.Log (invisible + " is visible now.");
+				invisible = null;
 			}
 		}
 	}

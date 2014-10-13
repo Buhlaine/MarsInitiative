@@ -1,7 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class DefenseCharge : MonoBehaviour 
+/* 
+*/
+
+public class DefenseTackle : MonoBehaviour 
 {
 	public int currentAbilityLevel;
 	public float chargeCounter;
@@ -19,7 +22,8 @@ public class DefenseCharge : MonoBehaviour
 		string ability = this.gameObject.transform.parent.gameObject.name;
 		player = GameObject.Find (ability).GetComponent<Player>();
 		currentAbilityLevel = 0;
-		
+
+		// Set this ability as "ability two" on the player (determined by the player's class)
 		player.SendMessage ("AbilityTwo", this.gameObject.name);
 	}
 
@@ -48,13 +52,10 @@ public class DefenseCharge : MonoBehaviour
 
 		if (isCharge) {
 			chargeCounter += 1.0f * Time.deltaTime;
-			// Send message to parent turning Charge on
-			gameObject.transform.parent.SendMessage ("Charge", true);
-		}
+			// Send message to parent turning Charge on with the duration
+			gameObject.transform.parent.SendMessage ("Charge", chargeDuration[currentAbilityLevel]);
 
-		if (!isCharge) {
-			// Send message to parent turning Charge off
-			gameObject.transform.parent.SendMessage ("Charge", false);
+			isCharge = false;
 		}
 	}
 }
