@@ -7,9 +7,13 @@ public class ZipLine : MonoBehaviour {
 	public GameObject target;
 	
 	public float travelTime = 1f;
-	
+
+	public bool drawShpere = false;
+
 	void Start () {
-		this.renderer.enabled = false;
+		if(!drawShpere){
+			this.renderer.enabled = false;
+		}
 	}
 	
 	void Update () {
@@ -19,7 +23,6 @@ public class ZipLine : MonoBehaviour {
 	void OnDrawGizmos(){
 		Gizmos.color = Color.red;
 		Gizmos.DrawLine(this.transform.position+(Vector3.up*0.5f),target.transform.position);
-
 	}
 	
 	void OnTriggerStay(Collider collider){
