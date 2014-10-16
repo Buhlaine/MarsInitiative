@@ -31,7 +31,7 @@ public class CamCtrl : MonoBehaviour {
 	}
 	
 	void Update(){
-		if(Input.GetKeyDown(KeyCode.E)){
+		if(Input.GetMouseButtonDown(2)){
 			Flip();
 		}
 		if(Input.GetMouseButtonDown(0)){

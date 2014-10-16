@@ -51,10 +51,7 @@
      <Compile Include="Assets\Programming\Andrew\Scripts\FPSInputController.js" />
      <Compile Include="Assets\Programming\Andrew\Scripts\PlatformInputController.js" />
      <Compile Include="Assets\Programming\Marcus\Standard Assets\Particles\Legacy Particles\TimedObjectDestructor.js" />
-     <Compile Include="Assets\Programming\Ramon\My Scripts\AIScript.js" />
-     <Compile Include="Assets\Programming\Ramon\My Scripts\WaypointGizmos.js" />
      <Compile Include="Assets\Programming\Ramon\bomb\LifeBar.js" />
-     <Compile Include="Assets\Programming\Standard Assets\Scripts\FPSWalker.js" />
      <None Include="Assets\Programming\Marcus\Shaders\cutoffRGBShader.shader" />
      <None Include="Assets\Programming\Marcus\Standard Assets\Particles\Sources\Shaders\Particle Alpha Blend (Queue +100).shader" />
      <None Include="Assets\Programming\Marcus\Shaders\cutoffAlphaShader.shader" />
