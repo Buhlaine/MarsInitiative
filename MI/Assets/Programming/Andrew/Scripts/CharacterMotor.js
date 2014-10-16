@@ -22,10 +22,8 @@ var inputJump : boolean = false;
 class CharacterMotorMovement {
 	// The maximum horizontal speed when moving
 	var maxForwardSpeed : float = 10.0;
-	@System.NonSerialized
-	var maxSidewaysSpeed : float = maxForwardSpeed;
-	@System.NonSerialized
-	var maxBackwardsSpeed : float = maxForwardSpeed;
+	var maxSidewaysSpeed : float = 10.0;
+	var maxBackwardsSpeed : float = 10.0;
 	
 	// Curve for multiplying speed based on slope (negative = downwards)
 	var slopeSpeedMultiplier : AnimationCurve = AnimationCurve(Keyframe(-90, 1), Keyframe(0, 1), Keyframe(90, 0));
@@ -38,7 +36,6 @@ class CharacterMotorMovement {
 	var gravity : float = 10.0;
 	var maxFallSpeed : float = 20.0;
 	
-	var sprintMultiplier : float = 0.2;
 	// For the next variables, @System.NonSerialized tells Unity to not serialize the variable or show it in the inspector view.
 	// Very handy for organization!
 
@@ -114,7 +111,6 @@ class CharacterMotorJumping {
 var jumping : CharacterMotorJumping = CharacterMotorJumping();
 
 class CharacterMotorMovingPlatform {
-	
 	var enabled : boolean = true;
 	
 	var movementTransfer : MovementTransferOnJump = MovementTransferOnJump.PermaTransfer;
@@ -147,7 +143,6 @@ class CharacterMotorMovingPlatform {
 	var newPlatform : boolean;
 }
 
-@System.NonSerialized
 var movingPlatform : CharacterMotorMovingPlatform = CharacterMotorMovingPlatform();
 
 class CharacterMotorSliding {

@@ -97,6 +97,10 @@
      <None Include="Assets\Programming\Ramon\bomb\twosideperpixel.shader" />
      <None Include="Assets\Programming\Marcus\Shaders\cutoffSecondaryShader.shader" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="Assembly-UnityScript-firstpass.unityproj">
+      <Project>{B6616371-D1AE-F23F-647E-FB441A3BDC66}</Project>      <Name>Assembly-UnityScript-firstpass</Name>    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
 	   Other similar extension points exist, see Microsoft.Common.targets.

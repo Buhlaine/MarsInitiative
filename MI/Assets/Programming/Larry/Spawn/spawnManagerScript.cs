@@ -16,8 +16,8 @@ public class spawnManagerScript : MonoBehaviour
 	//testing----------------------------------------------
 	GameObject thisGO;
 	//----------------------------------------------------
-	public GameObject scout;
-	public GameObject heavy;
+	public GameObject assassin;
+	public GameObject enforcer;
 	public GameObject trooper;
 	bool gameBegin = false;
 
@@ -114,7 +114,7 @@ public class spawnManagerScript : MonoBehaviour
 
 		//for testing---------------------------------------------------------------
 		string tag = "Red";
-		string playerClass = "scout";
+		string playerClass = "assassin";
 		//-----------------------------------------------------------------------------
 		if(!gameBegin)
 		{
@@ -122,17 +122,17 @@ public class spawnManagerScript : MonoBehaviour
 			//testing-------------------------------------------
 			if(tag == "Blue")
 			{
-				if(playerClass == "scout")
+				if(playerClass == "assassin")
 				{
-					GameObject.Instantiate (scout, blueStart[0].transform.position, Quaternion.identity);
+					GameObject.Instantiate (assassin, blueStart[0].transform.position, Quaternion.identity);
 				}
 				else if(playerClass == "trooper")
 				{
 					GameObject.Instantiate (trooper, blueStart[0].transform.position, Quaternion.identity);
 				}
-				else if(playerClass == "heavy")
+				else if(playerClass == "enforcer")
 				{
-					GameObject.Instantiate (heavy, blueStart[0].transform.position, Quaternion.identity);
+					GameObject.Instantiate (enforcer, blueStart[0].transform.position, Quaternion.identity);
 				}
 				blueStart.RemoveAt(0);
 			}
@@ -140,17 +140,17 @@ public class spawnManagerScript : MonoBehaviour
 			//testing------------------------------------
 			else if(tag == "Red")
 			{
-				if(playerClass == "scout")
+				if(playerClass == "assassin")
 				{
-					GameObject.Instantiate (scout, redStart[0].transform.position, Quaternion.identity);
+					GameObject.Instantiate (assassin, redStart[0].transform.position, Quaternion.identity);
 				}
 				else if(playerClass == "trooper")
 				{
 					GameObject.Instantiate (trooper, redStart[0].transform.position, Quaternion.identity);
 				}
-				else if(playerClass == "heavy")
+				else if(playerClass == "enforcer")
 				{
-					GameObject.Instantiate (heavy, redStart[0].transform.position, Quaternion.identity);
+					GameObject.Instantiate (enforcer, redStart[0].transform.position, Quaternion.identity);
 				}
 
 				redStart.RemoveAt(0);
@@ -269,12 +269,12 @@ public class spawnManagerScript : MonoBehaviour
 				//Get a random number to choose spawnPoint randomly
 				int randNum = Random.Range(0, possibleSpawns.Count - 1);
 				//Stand-in for actual spawning. Need to add check for different classes
-				if(playerClass == "scout")
-					GameObject.Instantiate (scout, possibleSpawns[randNum].transform.position, Quaternion.identity);
+				if(playerClass == "assassin")
+					GameObject.Instantiate (assassin, possibleSpawns[randNum].transform.position, Quaternion.identity);
 				else if(playerClass == "trooper")
 					GameObject.Instantiate (trooper, possibleSpawns[randNum].transform.position, Quaternion.identity);
-				else if(playerClass == "heavy")
-					GameObject.Instantiate (heavy, possibleSpawns[randNum].transform.position, Quaternion.identity);
+				else if(playerClass == "enforcer")
+					GameObject.Instantiate (enforcer, possibleSpawns[randNum].transform.position, Quaternion.identity);
 				//Goes through each spawnPoint and request them to resetspawn so weight is accurate next time spawn is requested
 				foreach(GameObject GO in spawnPoints)
 				{
@@ -289,12 +289,12 @@ public class spawnManagerScript : MonoBehaviour
 			else
 			{
 				//Stand-in for actual spawning. Need to add check for different classes
-				if(playerClass == "scout")
-					GameObject.Instantiate (scout, finalSpawnPos.transform.position, Quaternion.identity);
+				if(playerClass == "assassin")
+					GameObject.Instantiate (assassin, finalSpawnPos.transform.position, Quaternion.identity);
 				else if(playerClass == "trooper")
 					GameObject.Instantiate (trooper, finalSpawnPos.transform.position, Quaternion.identity);
-				else if(playerClass == "heavy")
-					GameObject.Instantiate (heavy, finalSpawnPos.transform.position, Quaternion.identity);
+				else if(playerClass == "enforcer")
+					GameObject.Instantiate (enforcer, finalSpawnPos.transform.position, Quaternion.identity);
 
 				//Goes through each spawnPoint and request them to resetspawn so weight is accurate next time spawn is requested
 				foreach(GameObject GO in spawnPoints)

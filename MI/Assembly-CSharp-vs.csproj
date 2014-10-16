@@ -96,6 +96,9 @@
      <None Include="Assets\Programming\Marcus\Shaders\cutoffAlphaShader.shader" />
      <None Include="Assets\Programming\Ramon\bomb\twosideperpixel.shader" />
      <None Include="Assets\Programming\Marcus\Shaders\cutoffSecondaryShader.shader" />
+ <Reference Include="Assembly-UnityScript-firstpass">
+ <HintPath>D:/SaeyangL/MarsInitiative/MI/Library/ScriptAssemblies/Assembly-UnityScript-firstpass.dll</HintPath>
+ </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
