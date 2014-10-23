@@ -11,6 +11,7 @@ public class spawnManagerScript : MonoBehaviour
 	List<GameObject> possibleSpawns = new List<GameObject> ();
 	GameObject finalSpawnPos;
 	int spawnWeight = 1000;
+	public float spawnWaitTime = 5.0f;
 
 
 	//testing----------------------------------------------
@@ -58,7 +59,7 @@ public class spawnManagerScript : MonoBehaviour
 		//Testing Purposes
 		//Remove input when in game use
 		//Player request to spawn
-		if(Input.GetKeyDown(KeyCode.Q))
+		if(Input.GetKeyDown(KeyCode.Y))
 		{
 			for(int i = 0; i < 8; i++)
 			{
@@ -66,18 +67,30 @@ public class spawnManagerScript : MonoBehaviour
 				checkSpawn(thisGO);
 			}
 		}
-		if(Input.GetKeyDown(KeyCode.P))
+		if(Input.GetKeyDown(KeyCode.I))
 		{
-			checkSpawn(thisGO);
+			spawnRequest(thisGO);
 		}
-		if(Input.GetKeyDown(KeyCode.G))
+		if(Input.GetKeyDown(KeyCode.U))
 		{
 			setGameBegin();
 		}
-		if(Input.GetKeyDown(KeyCode.H))
+		if(Input.GetKeyDown(KeyCode.O))
 		{
 			Debug.Log(gameBegin);
 		}
+	}
+
+	IEnumerator spawnDelay(float delayTime, GameObject _requestor)
+	{
+		Debug.Log ("Spawn Start time: " + Time.time);
+		yield return new WaitForSeconds(delayTime);
+		checkSpawn (_requestor);
+	}
+
+	void spawnRequest (GameObject _requestor)
+	{
+		StartCoroutine (spawnDelay(spawnWaitTime, _requestor));
 	}
 
 	void checkSpawn(GameObject _requestor)
@@ -306,6 +319,7 @@ public class spawnManagerScript : MonoBehaviour
 				//Make sure multiple is set to false
 				multiple = false;
 			}
+			Debug.Log("Character Spawned: " + Time.time);
 		}
 	}
 

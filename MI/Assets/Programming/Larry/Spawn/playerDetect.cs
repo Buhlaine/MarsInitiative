@@ -1,14 +1,55 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class playerDetect : MonoBehaviour {
+
 	Hashtable playersInZone;
 	int spawnWeight = 1000;
+	public float distanceAmount = 20.0f;
+	int weightOffset = 20;
+	int numOffset = 0;
+
+	//Close spawnPoints
+	List<GameObject> closeSpawns = new List<GameObject>();
 	
 	void Start () 
 	{
 		playersInZone = new Hashtable ();
+
+		//Finding other spawnPoints within a certain radius
+		GameObject[] allSpawns = GameObject.FindGameObjectsWithTag ("spawnPoint");
+		
+		foreach(GameObject spawn in allSpawns)
+		{
+			if(spawn != this.gameObject)
+			{
+				if((spawn.transform.position - this.transform.position).magnitude < distanceAmount)
+				{
+					closeSpawns.Add(spawn);
+				}
+			}
+		}
+
+		//closeSpawnPrintTest ();
 	}
+	//Testing------------------------------------------------------
+	void spawnWeightPrint()
+	{
+		Debug.Log (this.name + ": " + spawnWeight);
+	}
+
+	void closeSpawnPrintTest()
+	{
+		Debug.Log ("++++++++++++++++++++++++++++++++++++");
+		Debug.Log (this.name + ": ");
+		foreach(GameObject spawn in closeSpawns)
+		{
+			Debug.Log(spawn.name);
+		}
+		Debug.Log ("------------------------------------");
+	}
+	//-------------------------------------------------------------
 
 	void Update () 
 	{
@@ -25,12 +66,12 @@ public class playerDetect : MonoBehaviour {
 //				Debug.Log("++++++++++++++++++++++++");
 //			}
 //		}
-//		if(Input.GetKeyDown(KeyCode.Y))
-//		{
-//			this.calcSpawnWeight("Blue");
-//			Debug.Log(spawnWeight);
-//			this.resetWeight();
-//		}
+		if(Input.GetKeyDown(KeyCode.L))
+		{
+			this.calcSpawnWeight("Red");
+			spawnWeightPrint();
+			this.resetWeight();
+		}
 //		if(Input.GetKeyDown(KeyCode.M))
 //		{
 //			foreach(DictionaryEntry units in playersInZone)
@@ -41,6 +82,15 @@ public class playerDetect : MonoBehaviour {
 //--------------------------------------------------------------------------------------------------
 	}
 
+	void setNumOffset(int offset)
+	{
+		numOffset += offset;
+	}
+
+	void resetOffset()
+	{
+		numOffset = 0;
+	}
 
 	void OnTriggerEnter(Collider playerInRange)
 	{
@@ -66,6 +116,7 @@ public class playerDetect : MonoBehaviour {
 	//Calculating spawnWeight
 	void calcSpawnWeight(string teamColor)
 	{
+		int offsetNum = 0;
 		//Go through each entry in the dictionary
 		foreach(DictionaryEntry units in playersInZone)
 		{
@@ -74,6 +125,7 @@ public class playerDetect : MonoBehaviour {
 			{
 				//subtract 50 from spawnWeight
 				spawnWeight -= 50;
+				offsetNum++;
 			}
 			//if team color matches team color of player requesting spawn
 			else if(units.Value.ToString() == teamColor)
@@ -82,6 +134,22 @@ public class playerDetect : MonoBehaviour {
 				spawnWeight += 100;
 			}
 		}
+
+		if(offsetNum > 0)
+		{
+			foreach(GameObject spawn in closeSpawns)
+			{
+				spawn.SendMessage("setNumOffset", offsetNum);
+			}
+		}
+
+		Debug.Log (this.name + ": " + offsetNum);
+
+		spawnWeight -= (numOffset * weightOffset);
+
+		Debug.LogWarning (this.name + " final offset amount: " + (numOffset * weightOffset));
+
+		resetOffset ();
 	}
 
 	//Using in spawnManager script to set spawnWeight in dictionary
