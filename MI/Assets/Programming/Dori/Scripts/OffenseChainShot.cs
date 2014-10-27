@@ -24,8 +24,6 @@ public class OffenseChainShot : MonoBehaviour
 
 		string ability = this.gameObject.transform.parent.gameObject.name;
 		player = GameObject.Find (ability).GetComponent<Player>();
-
-		player.SendMessage ("AbilityTwo", this.gameObject.name);
 	}
 
 	void Update()

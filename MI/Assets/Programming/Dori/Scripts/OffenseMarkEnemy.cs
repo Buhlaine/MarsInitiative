@@ -28,8 +28,6 @@ public class OffenseMarkEnemy : MonoBehaviour
 		string parent = this.gameObject.transform.parent.gameObject.name;
 		player = GameObject.Find (parent).GetComponent<Player>();
 		sphereCollider = GetComponent<SphereCollider> ();
-
-		player.SendMessage ("AbilityTwo", this.gameObject.name);
 	}
 	
 	void Update()

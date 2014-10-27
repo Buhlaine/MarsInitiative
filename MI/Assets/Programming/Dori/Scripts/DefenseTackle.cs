@@ -1,9 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-/* 
-*/
-
 public class DefenseTackle : MonoBehaviour 
 {
 	public int currentAbilityLevel;
@@ -22,9 +19,6 @@ public class DefenseTackle : MonoBehaviour
 		string ability = this.gameObject.transform.parent.gameObject.name;
 		player = GameObject.Find (ability).GetComponent<Player>();
 		currentAbilityLevel = 0;
-
-		// Set this ability as "ability two" on the player (determined by the player's class)
-		player.SendMessage ("AbilityTwo", this.gameObject.name);
 	}
 
 	void Update()

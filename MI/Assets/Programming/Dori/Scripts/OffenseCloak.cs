@@ -27,9 +27,6 @@ public class OffenseCloak : MonoBehaviour
 		sphereCollider = this.gameObject.transform.GetComponent<SphereCollider> ();
 		string ability = this.gameObject.transform.parent.gameObject.name;
 		player = GameObject.Find (ability).GetComponent<Player>();
-
-		// Set this ability as "ability one" on the player (determined by the player's class)
-		player.SendMessage ("AbilityOne", this.gameObject.name);
 	}
 
 	void Update()

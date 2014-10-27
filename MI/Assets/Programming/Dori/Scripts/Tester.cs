@@ -36,6 +36,13 @@ public class Tester : MonoBehaviour
 	{
 		deaths += 1;
 	}
+
+	void KillYourself()
+	{
+		Debug.Log (this.gameObject.name + " has died.");
+		health = 0;
+		OnDeath ();
+	}
 	
 	void AddXP(int _xp)
 	{

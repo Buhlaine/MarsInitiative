@@ -39,9 +39,6 @@ public class SupportRestock : MonoBehaviour
 		
 		currentAbilityLevel = 0;
 		cooldownPeriod = 15.0f;
-
-		// Set this ability as "ability one" on the player (determined by the player's class)
-		player.SendMessage ("AbilityOne", this.gameObject.name);
 	}
 	
 	void Update()

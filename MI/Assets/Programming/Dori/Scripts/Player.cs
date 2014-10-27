@@ -127,7 +127,7 @@ public class Player : MonoBehaviour
 			abilityTwo = this.gameObject.transform.FindChild ("PulseRadar").gameObject;
 
 			gameObject.transform.FindChild ("Shield").gameObject.SetActive(false);
-			gameObject.transform.FindChild ("Charge").gameObject.SetActive(false);
+			gameObject.transform.FindChild ("Tackle").gameObject.SetActive(false);
 			gameObject.transform.FindChild ("Cloak").gameObject.SetActive(false);
 			gameObject.transform.FindChild ("ChainShot").gameObject.SetActive(false);
 
@@ -140,7 +140,7 @@ public class Player : MonoBehaviour
 			speed = defaultSpeed[1];
 
 			abilityOne = this.gameObject.transform.FindChild ("Shield").gameObject;
-			abilityTwo = this.gameObject.transform.FindChild ("Charge").gameObject;
+			abilityTwo = this.gameObject.transform.FindChild ("Tackle").gameObject;
 
 			gameObject.transform.FindChild ("Restock").gameObject.SetActive(false);
 			gameObject.transform.FindChild ("PulseRadar").gameObject.SetActive(false);
@@ -161,7 +161,7 @@ public class Player : MonoBehaviour
 			gameObject.transform.FindChild ("Restock").gameObject.SetActive(false);
 			gameObject.transform.FindChild ("PulseRadar").gameObject.SetActive(false);
 			gameObject.transform.FindChild ("Shield").gameObject.SetActive(false);
-			gameObject.transform.FindChild ("Charge").gameObject.SetActive(false);
+			gameObject.transform.FindChild ("Tackle").gameObject.SetActive(false);
 			
 			abilityOne.SetActive(true);
 			abilityTwo.SetActive(true);
@@ -233,6 +233,13 @@ public class Player : MonoBehaviour
 	void OnDeath()
 	{
 		deaths += 1;
+	}
+
+	void KillYourself()
+	{
+		Debug.Log (this.gameObject.name + " has died.");
+		health = 0;
+		OnDeath ();
 	}
 
 	void AddXP(int _xp)

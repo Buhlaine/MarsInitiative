@@ -46,9 +46,6 @@ public class DefenseShield : MonoBehaviour
 		sphereCollider = this.transform.GetComponent<SphereCollider> ();
 		string parent = this.gameObject.transform.parent.gameObject.name;
 		player = GameObject.Find (parent).GetComponent<Player>();
-
-		// Set this ability as "ability one" on the player (determined by the player's class)
-		player.SendMessage ("AbilityOne", this.gameObject.name);
 	}
 
 	void Update()

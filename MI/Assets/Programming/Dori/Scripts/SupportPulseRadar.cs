@@ -40,9 +40,6 @@ public class SupportPulseRadar : MonoBehaviour
 		
 		currentAbilityLevel = 0;
 		cooldownPeriod = 16.0f;
-
-		// Set this ability as "ability two" on the player (determined by the player's class)
-		player.SendMessage ("AbilityTwo", this.gameObject.name);
 	}
 
 	void Update()
