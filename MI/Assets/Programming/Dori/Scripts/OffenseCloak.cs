@@ -16,7 +16,7 @@ public class OffenseCloak : MonoBehaviour
 	public bool startCooldown;
 
 	private Player player;
-	private SphereCollider sphereCollider;
+//	private SphereCollider sphereCollider;
 
 	void Start()
 	{
@@ -24,9 +24,11 @@ public class OffenseCloak : MonoBehaviour
 		currentAbilityLevel = 0;
 		cooldownPeriod = 26.0f;
 
-		sphereCollider = this.gameObject.transform.GetComponent<SphereCollider> ();
+//		sphereCollider = this.gameObject.transform.GetComponent<SphereCollider> ();
 		string ability = this.gameObject.transform.parent.gameObject.name;
 		player = GameObject.Find (ability).GetComponent<Player>();
+
+		Reset ();
 	}
 
 	void Update()
@@ -43,10 +45,10 @@ public class OffenseCloak : MonoBehaviour
 				if(hitInfo.transform.tag == "Teammate") {
 					// Assign the target to variable marked
 					target = hitInfo.transform.name;
-				}
-				else {
-					target = null;
-				}
+				} 
+			}
+			else {
+				Reset();
 			}
 		}
 
@@ -55,6 +57,7 @@ public class OffenseCloak : MonoBehaviour
 			startCooldown = true;
 			isCamo = false;
 			camoCounter = 0;
+
 		}
 
 		if(startCooldown) {
@@ -69,23 +72,29 @@ public class OffenseCloak : MonoBehaviour
 		if(isCamo) {
 			camoCounter += 1.0f * Time.deltaTime;
 
-			player.SendMessage("PersonalCamo");
+			player.SendMessage("CloakOn");
 
 			if(target != null && currentAbilityLevel >= 1) {
-				GameObject.Find(invisible).SendMessage("PersonalCamo");
+				GameObject.Find(invisible).SendMessage("CloakOn");
 				Debug.Log (invisible + " is invisible now.");
 			}
 		}
 
-		if(!isCamo && target == null) {
-			player.SendMessage ("PersonalCamoOff");
+		if(!isCamo && invisible != null) {
+			player.SendMessage ("CloakOff");
 
 			if(invisible != null && currentAbilityLevel >= 1) {
-				GameObject.Find(invisible).SendMessage("PersonalCamoOff");
+				GameObject.Find(invisible).SendMessage("CloakOff");
 				Debug.Log (invisible + " is visible now.");
-				invisible = null;
+				Reset ();
 			}
 		}
+	}
+
+	void Reset()
+	{
+		invisible = null;
+		target = null;
 	}
 	
 	void Changed()

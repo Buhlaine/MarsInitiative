@@ -30,7 +30,7 @@ public class DefenseShield : MonoBehaviour
 	public bool isShielded;
 	public bool startCooldown;
 
-	private Player player;
+//	private Player player;
 	private SphereCollider sphereCollider;
 
 	// Create two lists to store teammates in player's radius, and teammates with active shields
@@ -44,8 +44,8 @@ public class DefenseShield : MonoBehaviour
 		cooldownPeriod = 24.0f;
 
 		sphereCollider = this.transform.GetComponent<SphereCollider> ();
-		string parent = this.gameObject.transform.parent.gameObject.name;
-		player = GameObject.Find (parent).GetComponent<Player>();
+//		string parent = this.gameObject.transform.parent.gameObject.name;
+//		player = GameObject.Find (parent).GetComponent<Player>();
 	}
 
 	void Update()
@@ -118,6 +118,7 @@ public class DefenseShield : MonoBehaviour
 		foreach (var teammate in teammates) {
 			if(other.tag == "Teammate") {
 				BlueInRadius.Add(other.gameObject);
+				Debug.Log ("Adding: " + teammate.gameObject.name + " | " + other.gameObject.name);
 			}
 		}
 	}

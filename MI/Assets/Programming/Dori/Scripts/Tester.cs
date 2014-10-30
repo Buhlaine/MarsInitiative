@@ -117,15 +117,15 @@ public class Tester : MonoBehaviour
 	}
 	
 	// TEST OFFENSE SECTION
-	void PersonalCamo()
+	void CloakOn()
 	{
-		renderer.material.shader = Shader.Find ("Camo");
+		this.gameObject.renderer.material.shader = Shader.Find ("Camo");
 	}
-	
-	void PersonalCamoOff()
+
+	void CloakOff()
 	{
-		renderer.material.shader = Shader.Find("Diffuse");
-		gameObject.renderer.material.SetColor("_Color", Color.blue);
+		this.gameObject.renderer.material.shader = Shader.Find("Diffuse");
+		this.gameObject.renderer.material.SetColor("_Color", Color.blue);
 	}
 	
 	void ChainShot(string _chainShotSender)

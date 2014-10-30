@@ -15,7 +15,7 @@ public class OffenseMarkEnemy : MonoBehaviour
 	public bool isMarking;
 	public bool startCooldown;
 
-	private Player player;
+//	private Player player;
 	private SphereCollider sphereCollider;
 	public List<GameObject> EnemiesInRadius = new List<GameObject>();
 	public List<GameObject> EnemiesMarked = new List<GameObject>();
@@ -25,8 +25,8 @@ public class OffenseMarkEnemy : MonoBehaviour
 		currentAbilityLevel = 0;
 		cooldownPeriod = 16.0f;
 
-		string parent = this.gameObject.transform.parent.gameObject.name;
-		player = GameObject.Find (parent).GetComponent<Player>();
+//		string parent = this.gameObject.transform.parent.gameObject.name;
+//		player = GameObject.Find (parent).GetComponent<Player>();
 		sphereCollider = GetComponent<SphereCollider> ();
 	}
 	

@@ -327,7 +327,7 @@ public class Player : MonoBehaviour
 
 			if(Physics.SphereCast(transform.position, controller.height / 2, transform.forward, out hit, 0.5f)) {
 				GameObject enemy = hit.transform.gameObject; 
-				if(enemy == GameObject.FindWithTag ("Enemy")) {
+				if(enemy.tag == "Enemy") {
 					enemy.SendMessage("KillYourself"); //TODO inappropriate geez
 				}
 			}
@@ -335,23 +335,21 @@ public class Player : MonoBehaviour
 	}
 
 	// TEST OFFENSE SECTION
-	void PersonalCamo()
+	void CloakOn()
 	{
 		// Turn on "invisible" shader
-		renderer.material.shader = Shader.Find ("Camo");
+		this.gameObject.renderer.material.shader = Shader.Find ("Camo");
 	}
 	
-	void PersonalCamoOff()
+	void CloakOff()
 	{
 		// Change shader back to default
-		renderer.material.shader = Shader.Find("Diffuse");
-		gameObject.renderer.material.SetColor("_Color", Color.blue); // For testing
+		this.gameObject.renderer.material.shader = Shader.Find("Diffuse");
+		this.gameObject.renderer.material.SetColor("_Color", Color.blue); // For testing
 	}
 
 	void ChainShot(string _chainShotSender)
 	{
-		Debug.Log ("BOOM");
-
 		if (Input.GetButtonDown("Fire1")) {
 			GameObject.Find (_chainShotSender).SendMessage ("Off");
 		}

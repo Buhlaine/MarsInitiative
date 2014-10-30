@@ -27,7 +27,7 @@ public class SupportPulseRadar : MonoBehaviour
 	public bool isPulse;
 	public bool startCooldown;
 
-	private Player player;
+//	private Player player;
 	private SphereCollider sphereCollider;
 	private List<GameObject> EnemyInRadius = new List<GameObject>();
 
@@ -35,8 +35,8 @@ public class SupportPulseRadar : MonoBehaviour
 	{
 		// Create references and set values
 		sphereCollider = this.gameObject.transform.GetComponent<SphereCollider> ();
-		string ability = this.gameObject.transform.parent.gameObject.name;
-		player = GameObject.Find (ability).GetComponent<Player>();
+//		string ability = this.gameObject.transform.parent.gameObject.name;
+//		player = GameObject.Find (ability).GetComponent<Player>();
 		
 		currentAbilityLevel = 0;
 		cooldownPeriod = 16.0f;
@@ -107,7 +107,7 @@ public class SupportPulseRadar : MonoBehaviour
 		foreach (var enemy in enemies) {
 			if (other.gameObject.tag == "Enemy") {
 				EnemyInRadius.Add(other.gameObject);
-				Debug.Log ("Adding: " + other.gameObject);
+				Debug.Log ("Adding: " + enemy.gameObject);
 			}
 		}
 	}
@@ -118,7 +118,7 @@ public class SupportPulseRadar : MonoBehaviour
 		foreach (var enemy in EnemyInRadius) {
 			if (other.gameObject.tag == "Enemy") { 
 				EnemyInRadius.Remove(other.gameObject);
-				Debug.Log ("Removing: " + other.gameObject);
+				Debug.Log ("Removing: " + enemy.gameObject);
 			}
 		}
 	}

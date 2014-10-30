@@ -12,12 +12,12 @@ public class DefenseTackle : MonoBehaviour
 	public bool isCharge;
 	public bool startCooldown;
 	
-	private Player player;
+//	private Player player;
 
 	void Start()
 	{
-		string ability = this.gameObject.transform.parent.gameObject.name;
-		player = GameObject.Find (ability).GetComponent<Player>();
+//		string ability = this.gameObject.transform.parent.gameObject.name;
+//		player = GameObject.Find (ability).GetComponent<Player>();
 		currentAbilityLevel = 0;
 	}
 

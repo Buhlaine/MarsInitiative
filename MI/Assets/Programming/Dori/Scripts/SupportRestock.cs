@@ -107,7 +107,7 @@ public class SupportRestock : MonoBehaviour
 		foreach (var teammate in teammates) {
 			if (other.tag == "Teammate") { 
 				BlueInRadius.Add(other.gameObject);
-				Debug.Log ("Adding: " + other.gameObject + " Count: " + BlueInRadius.Count);
+				Debug.Log ("Adding: " + teammate.gameObject + " Count: " + BlueInRadius.Count);
 			}
 		}
 	}
