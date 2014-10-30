@@ -71,21 +71,18 @@ public class OffenseCloak : MonoBehaviour
 
 		if(isCamo) {
 			camoCounter += 1.0f * Time.deltaTime;
-
 			player.SendMessage("CloakOn");
 
 			if(target != null && currentAbilityLevel >= 1) {
 				GameObject.Find(invisible).SendMessage("CloakOn");
-				Debug.Log (invisible + " is invisible now.");
 			}
 		}
 
-		if(!isCamo && invisible != null) {
+		if(!isCamo) {
 			player.SendMessage ("CloakOff");
 
 			if(invisible != null && currentAbilityLevel >= 1) {
 				GameObject.Find(invisible).SendMessage("CloakOff");
-				Debug.Log (invisible + " is visible now.");
 				Reset ();
 			}
 		}

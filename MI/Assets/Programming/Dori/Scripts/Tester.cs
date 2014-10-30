@@ -70,11 +70,6 @@ public class Tester : MonoBehaviour
 		gameObject.SendMessage ("Changed");
 	}
 	
-	void Changed()
-	{
-		// stat level ups
-	}
-	
 	void RestartXPCounter(int _leftOverXP)
 	{
 		// Left over XP is calculated

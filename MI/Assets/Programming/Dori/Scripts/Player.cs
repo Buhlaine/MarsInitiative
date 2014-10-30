@@ -37,8 +37,6 @@ public class Player : MonoBehaviour
 	private XPTracker xptracker;
 	private CharacterController controller;
 
-	RaycastHit checkDuckInfo;
-
 	void Awake()
 	{
 		// Set the this game object's tag to "Player"
@@ -76,18 +74,20 @@ public class Player : MonoBehaviour
 	{
 		CheckPlayerClass ();
 
-//		// Shoot a raycast at area in front of player. If object == duck than check if health == 0. 
-//		// If duck health == 0 then this player has killed the duck and deserves that sweet XP.
-//		Vector3 forwardRay = transform.TransformDirection (Vector3.forward);
-//		// last parameter should be actual weapon's range. 10 for testing
-//		if(checkDuckInfo.transform.name == "Duck" && isShooting) {
-//		if (Physics.Raycast(transform.position, forwardRay, out checkDuckInfo, 10.0f)) { 
-//				// Apply damage to the duck, as well as the name of this player
-//				checkDuckInfo.transform.SendMessage("WhoKillMe", this.gameObject.name); 
-//				// Should be actual weapon's damage. 10 for testing
-//				checkDuckInfo.transform.gameObject.SendMessage("Damage", 10.0f); 
-//			}
-//		}
+		if(Input.GetMouseButtonDown(0)){
+			// DUCK SECTION
+			RaycastHit duckInfo;
+			// TODO Last parameter should be actual weapon's range. 10 for testing
+			if(Physics.Raycast(transform.position, Vector3.forward, out duckInfo, 10.0f)) {
+				if (duckInfo.transform.tag == "Duck") { 
+					// Apply damage to the duck, and send the name of this player
+					duckInfo.transform.gameObject.SendMessage("WhoKillMe", this.gameObject.name); 
+					// TODO Should be actual weapon's damage. 10 for testing
+					duckInfo.transform.gameObject.SendMessage("Damage", 10.0f); 
+					Debug.Log ("Duck! " + duckInfo.transform.name + " " + duckInfo.transform.gameObject.GetComponent<DuckScript>().health);
+				}
+			} 
+		}
 
 		// Simulating when player scores a kill (TESTING ONLY)
 		if (Input.GetKeyDown (KeyCode.J)) {
@@ -171,7 +171,7 @@ public class Player : MonoBehaviour
 	// XP SECTION
 	void OnKill()
 	{
-		Debug.Log ("OnKill");
+		Debug.Log ("Kill");
 		string player = this.gameObject.name;
 		int isKill = 0;
 		ArrayList data = new ArrayList();
@@ -187,7 +187,7 @@ public class Player : MonoBehaviour
 
 	void OnCapture()
 	{
-		Debug.Log ("OnCapture");
+		Debug.Log ("Capture");
 		string player = this.gameObject.name;
 		int isCap = 1;
 		ArrayList data = new ArrayList();
@@ -203,7 +203,7 @@ public class Player : MonoBehaviour
 
 	void OnAssist()
 	{
-		Debug.Log ("OnAssist");
+		Debug.Log ("Assist");
 		string player = this.gameObject.name;
 		int isAss = 2;
 		ArrayList data = new ArrayList();
@@ -217,11 +217,25 @@ public class Player : MonoBehaviour
 		assists += 1;
 	}
 
+	void OnAbility()
+	{
+		Debug.Log ("Ability");
+		string player = this.gameObject.name;
+		int isAbility = 3;
+		ArrayList data = new ArrayList();
+		
+		// Store data into an array - sent to XPTracker
+		data.Add (player);
+		data.Add (xp);
+		data.Add (isAbility);
+		
+		xptracker.SendMessage ("UpdateXP", data);
+	}
+
 	void OnKillDuck()
 	{
 		// If this player killed the duck - send info of this player that killed the duck
 		string player = this.gameObject.name;
-//		int isDuckKill = 3;
 		ArrayList data = new ArrayList ();
 
 		data.Add (player);
@@ -259,7 +273,7 @@ public class Player : MonoBehaviour
 		data.Add (gameObject.name);
 		data.Add (levelUpEvent);
 
-		gameObject.SendMessage ("UpperCornerEvent", data);
+		gameObject.SendMessage ("UpperCornerEvent", data); // TODO Message has no receiver
 	}
 
 	// Golden Functions HERE
@@ -277,8 +291,13 @@ public class Player : MonoBehaviour
 
 	void StatsLevelUp()
 	{
-		// Sending a level up for stats 
-		gameObject.SendMessage ("Changed");
+		// TODO Sending a level up for stats so that it can be chosen by player
+		gameObject.SendMessage ("StatLevelUp");
+	}
+
+	void ReceiveStatLevelUp(string _stat)
+	{
+		// TODO level up chosen stat
 	}
 
 	void RestartXPCounter(int _leftOverXP)
@@ -291,15 +310,18 @@ public class Player : MonoBehaviour
 	// SUPPORT CLASS SECTION
 	void PulseRadar(bool _onoroff)
 	{
+		// TODO Marking the enemy
 		Debug.Log ("Marking!");
 	}
 	
 	void PulseDamage(float _damage)
 	{
 		Debug.Log ("Ping! Pulse damage taken!");
+		// Damaging the enemy in "pulses". Pulses controlled in ability script.
 		health -= _damage;
 	}
 
+	// Ammo and health restocking
 	void Restock(int _regenIndex)
 	{
 		if (health >= defaultHealth) {
@@ -327,7 +349,7 @@ public class Player : MonoBehaviour
 
 			if(Physics.SphereCast(transform.position, controller.height / 2, transform.forward, out hit, 0.5f)) {
 				GameObject enemy = hit.transform.gameObject; 
-				if(enemy.tag == "Enemy") {
+				if(enemy.transform.tag == "Enemy") {
 					enemy.SendMessage("KillYourself"); //TODO inappropriate geez
 				}
 			}
@@ -345,7 +367,7 @@ public class Player : MonoBehaviour
 	{
 		// Change shader back to default
 		this.gameObject.renderer.material.shader = Shader.Find("Diffuse");
-		this.gameObject.renderer.material.SetColor("_Color", Color.blue); // For testing
+		this.gameObject.renderer.material.SetColor("Color", Color.blue); // For testing
 	}
 
 	void ChainShot(string _chainShotSender)
