@@ -74,6 +74,7 @@ public class Player : MonoBehaviour
 	{
 		CheckPlayerClass ();
 
+		// SHOOTING THE DUCK (TEST ONLY)
 		if(Input.GetMouseButtonDown(0)){
 			// DUCK SECTION
 			RaycastHit duckInfo;
@@ -201,7 +202,7 @@ public class Player : MonoBehaviour
 		captures += 1;
 	}
 
-	void OnAssist()
+	void OnAssist() //TODO Are assists coded? O_O
 	{
 		Debug.Log ("Assist");
 		string player = this.gameObject.name;
@@ -326,15 +327,13 @@ public class Player : MonoBehaviour
 	{
 		if (health >= defaultHealth) {
 			health = defaultHealth;
-		}
-		else {
+		} else {
 			health += _regenIndex * Time.deltaTime;
 		}
 
 		if (ammo >= maxAmmo) {
 			ammo = maxAmmo;
-		}
-		else {
+		} else {
 			ammo += _regenIndex * Time.deltaTime;
 		}
 	}
@@ -366,14 +365,14 @@ public class Player : MonoBehaviour
 	void CloakOff()
 	{
 		// Change shader back to default
-		this.gameObject.renderer.material.shader = Shader.Find("Diffuse");
+		this.gameObject.renderer.material.shader = Shader.Find("Diffuse"); //TODO Need an actual shader 
 		this.gameObject.renderer.material.SetColor("Color", Color.blue); // For testing
 	}
 
 	void ChainShot(string _chainShotSender)
 	{
 		if (Input.GetButtonDown("Fire1")) {
-			GameObject.Find (_chainShotSender).SendMessage ("Off");
+			GameObject.Find (_chainShotSender).SendMessage ("Off"); // TODO DORI
 		}
 	}
 }

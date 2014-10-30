@@ -1,17 +1,20 @@
 ﻿using UnityEngine;
 using System.Collections;
-using System.Collections.Generic;
 
 public class DuckScript : MonoBehaviour 
 {
-	public float health = 100.0f;
-	public float speed = 7.5f;
+	public float health;
+	public float speed;
 	public string duckKiller;
 
 	void Start()
 	{
 		this.gameObject.tag = "Duck";
 		this.gameObject.name = "Duck";
+
+		health = 100.0f;
+		speed = 8.0f;
+		duckKiller = null;
 	}
 
 	void Update()

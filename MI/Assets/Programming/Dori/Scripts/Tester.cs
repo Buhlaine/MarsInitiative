@@ -53,9 +53,7 @@ public class Tester : MonoBehaviour
 	{
 		level += 1;
 		xPPoints += 1;
-		
 		int levelUpEvent = 1; // might change depending...
-		
 		ArrayList data = new ArrayList();
 		
 		data.Add (gameObject.name);
@@ -80,7 +78,7 @@ public class Tester : MonoBehaviour
 	// SUPPORT CLASS SECTION
 	void PulseRadar(bool _onoroff)
 	{
-		Debug.Log ("Marking!");
+		Debug.Log ("Marking!"); // TODO Mark enemy
 	}
 	
 	void PulseDamage(float _damage)
