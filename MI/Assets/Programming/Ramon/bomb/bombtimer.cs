@@ -25,17 +25,17 @@ public class bombtimer : MonoBehaviour {
 		//this.transform.LookAt(Camera.main.transform.forward, Vector3.down);
 		//Vector3 screenloc = Camera.main.WorldToScreenPoint (this.transform.position);
 		this.transform.rotation= Quaternion.LookRotation (this.transform.position - Camera.main.transform.position);
-		Vector3 screenloc = Camera.main.WorldToScreenPoint (this.transform.position);
-		this.transform.position = new Vector3 (Mathf.Clamp (screenloc.x, 0, Screen.width), Mathf.Clamp (screenloc.y, 0, Screen.height), this.transform.position.z);
+		//Vector3 screenloc = Camera.main.WorldToScreenPoint (this.transform.position);
+		//this.transform.position = new Vector3 (Mathf.Clamp (screenloc.x, 0, Screen.width), Mathf.Clamp (screenloc.y, 0, Screen.height), this.transform.position.z);
 		//Debug.Log (this.transform.forward);
 	}
 
 	void setParent(GameObject parent)
 	{
-		//angle = Vector3.Angle (Camera.main.transform.forward, this.transform.forward);
-		//Debug.Log (this.transform.forward);
-		//this.transform.forward = (Quaternion.AngleAxis (angle, Vector3.up) * this.transform.forward);
-		//Debug.Log (this.transform.forward);
-		//followPos = parent;
+//		angle = Vector3.Angle (Camera.main.transform.forward, this.transform.forward);
+//		Debug.Log (this.transform.forward);
+//		this.transform.forward = (Quaternion.AngleAxis (angle, Vector3.up) * this.transform.forward);
+//		Debug.Log (this.transform.forward);
+//		followPos = parent;
 	}
 }

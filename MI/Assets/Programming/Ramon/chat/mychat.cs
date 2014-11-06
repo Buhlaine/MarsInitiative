@@ -39,7 +39,7 @@ public class mychat : MonoBehaviour {
 
 	void OnGUI(){
 		//visible = false;
-		print (visible);
+		//print (visible);
 
 		if (visible){
 			//####set the name of the textfield
@@ -119,7 +119,7 @@ public class mychat : MonoBehaviour {
 			{
 				//####focus on the scrollview which should unfocus
 				GUI.FocusControl("Deselecting-scroll");
-				Debug.LogWarning("not selected");
+				//Debug.LogWarning("not selected");
 			}
 		}
 	}
@@ -151,9 +151,9 @@ public class mychat : MonoBehaviour {
 
 		if(Input.GetMouseButtonDown(0))
 	   	{
-			if(inBetween(Input.mousePosition.x,0.0f,Screen.width*0.125f) && inBetween(Screen.height-Input.mousePosition.y,Screen.height*0.8076923f,Screen.height*0.9711539f))
+			if(inBetween(Input.mousePosition.x,0.0f,Screen.width*0.125f) && inBetween(Screen.height-Input.mousePosition.y,Screen.height*0.8076923f,Screen.height*0.9711539f) && visible==true)
 			{
-				visible=true;
+				//visible=true;
 				selectTextfield = true;
 				StopCoroutine ("disappearanceTime");
 			}
@@ -162,7 +162,7 @@ public class mychat : MonoBehaviour {
 				//####start 10 seconds before the minichat goes away
 				StartCoroutine ("disappearanceTime");
 				selectTextfield = false;
-				Debug.LogWarning (((1010.0f)/Screen.height)*100);
+				//Debug.LogWarning (((1010.0f)/Screen.height)*100);
 				//visible=false;
 				//Vector2 dos=Event.current.mousePosition;
 				//Debug.LogWarning("DdfdffddfdfdfDF"+Input.mousePosition.y);
@@ -187,7 +187,7 @@ public class mychat : MonoBehaviour {
 			//####if not empty add the text
 			if(stringToEdit != "")
 			{
-				chat(""+stringToEdit);
+				chat(this.name+":"+" "+stringToEdit);
 				stringToEdit ="";
 				StopCoroutine ("disappearanceTime");
 			}

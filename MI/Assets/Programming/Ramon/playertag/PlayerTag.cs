@@ -48,7 +48,7 @@ public class PlayerTag : MonoBehaviour {
 		if (this.renderer.isVisible) {
 				Vector3 screenloc = Camera.main.WorldToScreenPoint (headpos);
 				GUI.Box (new Rect (Mathf.Clamp (screenloc.x, 0, (Screen.width - 100)), Mathf.Clamp ((Screen.height - screenloc.y), 0, Screen.height - 20), 100, 20), "LVL: " + level.ToString ());
-			                  Debug.Log (Mathf.Clamp (screenloc.x, 0, Screen.width));
+			                  //Debug.Log (Mathf.Clamp (screenloc.x, 0, Screen.width));
 			//Debug.Log ("Y" + this.renderer.isVisible);
 			float rightangle = Vector3.Angle(new Vector3(screenloc.x,0.0f,screenloc.z), new Vector3(Camera.main.transform.forward.x,0.0f,Camera.main.transform.forward.z));
 			//Debug.Log ("Angle" + rightangle);

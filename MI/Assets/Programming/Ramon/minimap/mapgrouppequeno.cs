@@ -49,8 +49,8 @@ public class mapgrouppequeno : MonoBehaviour {
 	void findEnemies()
 	{
 		enemy = GameObject.FindGameObjectsWithTag ("Enemy");
-		for(int i=0; i<enemy.Length; i++)
-			Debug.Log (enemy[i].transform.name);
+		//for(int i=0; i<enemy.Length; i++)
+			//Debug.Log (enemy[i].transform.name);
 
 		}
 	

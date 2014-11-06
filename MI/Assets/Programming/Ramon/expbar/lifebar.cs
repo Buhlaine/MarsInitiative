@@ -3,13 +3,15 @@ using System.Collections;
 
 public class lifebar : MonoBehaviour {
 	public GUIStyle life;
+	public GUIStyle expbar;
 	public GUIStyle bomb;
-	private float currExperience=100;
-	private float goalExperience = 789;
+	public float currExperience=50;
+	private float goalExperience = 100;
 	private float expPos;
-	private float bombTimer=1;
-	public float expSize;
-	public float expBegin;
+	public float bombTimer=1;
+	private float expSize;
+	private float expBegin;
+
 
 	// Use this for initialization
 	void Start () {
@@ -18,14 +20,14 @@ public class lifebar : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		expSize =Screen.width * 0.7f;
-		expBegin =Screen.width * 0.15f;
+		expSize =Screen.width * 0.584f;
+		expBegin =Screen.width * 0.255f;
 		normalizexp (currExperience, goalExperience);
 	}
 
 	void normalizexp(float current, float max)
 	{
-		expPos = (current - 0) / (goalExperience - 0);
+		expPos = (current - 0) / (max - 0);
 		//Debug.Log (expPos);
 			
 		}
@@ -35,9 +37,12 @@ public class lifebar : MonoBehaviour {
 		//LIFE_BAR
 
 		//----------------------------------------------porcentage times the size of the bar makes it move
-		GUI.Box (new Rect (expBegin, Screen.height * 0.9f, expPos*expSize, Screen.height * 0.05f), "life",life);
+		GUI.Box (new Rect (expBegin, Screen.height * 0.9f, expPos*expSize, Screen.height * 0.05f), "",life);
+
 		//lifebar border
-		GUI.Box (new Rect (Screen.width * 0.15f, Screen.height * 0.9f, Screen.width * 0.7f, Screen.height * 0.05f), "death");
+		//GUI.Box (new Rect (Screen.width * 0.15f, Screen.height * 0.9f, Screen.width * 0.7f, Screen.height * 0.05f), "death");
+		GUI.Box (new Rect (Screen.width * 0.15f, Screen.height * 0.85f, Screen.width * 0.7f, Screen.height * 0.15f), "death", expbar);
+		//GUI.Box (new Rect (expBegin, Screen.height * 0.9f, expPos*expSize, Screen.height * 0.05f), "life",life);
 
 		//BOMB_BAR
 
