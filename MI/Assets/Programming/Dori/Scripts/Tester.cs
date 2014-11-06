@@ -76,9 +76,10 @@ public class Tester : MonoBehaviour
 	}
 	
 	// SUPPORT CLASS SECTION
-	void PulseRadar(bool _onoroff)
+	void PulseRadar(string _enemy)
 	{
-		Debug.Log ("Marking!"); // TODO Mark enemy
+		// Send enemy position to GUI
+		this.gameObject.SendMessage ("visibleEnemy", _enemy);
 	}
 	
 	void PulseDamage(float _damage)

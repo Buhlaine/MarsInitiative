@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
 		Assassin
 	};
 
+	public string team; // Player team
 	public float health;
 	public float ammo;
 	public int maxAmmo;
@@ -18,6 +19,7 @@ public class Player : MonoBehaviour
 	public int totalXP; // Total amount of XP
 	public int xp;
 	public int skillPoints; // Used for spending on upgrades
+	public int classIndex;
 	
 	public int kills; // Total player kills
 	public int captures;
@@ -29,11 +31,10 @@ public class Player : MonoBehaviour
 	public int[] maxHealth; // Max health depends on player class
 	public float[] defaultSpeed; // Max speed depends on player class (Troper & Scout = 100, Heavy = 90)
 	public Class currentClass;
-
 	public GameObject abilityOne;
 	public GameObject abilityTwo;
-
 	public bool isShooting;
+
 	private XPTracker xptracker;
 	private CharacterController controller;
 
@@ -57,10 +58,12 @@ public class Player : MonoBehaviour
 		captures = 0;
 		assists = 0;
 		deaths = 0;
-		level = 1;
+		level = 0;
 
 		xptracker = GameObject.FindGameObjectWithTag ("XPTracker").GetComponent<XPTracker> ();
 		controller = GetComponent<CharacterController> ();
+
+		ReceiveLevelUp ();
 
 		// When player logs in, send a message to XPTracker with this players name to be stored into a team list
 		ArrayList playerInfo = new ArrayList();
@@ -116,6 +119,16 @@ public class Player : MonoBehaviour
 //		}
 	}
 
+	void SetTeam()
+	{
+		// TODO Set the player team (player has to choose)
+	}
+
+	void SetClass()
+	{
+		// TODO Set the player's class (player has to choose)
+	}
+
 	void CheckPlayerClass()
 	{
 		// Selecting one class turns on that class' abilities, and turns off the others
@@ -123,6 +136,7 @@ public class Player : MonoBehaviour
 			health = maxHealth[0];
 			defaultHealth = maxHealth[0];
 			speed = defaultSpeed[0];
+			classIndex = 0;
 
 			abilityOne = this.gameObject.transform.FindChild ("Restock").gameObject;
 			abilityTwo = this.gameObject.transform.FindChild ("PulseRadar").gameObject;
@@ -139,6 +153,7 @@ public class Player : MonoBehaviour
 			health = maxHealth[1];
 			defaultHealth = maxHealth[1];
 			speed = defaultSpeed[1];
+			classIndex = 1;
 
 			abilityOne = this.gameObject.transform.FindChild ("Shield").gameObject;
 			abilityTwo = this.gameObject.transform.FindChild ("Tackle").gameObject;
@@ -155,6 +170,7 @@ public class Player : MonoBehaviour
 			health = maxHealth[2];
 			defaultHealth = maxHealth[2];
 			speed = defaultSpeed[2];
+			classIndex = 2;
 
 			abilityOne = this.gameObject.transform.FindChild ("Cloak").gameObject;
 			abilityTwo = this.gameObject.transform.FindChild ("ChainShot").gameObject;
@@ -184,6 +200,13 @@ public class Player : MonoBehaviour
 
 		xptracker.SendMessage ("UpdateXP", data);
 		kills += 1;
+
+		networkView.RPC ("OtherOnKill", RPCMode.All, this.gameObject.name + "," + kills.ToString());
+	}
+
+	void OtherOnKill(string _kills) 
+	{
+
 	}
 
 	void OnCapture()
@@ -200,6 +223,13 @@ public class Player : MonoBehaviour
 		
 		xptracker.SendMessage ("UpdateXP", data);
 		captures += 1;
+
+		networkView.RPC ("OtherOnCapture", RPCMode.All, this.gameObject.name + "," + captures.ToString());
+	}
+
+	void OtherOnCapture(string _captures)
+	{
+
 	}
 
 	void OnAssist() //TODO Are assists coded? O_O
@@ -216,6 +246,13 @@ public class Player : MonoBehaviour
 		
 		xptracker.SendMessage ("UpdateXP", data);
 		assists += 1;
+
+		networkView.RPC ("OtherOnAssist", RPCMode.All, this.gameObject.name + "," + assists.ToString());
+	}
+
+	void OtherOnAssist(string _assists)
+	{
+
 	}
 
 	void OnAbility()
@@ -243,6 +280,14 @@ public class Player : MonoBehaviour
 		data.Add (xp);
 
 		xptracker.SendMessage ("CompleteLevel", data);
+
+		networkView.RPC ("OtherKillDuck", RPCMode.All, this.gameObject.name);
+	}
+
+	void OtherKillDuck(string _otherDuckKiller)
+	{
+		// TODO What to do here when someone else has killed the duck? Play a sound?
+		Debug.Log (_otherDuckKiller + " has killed the duck before you.");
 	}
 
 	void OnDeath()
@@ -260,6 +305,9 @@ public class Player : MonoBehaviour
 	void AddXP(int _xp)
 	{
 		xp += _xp;
+
+		// Send current xp to experience bar (GUI)
+		this.gameObject.SendMessage ("getCurrent", xp, SendMessageOptions.DontRequireReceiver);
 	}
 
 	void ReceiveLevelUp()
@@ -267,17 +315,18 @@ public class Player : MonoBehaviour
 		level += 1;
 		skillPoints += 1;
 
-		int levelUpEvent = 1; // TODO Double Check with Ramone
-
 		ArrayList data = new ArrayList();
 
-		data.Add (gameObject.name);
-		data.Add (levelUpEvent);
+		data.Add (gameObject.name); // string
+		data.Add (level); // int
+		data.Add (classIndex); // int
+		data.Add (skillPoints); // int
 
-		gameObject.SendMessage ("UpperCornerEvent", data); // TODO Message has no receiver
+		// Player info and level up screen (GUI)
+		this.gameObject.SendMessage ("levelChecking", data, SendMessageOptions.DontRequireReceiver);
 	}
 
-	// Golden Functions HERE
+	// Golden Functions HERE (Accept level ups from player level up menu)
 	void AbilityOneLevelUp()
 	{
 		// Sending a level up to ability one
@@ -290,15 +339,11 @@ public class Player : MonoBehaviour
 		gameObject.transform.Find (abilityTwo.name).SendMessage ("Changed");
 	}
 
-	void StatsLevelUp()
-	{
-		// TODO Sending a level up for stats so that it can be chosen by player
-		gameObject.SendMessage ("StatLevelUp");
-	}
+//	void ReceiveStatLevelUp(string _stat) { }
 
-	void ReceiveStatLevelUp(string _stat)
+	void AbilityThreeLevelUp()
 	{
-		// TODO level up chosen stat
+		// TODO Third class ability level up (do this weekend)
 	}
 
 	void RestartXPCounter(int _leftOverXP)
@@ -306,13 +351,16 @@ public class Player : MonoBehaviour
 		// Left over XP is calculated
 		xp = 0;
 		xp += _leftOverXP;
+
+		// Send current xp to experience bar (GUI)
+		this.gameObject.SendMessage ("getCurrent", xp, SendMessageOptions.DontRequireReceiver);
 	}
 
 	// SUPPORT CLASS SECTION
-	void PulseRadar(bool _onoroff)
+	void PulseRadar(string _enemy)
 	{
-		// TODO Marking the enemy
-		Debug.Log ("Marking!");
+		// Send enemy position to GUI
+		this.gameObject.SendMessage ("visibleEnemy", _enemy);
 	}
 	
 	void PulseDamage(float _damage)
@@ -349,7 +397,7 @@ public class Player : MonoBehaviour
 			if(Physics.SphereCast(transform.position, controller.height / 2, transform.forward, out hit, 0.5f)) {
 				GameObject enemy = hit.transform.gameObject; 
 				if(enemy.transform.tag == "Enemy") {
-					enemy.SendMessage("KillYourself"); //TODO inappropriate geez
+					enemy.SendMessage("KillYourself"); 
 				}
 			}
 		}
@@ -367,12 +415,5 @@ public class Player : MonoBehaviour
 		// Change shader back to default
 		this.gameObject.renderer.material.shader = Shader.Find("Diffuse"); //TODO Need an actual shader 
 		this.gameObject.renderer.material.SetColor("Color", Color.blue); // For testing
-	}
-
-	void ChainShot(string _chainShotSender)
-	{
-		if (Input.GetButtonDown("Fire1")) {
-			GameObject.Find (_chainShotSender).SendMessage ("Off"); // TODO DORI
-		}
 	}
 }

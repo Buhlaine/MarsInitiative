@@ -35,6 +35,9 @@ public class OffenseChainShot : MonoBehaviour
 					target = enemy.transform.gameObject;
 				}
 			}
+
+			hasShot = true;
+			chainShotActive = false;
 		}
 
 		// Reset Counter and start cool down period
@@ -56,13 +59,7 @@ public class OffenseChainShot : MonoBehaviour
 
 		// Send the name of the short enemy to the weapons
 		if (chainShotActive) {
-			player.SendMessage ("ChainShot", target.name);
+			player.SendMessage ("ChainShot", target.name); // TODO Send to Marcus? 
 		}
-	}
-
-	void Off()
-	{
-		hasShot = true;
-		chainShotActive = false;
 	}
 }

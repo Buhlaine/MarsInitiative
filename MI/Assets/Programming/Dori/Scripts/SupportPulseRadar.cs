@@ -70,15 +70,16 @@ public class SupportPulseRadar : MonoBehaviour
 		if (isPulse) {
 			pulseCounter += 1.0f * Time.deltaTime;
 
+			ArrayList data = new ArrayList();
+
 			// Marking enemies on the minimap
 			foreach (var enemy in EnemyInRadius) {
-				enemy.SendMessage("PulseRadar", true);
+				enemy.SendMessage("PulseRadar", enemy.name);
 				// Sending damage in "pulses"
 				damageCounter += 1.0f * Time.deltaTime;
 				if (damageCounter >= 3) {
 					damageCounter = 0;
 					enemy.SendMessage("PulseDamage", pulseDamage[currentAbilityLevel]);
-//					Debug.Log ("Pulse Damage! " + pulseDamage[currentAbilityLevel]);
 				}
 			}
 		}
@@ -96,8 +97,6 @@ public class SupportPulseRadar : MonoBehaviour
 	void Changed()
 	{
 		currentAbilityLevel += 1;
-		
-		// Move sphere radius changing here eventually
 	}
 
 	void OnTriggerEnter(Collider other)
