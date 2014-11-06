@@ -4,67 +4,81 @@ using System.Collections.Generic;
 
 public class MasterData : MonoBehaviour{
 	
-	public List<NetworkPlayerModule> Players = new List<NetworkPlayerModule>();
+	public List<NetworkPlayer> Players = new List<NetworkPlayer>();
 	
 	public static MasterData MasterDataInstance;
 	
-	public static Player me;
+	public static NetworkPlayer me;
 	
 	private int responses;
 	
 	void Start(){
+		DontDestroyOnLoad(this.gameObject);
 		MasterDataInstance = this;
 	}
 	
 	//Client Locals
-	public void sendRegisterRequest(NetworkViewID _NVID){
-		networkView.RPC("registerPlayer",RPCMode.Server, this.networkView.viewID);
+	public void sendRegisterRequest(){
+		if(Network.peerType == NetworkPeerType.Client){
+			Debug.Log("Registering as "+Network.peerType.ToString());
+			networkView.RPC("registerPlayer",RPCMode.Server, Network.player);
+		}
+		else{
+			Debug.Log("Registering locally as Server");
+			registerPlayer(Network.player);
+		}
 	}
 	
 	
 	//Server Locals
-	public IEnumerator Waitresponses(){
-		responses = 0;
-		networkView.RPC("sendPlayerCount",RPCMode.All,Players.Count);
-		while(responses < Players.Count){
-			yield return null;
-		}
-		foreach(NetworkPlayerModule i in Players){
-			networkView.RPC("sendPlayerInfo",RPCMode.All,i.playerNumber,i.NVID);
-		}
-	}
 	
+
 	//Client RPCs
 	[RPC]
-	void sendPlayerCount(int _number){
-		networkView.RPC("incrementResponse",RPCMode.Server);
+	void SendPlayer(NetworkPlayer _player){
+		Debug.Log("received "+_player.ToString());
+		bool add = true;
+		foreach(NetworkPlayer i in Players){
+			Debug.Log("Comparing "+_player.ToString()+" to "+i.ToString());
+			if(_player.ToString() == i.ToString()){
+				add = false;
+				Debug.Log("Match, not adding");
+			}
+		}
+		if (add == true){
+			Debug.Log(_player.ToString()+" not found, adding");
+			Players.Add(_player);
+			//networkView.RPC("Wave",
+		}
 	}
-	
-	
+
 	//Server RPC's
 	[RPC]
-	void registerPlayer(NetworkViewID _NVID){
-		Players.Add(new NetworkPlayerModule(Players.Count+1,_NVID));
+	void registerPlayer(NetworkPlayer _playerNet){
+		Players.Add(_playerNet);
+		Debug.Log("Registered player "+(Players.Count).ToString());
+		if(_playerNet.guid != Network.player.guid){
+			Debug.Log("Sending current players");
+			foreach(NetworkPlayer i in Players){
+				Debug.Log("Sending "+i.guid.ToString()+" to "+_playerNet.guid.ToString());
+				networkView.RPC("SendPlayer",_playerNet,i);
+				
+			}
+		}
 	}
-	
-	[RPC]
-	void incrementResponse(){
-		responses++;
-	}
-	
-	[RPC]
-	void requestPlayerList(){
-		
-	}
-	
-}
 
-public class NetworkPlayerModule{
-	public int playerNumber;
-	public NetworkViewID NVID;
-	
-	public NetworkPlayerModule(int _playerNumber, NetworkViewID _NVID){
-		playerNumber = _playerNumber;
-		NVID = _NVID;
+	void OnGUI(){
+
+		GUI.Label(new Rect(Screen.width-300,50,200,30),"Me: "+Network.player.guid.ToString());
+
+		for(int i = 0; i<Players.Count; i++){
+			GUI.Label(new Rect(Screen.width-300,100+(50*i),200,30),Players[i].ToString());
+			GUI.Label(new Rect(Screen.width-300,120+(50*i),200,30),Players[i].guid.ToString());
+		}
 	}
+
+	void OnApplicationQuit(){
+		Network.Disconnect();
+	}
+	
 }
