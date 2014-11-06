@@ -14,7 +14,7 @@ public class WeaponsManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () 
 	{
-
+		//key selection, uncomment the amount of weapons you have
 		if (Input.GetKeyDown("1"))
 		{
 			weaponChoice = 0;
@@ -25,6 +25,7 @@ public class WeaponsManager : MonoBehaviour {
 			weaponChoice = 1;
 			SelectWeapon(weaponChoice);
 		}
+		/*
 		else if(Input.GetKeyDown("3"))
 		{
 			weaponChoice = 2;
@@ -45,12 +46,12 @@ public class WeaponsManager : MonoBehaviour {
 			weaponChoice = 5;
 			SelectWeapon(weaponChoice);
 		}
-
+		*/
 
 		if (Input.GetAxisRaw ("Mouse ScrollWheel") < 0) //scroll back
 		{
 			weaponChoice += 1;
-			if (weaponChoice > 5)
+			if (weaponChoice > 1) //change this number to n-1 weapons
 			{
 				weaponChoice = 0;
 			}
@@ -61,7 +62,7 @@ public class WeaponsManager : MonoBehaviour {
 			weaponChoice -= 1;
 			if (weaponChoice < 0)
 			{
-				weaponChoice = 5;
+				weaponChoice = 2;
 			}
 			SelectWeapon (weaponChoice);
 		}
