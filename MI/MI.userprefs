@@ -1,6 +1,12 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Programming\Andrew\Network\MasterData.cs">
+    <Files>
+      <File FileName="Assets\Programming\Andrew\Network\MasterData.cs" Line="84" Column="2" />
+      <File FileName="Assets\Programming\Andrew\Network\MasterData.cs" Line="84" Column="2" />
+      <File FileName="Assets\Programming\Andrew\Network\NetworkLobby.cs" Line="80" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
