@@ -48,6 +48,7 @@ public class Player : MonoBehaviour
 	{
 		// Check what class the player has chosen - this will dictate max health, speed, and other things
 		CheckPlayerClass ();
+		SetTeam ();
 
 		ammo = 0; 
 		maxAmmo = 500;
@@ -121,12 +122,65 @@ public class Player : MonoBehaviour
 
 	void SetTeam()
 	{
-		// TODO Set the player team (player has to choose)
+		networkView.RPC("RPCPlayerTeam", RPCMode.All, this.gameObject.networkView.viewID + "," + team);
 	}
 
 	void SetClass()
 	{
 		// TODO Set the player's class (player has to choose)
+		networkView.RPC("RPCPlayerClass", RPCMode.All, this.gameObject.networkView.viewID + "," + classIndex.ToString());
+	}
+
+	// Synchronizing variables across the network
+	void OnSerializeNetworkView(BitStream stream, NetworkMessageInfo info)
+	{
+		float syncHealth = 0;
+		float syncAmmo = 0;
+		float syncSpeed = 0;
+		int syncKills = 0;
+		int syncAssists = 0;
+		int syncCaptures = 0;
+		int syncDeaths = 0;
+		int syncLevel = 0;
+
+		if(stream.isWriting)
+		{
+			syncHealth = health;
+			syncAmmo = ammo;
+			syncSpeed = speed;
+			syncKills = kills;
+			syncAssists = assists;
+			syncCaptures = captures;
+			syncDeaths = deaths;
+			syncLevel = level;
+
+			stream.Serialize(ref syncHealth);
+			stream.Serialize(ref syncAmmo);
+			stream.Serialize(ref syncSpeed);
+			stream.Serialize(ref syncKills);
+			stream.Serialize(ref syncAssists);
+			stream.Serialize(ref syncCaptures);
+			stream.Serialize(ref syncDeaths);
+			stream.Serialize(ref syncLevel);
+		} else {
+			stream.Serialize(ref syncHealth);
+			stream.Serialize(ref syncAmmo);
+			stream.Serialize(ref syncSpeed);
+			stream.Serialize(ref syncKills);
+			stream.Serialize(ref syncAssists);
+			stream.Serialize(ref syncCaptures);
+			stream.Serialize(ref syncDeaths);
+			stream.Serialize(ref syncLevel);
+
+			health = syncHealth;
+			ammo = syncAmmo;
+			speed = syncSpeed;
+			kills = syncKills;
+			assists = syncAssists;
+			captures = syncCaptures;
+			deaths = syncDeaths;
+			level = syncLevel;
+		}
 	}
 
 	void CheckPlayerClass()
@@ -200,13 +254,6 @@ public class Player : MonoBehaviour
 
 		xptracker.SendMessage ("UpdateXP", data);
 		kills += 1;
-
-		networkView.RPC ("OtherOnKill", RPCMode.All, this.gameObject.name + "," + kills.ToString());
-	}
-
-	void OtherOnKill(string _kills) 
-	{
-
 	}
 
 	void OnCapture()
@@ -223,13 +270,6 @@ public class Player : MonoBehaviour
 		
 		xptracker.SendMessage ("UpdateXP", data);
 		captures += 1;
-
-		networkView.RPC ("OtherOnCapture", RPCMode.All, this.gameObject.name + "," + captures.ToString());
-	}
-
-	void OtherOnCapture(string _captures)
-	{
-
 	}
 
 	void OnAssist() //TODO Are assists coded? O_O
@@ -246,13 +286,6 @@ public class Player : MonoBehaviour
 		
 		xptracker.SendMessage ("UpdateXP", data);
 		assists += 1;
-
-		networkView.RPC ("OtherOnAssist", RPCMode.All, this.gameObject.name + "," + assists.ToString());
-	}
-
-	void OtherOnAssist(string _assists)
-	{
-
 	}
 
 	void OnAbility()
@@ -280,14 +313,6 @@ public class Player : MonoBehaviour
 		data.Add (xp);
 
 		xptracker.SendMessage ("CompleteLevel", data);
-
-		networkView.RPC ("OtherKillDuck", RPCMode.All, this.gameObject.name);
-	}
-
-	void OtherKillDuck(string _otherDuckKiller)
-	{
-		// TODO What to do here when someone else has killed the duck? Play a sound?
-		Debug.Log (_otherDuckKiller + " has killed the duck before you.");
 	}
 
 	void OnDeath()
@@ -339,8 +364,6 @@ public class Player : MonoBehaviour
 		gameObject.transform.Find (abilityTwo.name).SendMessage ("Changed");
 	}
 
-//	void ReceiveStatLevelUp(string _stat) { }
-
 	void AbilityThreeLevelUp()
 	{
 		// TODO Third class ability level up (do this weekend)
@@ -371,7 +394,7 @@ public class Player : MonoBehaviour
 	}
 
 	// Ammo and health restocking
-	void Restock(int _regenIndex)
+	void Restock(float _regenIndex)
 	{
 		if (health >= defaultHealth) {
 			health = defaultHealth;

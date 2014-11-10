@@ -70,8 +70,6 @@ public class SupportPulseRadar : MonoBehaviour
 		if (isPulse) {
 			pulseCounter += 1.0f * Time.deltaTime;
 
-			ArrayList data = new ArrayList();
-
 			// Marking enemies on the minimap
 			foreach (var enemy in EnemyInRadius) {
 				enemy.SendMessage("PulseRadar", enemy.name);
