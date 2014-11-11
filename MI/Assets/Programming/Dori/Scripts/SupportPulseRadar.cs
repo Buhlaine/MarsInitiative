@@ -91,7 +91,7 @@ public class SupportPulseRadar : MonoBehaviour
 			damageCounter = 0;
 
 			foreach (var enemy in EnemyInRadius) {
-				enemy.SendMessage("PulseRadar", false);
+				enemy.SendMessage("PulseRadar", enemy.name);
 			}
 		}
 	}

@@ -14,6 +14,7 @@ public class Player : MonoBehaviour
 	public string team; // Player team
 	public float health;
 	public float ammo;
+	public float stamina;
 	public int maxAmmo;
 	public float speed;
 	public int totalXP; // Total amount of XP
@@ -28,15 +29,19 @@ public class Player : MonoBehaviour
 	public int level; // Current player level
 
 	public float defaultHealth;
+	public float sprintSpeed;
 	public int[] maxHealth; // Max health depends on player class
 	public float[] defaultSpeed; // Max speed depends on player class (Troper & Scout = 100, Heavy = 90)
+	public float[] maxStamina;
 	public Class currentClass;
 	public GameObject abilityOne;
 	public GameObject abilityTwo;
+	public GameObject boostAbility;
 	public bool isShooting;
 
 	private XPTracker xptracker;
 	private CharacterController controller;
+	private GameObject particle;
 
 	void Awake()
 	{
@@ -61,8 +66,11 @@ public class Player : MonoBehaviour
 		deaths = 0;
 		level = 0;
 
+		sprintSpeed = 10;
+
 		xptracker = GameObject.FindGameObjectWithTag ("XPTracker").GetComponent<XPTracker> ();
 		controller = GetComponent<CharacterController> ();
+		particle = gameObject.transform.FindChild ("Fist_Bump").gameObject;
 
 		ReceiveLevelUp ();
 
@@ -72,6 +80,7 @@ public class Player : MonoBehaviour
 		playerInfo.Add (this.gameObject.tag);
 
 		xptracker.SendMessage ("StorePlayer", playerInfo);
+		particle.SetActive(false);
 	}
 
 	void Update()
@@ -94,34 +103,24 @@ public class Player : MonoBehaviour
 			} 
 		}
 
+		// Health
 		if(health <= 0) {
 			OnDeath (this.gameObject.networkView.viewID.ToString());
 		}
 
-		// Simulating when player scores a kill (TESTING ONLY)
-		if (Input.GetKeyDown (KeyCode.J)) {
-			OnKill ();
+		// Fist Bump
+		if (Input.GetKeyDown (KeyCode.F)) {
+			particle.SetActive (true);
 		}
-		if (Input.GetKeyDown (KeyCode.K)) {
-			OnCapture ();
+
+		// Sprint
+		if (Input.GetKeyDown (KeyCode.LeftShift)) {
+			speed = sprintSpeed;
+			stamina -= 1 * Time.deltaTime;
+		} else if (Input.GetKeyUp (KeyCode.LeftShift)) {
+			speed = defaultSpeed[classIndex];
+			stamina += 1 * Time.deltaTime;
 		}
-		if (Input.GetKeyDown (KeyCode.L)) {
-			OnAssist ();
-		}
-//
-//		// Test Character Controls (TESTING ONLY)
-//		if (Input.GetKey (KeyCode.W)) {
-//			transform.Translate (Vector3.forward * speed * Time.deltaTime);
-//		}
-//		if (Input.GetKey (KeyCode.S)) {
-//			transform.Translate (-Vector3.forward * speed * Time.deltaTime);
-//		}
-//		if (Input.GetKey (KeyCode.A)) {
-//			transform.Translate (-Vector3.right * speed * Time.deltaTime);
-//		}
-//		if (Input.GetKey (KeyCode.D)) {
-//			transform.Translate (Vector3.right * speed * Time.deltaTime);
-//		}
 	}
 
 	void SetTeam()
@@ -188,52 +187,67 @@ public class Player : MonoBehaviour
 			health = maxHealth[0];
 			defaultHealth = maxHealth[0];
 			speed = defaultSpeed[0];
+			stamina = maxStamina[0];
 			classIndex = 0;
 
 			abilityOne = this.gameObject.transform.FindChild ("Restock").gameObject;
 			abilityTwo = this.gameObject.transform.FindChild ("PulseRadar").gameObject;
+			boostAbility = this.gameObject.transform.FindChild ("TrooperBoost").gameObject;
 
 			gameObject.transform.FindChild ("Shield").gameObject.SetActive(false);
 			gameObject.transform.FindChild ("Tackle").gameObject.SetActive(false);
 			gameObject.transform.FindChild ("Cloak").gameObject.SetActive(false);
 			gameObject.transform.FindChild ("ChainShot").gameObject.SetActive(false);
+			gameObject.transform.FindChild ("AssassinBoost").gameObject.SetActive(false);
+			gameObject.transform.FindChild ("EnforcerBoost").gameObject.SetActive(false);
 
 			abilityOne.SetActive(true);
 			abilityTwo.SetActive(true);
+			boostAbility.SetActive(true);
 		}
 		if (currentClass == Class.Enforcer) {
 			health = maxHealth[1];
 			defaultHealth = maxHealth[1];
 			speed = defaultSpeed[1];
+			stamina = maxStamina[1];
 			classIndex = 1;
 
 			abilityOne = this.gameObject.transform.FindChild ("Shield").gameObject;
 			abilityTwo = this.gameObject.transform.FindChild ("Tackle").gameObject;
+			boostAbility = this.gameObject.transform.FindChild ("EnforcerBoost").gameObject;
 
 			gameObject.transform.FindChild ("Restock").gameObject.SetActive(false);
 			gameObject.transform.FindChild ("PulseRadar").gameObject.SetActive(false);
 			gameObject.transform.FindChild ("Cloak").gameObject.SetActive(false);
 			gameObject.transform.FindChild ("ChainShot").gameObject.SetActive(false);
+			gameObject.transform.FindChild ("TrooperBoost").gameObject.SetActive(false);
+			gameObject.transform.FindChild ("AssassinBoost").gameObject.SetActive(false);
 			
 			abilityOne.SetActive(true);
 			abilityTwo.SetActive(true);
+			boostAbility.SetActive(true);
 		}
 		if (currentClass == Class.Assassin) {
 			health = maxHealth[2];
 			defaultHealth = maxHealth[2];
 			speed = defaultSpeed[2];
+			stamina = maxStamina[2];
 			classIndex = 2;
 
 			abilityOne = this.gameObject.transform.FindChild ("Cloak").gameObject;
 			abilityTwo = this.gameObject.transform.FindChild ("ChainShot").gameObject;
+			boostAbility = this.gameObject.transform.FindChild ("AssassinBoost").gameObject;
 
 			gameObject.transform.FindChild ("Restock").gameObject.SetActive(false);
 			gameObject.transform.FindChild ("PulseRadar").gameObject.SetActive(false);
 			gameObject.transform.FindChild ("Shield").gameObject.SetActive(false);
 			gameObject.transform.FindChild ("Tackle").gameObject.SetActive(false);
+			gameObject.transform.FindChild ("TrooperBoost").gameObject.SetActive(false);
+			gameObject.transform.FindChild ("EnforcerBoost").gameObject.SetActive(false);
 			
 			abilityOne.SetActive(true);
 			abilityTwo.SetActive(true);
+			boostAbility.SetActive(true);
 		}
 	}
 
@@ -316,11 +330,10 @@ public class Player : MonoBehaviour
 	void OnDeath(string _id)
 	{
 		int result = int.Parse(_id);
-
 		deaths += 1;
 
 		// Broadcast that this player has died
-		networkView.RPC ("requestSpawn", RPCMode.All, this.gameObject.networkView.viewID);
+		networkView.RPC ("requestSpawn", RPCMode.All, result);
 	}
 
 	void KillYourself()
@@ -369,7 +382,23 @@ public class Player : MonoBehaviour
 
 	void AbilityThreeLevelUp()
 	{
-		// TODO Third class ability level up (do this weekend)
+		gameObject.transform.Find (boostAbility.name).SendMessage ("Changed");
+	}
+
+	void IncreaseSprintSpeed()
+	{
+		sprintSpeed = 12;
+	}
+
+	void IncreaseMaxHealth()
+	{
+		maxHealth[1] = 100;
+	}
+
+	void IncreaseTrooperStats()
+	{
+		this.gameObject.transform.FindChild(abilityOne.name).SendMessage("IncreaseRegenAmount");
+		maxStamina[0] = 8;
 	}
 
 	void RestartXPCounter(int _leftOverXP)
@@ -386,7 +415,7 @@ public class Player : MonoBehaviour
 	void PulseRadar(string _enemy)
 	{
 		// Send enemy position to GUI
-		this.gameObject.SendMessage ("visibleEnemy", _enemy);
+		this.gameObject.SendMessage ("visibleEnemy", _enemy, SendMessageOptions.DontRequireReceiver);
 	}
 	
 	void PulseDamage(float _damage)

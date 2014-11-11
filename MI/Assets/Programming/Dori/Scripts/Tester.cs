@@ -79,11 +79,13 @@ public class Tester : MonoBehaviour
 	void PulseRadar(string _enemy)
 	{
 		// Send enemy position to GUI
-		this.gameObject.SendMessage ("visibleEnemy", _enemy);
+		this.gameObject.SendMessage ("visibleEnemy", _enemy, SendMessageOptions.DontRequireReceiver);
 	}
 	
 	void PulseDamage(float _damage)
 	{
+		Debug.Log ("Ping! Pulse damage taken!");
+		// Damaging the enemy in "pulses". Pulses controlled in ability script.
 		health -= _damage;
 	}
 	
