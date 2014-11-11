@@ -14,6 +14,7 @@ public class OffenseChainShot : MonoBehaviour
 
 	private bool hasShot;
 	private Player player;
+	private GameObject particle;
 
 	void Start()
 	{
@@ -21,12 +22,16 @@ public class OffenseChainShot : MonoBehaviour
 
 		string ability = this.gameObject.transform.parent.gameObject.name;
 		player = GameObject.Find (ability).GetComponent<Player>();
+		particle  = gameObject.transform.FindChild("SFX_Chain_Shot_Barrel").gameObject;
+
+		particle.SetActive(false);
 	}
 
 	void Update()
 	{
 		if(Input.GetKeyDown (KeyCode.Q) && !startCooldown && !chainShotActive) {
 			chainShotActive = true;
+			particle.SetActive(true);
 
 			// Send a raycast forward. If it hits an enemy while the chainshot is active, then that enemy is dead.
 			RaycastHit enemy;
@@ -59,7 +64,7 @@ public class OffenseChainShot : MonoBehaviour
 
 		// Send the name of the short enemy to the weapons
 		if (chainShotActive) {
-			player.SendMessage ("ChainShot", target.name); // TODO Send to Marcus? 
+			player.SendMessage ("ChainShot", target.name);
 		}
 	}
 }

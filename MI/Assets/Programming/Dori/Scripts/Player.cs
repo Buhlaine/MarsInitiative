@@ -94,6 +94,10 @@ public class Player : MonoBehaviour
 			} 
 		}
 
+		if(health <= 0) {
+			OnDeath (this.gameObject.networkView.viewID.ToString());
+		}
+
 		// Simulating when player scores a kill (TESTING ONLY)
 		if (Input.GetKeyDown (KeyCode.J)) {
 			OnKill ();
@@ -122,13 +126,7 @@ public class Player : MonoBehaviour
 
 	void SetTeam()
 	{
-		networkView.RPC("RPCPlayerTeam", RPCMode.All, this.gameObject.networkView.viewID + "," + team);
-	}
-
-	void SetClass()
-	{
-		// TODO Set the player's class (player has to choose)
-		networkView.RPC("RPCPlayerClass", RPCMode.All, this.gameObject.networkView.viewID + "," + classIndex.ToString());
+		networkView.RPC("RPCPlayerTeam", RPCMode.All, this.gameObject.networkView.viewID.owner + "," + team);
 	}
 
 	// Synchronizing variables across the network
@@ -315,16 +313,21 @@ public class Player : MonoBehaviour
 		xptracker.SendMessage ("CompleteLevel", data);
 	}
 
-	void OnDeath()
+	void OnDeath(string _id)
 	{
+		int result = int.Parse(_id);
+
 		deaths += 1;
+
+		// Broadcast that this player has died
+		networkView.RPC ("requestSpawn", RPCMode.All, this.gameObject.networkView.viewID);
 	}
 
 	void KillYourself()
 	{
 		Debug.Log (this.gameObject.name + " has died.");
 		health = 0;
-		OnDeath ();
+		networkView.RPC ("OnDeath", RPCMode.All, this.gameObject.networkView.viewID);
 	}
 
 	void AddXP(int _xp)
@@ -420,7 +423,9 @@ public class Player : MonoBehaviour
 			if(Physics.SphereCast(transform.position, controller.height / 2, transform.forward, out hit, 0.5f)) {
 				GameObject enemy = hit.transform.gameObject; 
 				if(enemy.transform.tag == "Enemy") {
-					enemy.SendMessage("KillYourself"); 
+					// TODO Ask Andrew if this will work
+					networkView.RPC ("KillYourself", RPCMode.All, enemy.networkView.viewID.owner);
+					Debug.Log (enemy.networkView.viewID.owner);
 				}
 			}
 		}

@@ -32,6 +32,7 @@ public class DefenseShield : MonoBehaviour
 
 //	private Player player;
 	private SphereCollider sphereCollider;
+	private GameObject particle;
 
 	// Create two lists to store teammates in player's radius, and teammates with active shields
 	private List<GameObject> BlueInRadius = new List<GameObject>();	
@@ -46,6 +47,9 @@ public class DefenseShield : MonoBehaviour
 		sphereCollider = this.transform.GetComponent<SphereCollider> ();
 //		string parent = this.gameObject.transform.parent.gameObject.name;
 //		player = GameObject.Find (parent).GetComponent<Player>();
+		particle = gameObject.transform.FindChild("SFX_BubbleShield").gameObject;
+
+		particle.SetActive(false);
 	}
 
 	void Update()
@@ -80,6 +84,11 @@ public class DefenseShield : MonoBehaviour
 			// Turn sphere colliders on (they are on layermask "Ignore Raycast")
 			sphereCollider.enabled = true;
 			gameObject.transform.parent.gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
+
+//			particle.transform.FindChild ("Particle System 1").particleSystem.enableEmission = true;
+//			particle.transform.FindChild ("Particle System 2").particleSystem.enableEmission = true;
+
+			particle.SetActive(true);
 			
 			foreach (GameObject teammates in BlueInRadius) {
 				// Store players within range into a second list 
@@ -96,6 +105,11 @@ public class DefenseShield : MonoBehaviour
 		if (!isShielded) {
 			sphereCollider.enabled = false;
 			gameObject.transform.parent.gameObject.layer = LayerMask.NameToLayer("Default");
+
+//			particle.transform.FindChild ("Particle System 1").particleSystem.enableEmission = false;
+//			particle.transform.FindChild ("Particle System 2").particleSystem.enableEmission = false;
+
+			particle.SetActive(false);
 			
 			foreach (GameObject teammates in BlueShielded) {
 				sphereCollider.enabled = false;

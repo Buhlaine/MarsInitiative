@@ -17,6 +17,7 @@ public class OffenseCloak : MonoBehaviour
 
 	private Player player;
 //	private SphereCollider sphereCollider;
+	private GameObject particle;
 
 	void Start()
 	{
@@ -27,6 +28,10 @@ public class OffenseCloak : MonoBehaviour
 //		sphereCollider = this.gameObject.transform.GetComponent<SphereCollider> ();
 		string ability = this.gameObject.transform.parent.gameObject.name;
 		player = GameObject.Find (ability).GetComponent<Player>();
+		particle = gameObject.transform.FindChild("SFX_Cloaking").gameObject;
+		Debug.Log (particle);
+
+		particle.SetActive (false);
 
 		Reset ();
 	}
@@ -71,7 +76,9 @@ public class OffenseCloak : MonoBehaviour
 
 		if(isCamo) {
 			camoCounter += 1.0f * Time.deltaTime;
+
 			player.SendMessage("CloakOn");
+			particle.SetActive(true);
 
 			if(target != null && currentAbilityLevel >= 1) {
 				GameObject.Find(invisible).SendMessage("CloakOn");
@@ -80,6 +87,7 @@ public class OffenseCloak : MonoBehaviour
 
 		if(!isCamo) {
 			player.SendMessage ("CloakOff");
+			particle.SetActive (false);
 
 			if(invisible != null && currentAbilityLevel >= 1) {
 				GameObject.Find(invisible).SendMessage("CloakOff");

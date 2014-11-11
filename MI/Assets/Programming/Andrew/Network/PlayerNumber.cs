@@ -6,7 +6,7 @@ public class PlayerNumber : MonoBehaviour {
 	public int number;
 	
 	void Start(){
-		number = int.TryParse(MasterData.me.ToString());
+//		number = int.TryParse(MasterData.me.ToString());
 	}
 
 }

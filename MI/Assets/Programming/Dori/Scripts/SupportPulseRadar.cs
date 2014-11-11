@@ -30,6 +30,7 @@ public class SupportPulseRadar : MonoBehaviour
 //	private Player player;
 	private SphereCollider sphereCollider;
 	private List<GameObject> EnemyInRadius = new List<GameObject>();
+	private GameObject particle;
 
 	void Start()
 	{
@@ -37,9 +38,11 @@ public class SupportPulseRadar : MonoBehaviour
 		sphereCollider = this.gameObject.transform.GetComponent<SphereCollider> ();
 //		string ability = this.gameObject.transform.parent.gameObject.name;
 //		player = GameObject.Find (ability).GetComponent<Player>();
+		particle = transform.FindChild("Radar").gameObject;
 		
 		currentAbilityLevel = 0;
 		cooldownPeriod = 16.0f;
+		particle.SetActive(false);
 	}
 
 	void Update()
@@ -59,6 +62,7 @@ public class SupportPulseRadar : MonoBehaviour
 
 		// Reset and start cool down
 		if(startCooldown) {
+			particle.SetActive(false);
 			cooldownCounter += 1.0f * Time.deltaTime;
 		}
 		
@@ -73,7 +77,8 @@ public class SupportPulseRadar : MonoBehaviour
 			// Marking enemies on the minimap
 			foreach (var enemy in EnemyInRadius) {
 				enemy.SendMessage("PulseRadar", enemy.name);
-				// Sending damage in "pulses"
+				particle.SetActive(true);
+
 				damageCounter += 1.0f * Time.deltaTime;
 				if (damageCounter >= 3) {
 					damageCounter = 0;

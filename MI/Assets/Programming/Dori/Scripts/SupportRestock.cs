@@ -29,6 +29,7 @@ public class SupportRestock : MonoBehaviour
 	private Player player;
 	private SphereCollider sphereCollider;
 	private List<GameObject> BlueInRadius = new List<GameObject>();	
+	private GameObject particle;
 	
 	void Start()
 	{
@@ -36,9 +37,11 @@ public class SupportRestock : MonoBehaviour
 		sphereCollider = this.gameObject.transform.GetComponent<SphereCollider> ();
 		string ability = this.gameObject.transform.parent.gameObject.name;
 		player = GameObject.Find (ability).GetComponent<Player>();
+		particle = transform.FindChild("SFX_Regen_Health_Ammo").gameObject;
 		
 		currentAbilityLevel = 0;
 		cooldownPeriod = 15.0f;
+		particle.SetActive(false);
 	}
 	
 	void Update()
@@ -60,6 +63,7 @@ public class SupportRestock : MonoBehaviour
 
 		// Start the cooldown timer once startCooldown is set to true
 		if(startCooldown) {
+			particle.SetActive(false);
 			cooldownCounter += 1.0f * Time.deltaTime;
 		}
 
@@ -83,6 +87,7 @@ public class SupportRestock : MonoBehaviour
 
 			// Send a message to the player to restock
 			player.SendMessage("Restock", regenAmount[currentAbilityLevel]);
+			particle.SetActive(true);
 
 			// Send message to restock to each of the teammates stored in the list BlueInRadius
 			foreach (var teammates in BlueInRadius) {
