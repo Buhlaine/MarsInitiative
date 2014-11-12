@@ -1,13 +1,10 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Programming\Marcus\Weapons\Scripts\DamageController.cs">
+  <MonoDevelop.Ide.Workspace />
+  <MonoDevelop.Ide.Workbench ActiveDocument="..\..\..\classFiles\Team Production II\week 6\MI\Assets\Programming\Marcus\Weapons\Scripts\weaponScript.cs">
     <Files>
-      <File FileName="Assets\Programming\Dori\Scripts\Player.cs" Line="460" Column="4" />
-      <File FileName="Assets\Programming\Marcus\Animation\animationScripts\assassinAnimCtrlScript.cs" Line="224" Column="1" />
-      <File FileName="Assets\Programming\Marcus\Animation\animationScripts\heavyAnimCtrlScript.cs" Line="224" Column="1" />
-      <File FileName="Assets\Programming\Marcus\Animation\animationScripts\trooperAnimCtrlScript.cs" Line="203" Column="39" />
-      <File FileName="Assets\Programming\Marcus\Weapons\Scripts\DamageController.cs" Line="44" Column="3" />
-      <File FileName="Assets\Programming\Marcus\Weapons\Scripts\weaponScript.cs" Line="215" Column="7" />
+      <File FileName="..\..\..\classFiles\Team Production II\week 6\MI\Assets\Programming\Marcus\Weapons\Scripts\grenadeExplosionScript.cs" Line="36" Column="27" />
+      <File FileName="..\..\..\classFiles\Team Production II\week 6\MI\Assets\Programming\Marcus\Weapons\Scripts\MeleeAttack.cs" Line="43" Column="5" />
+      <File FileName="..\..\..\classFiles\Team Production II\week 6\MI\Assets\Programming\Marcus\Weapons\Scripts\weaponScript.cs" Line="219" Column="5" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
