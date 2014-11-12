@@ -8,7 +8,7 @@ public class MasterData : MonoBehaviour{
 	
 	public static MasterData MasterDataInstance;
 	
-	private string team;
+	public static string team;
 	
 	void Start(){
 		DontDestroyOnLoad(this.gameObject);

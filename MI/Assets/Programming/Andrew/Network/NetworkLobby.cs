@@ -62,12 +62,12 @@ public class NetworkLobby : MonoBehaviour {
 			for(int i=0;i<MasterServer.PollHostList().Length;i++){
 				GUI.Label(new Rect(50,50+(i*50),50,25),i.ToString());
 				GUI.Label(new Rect(100,50+(i*50),200,25),MasterServer.PollHostList()[i].gameName);
-				if(!isHost){
-					if(GUI.Button(new Rect(250,50+(i*50),50,25),"Join Red")){
+				if(Network.peerType == NetworkPeerType.Disconnected){
+					if(GUI.Button(new Rect(250,50+(i*50),75,25),"Join Red")){
 						Network.Connect(MasterServer.PollHostList()[i].ip,MasterServer.PollHostList()[i].port);
 						StartCoroutine(waitConnection("Red"));
 					}
-					if(GUI.Button(new Rect(310,50+(i*50),50,25),"Join Blu")){
+					if(GUI.Button(new Rect(335,50+(i*50),75,25),"Join Blu")){
 						Network.Connect(MasterServer.PollHostList()[i].ip,MasterServer.PollHostList()[i].port);
 						StartCoroutine(waitConnection("Blue"));
 					}
