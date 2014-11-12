@@ -34,12 +34,12 @@ public class flagScript : MonoBehaviour {
 
 		//setting enemy team
 		//used in collision for flag drop
-		if(this.name == "blueFlagObj")
+		if(this.name.Contains("blue") || this.name.Contains("Blue"))
 		{
 			enemyTeam = "Red";
 			homeTeam = "Blue";
 		}
-		else if(this.name == "redFlagObj")
+		else if(this.name.Contains("red") || this.name.Contains("Red"))
 		{
 			enemyTeam = "Blue";
 			homeTeam = "Red";
@@ -63,22 +63,26 @@ public class flagScript : MonoBehaviour {
 	{
 		if(dropped)
 		{
-			if(colliderInfo.gameObject.tag == enemyTeam)
+			if(colliderInfo.gameObject.tag == "Player")
 			{
-				//May be removed.
-				//had issues during testing where dead player picked flag up
-				followPlayer(colliderInfo.gameObject as GameObject);
-				flagPickedUp();
-				colliderInfo.SendMessage("obtainedFlag");
-				//colliderInfo.gameObject.SendMessage("areYouAlive", this.gameObject as GameObject);
-			}
-			else if(colliderInfo.gameObject.tag == homeTeam)
-			{
-				follow = false;
-				this.transform.position = homePos;
-				returned = true;
-				dropped = false;
-				teambase.SendMessage("flagReturned");
+				Player colPlayer = colliderInfo.GetComponent<PlayerPrefs> ();
+				if(colPlayer.team == homeTeam)
+				{
+					follow = false;
+					this.transform.position = homePos;
+					returned = true;
+					dropped = false;
+					teambase.SendMessage("flagReturned");
+				}
+				else if(colPlayer.team == enemyTeam)
+				{
+					//May be removed.
+					//had issues during testing where dead player picked flag up
+					followPlayer(colliderInfo.gameObject as GameObject);
+					flagPickedUp();
+					colliderInfo.SendMessage("obtainedFlag");
+					//colliderInfo.gameObject.SendMessage("areYouAlive", this.gameObject as GameObject);
+				}
 			}
 		}
 	}

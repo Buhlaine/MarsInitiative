@@ -87,20 +87,24 @@ public class baseScript : MonoBehaviour {
 		{
 			//checking to see if colliderinfo is enemy
 			//if enemy, flag is captured, follow enemy
-			if(colliderInfo.tag == enemyTag)
+			if(colliderInfo.tag == "Player")
 			{
-				teamFlag.SendMessage("followPlayer", colliderInfo.gameObject as GameObject);
-				//setting carrying on enemy player
-				colliderInfo.SendMessage("obtainedFlag");
-				flagHere = false;
-				//Debug.Log(colliderInfo.name);
+				Player colPlayer = colliderInfo.GetComponent<PlayerPrefs> ();
+				if(colPlayer.team == enemyTag)
+				{
+					teamFlag.SendMessage("followPlayer", colliderInfo.gameObject as GameObject);
+					//setting carrying on enemy player
+					colliderInfo.SendMessage("obtainedFlag");
+					flagHere = false;
+					//Debug.Log(colliderInfo.name);
+				}
+				//check to see if colliderinfo is team
+				//if team, check to see if play is carrying
+				else if(colliderInfo.tag == teamTag)
+				{
+					colliderInfo.SendMessage("isCarrying", this.gameObject as GameObject);
+				}
 			}
-		}
-		//check to see if colliderinfo is team
-		//if team, check to see if play is carrying
-		if(colliderInfo.tag == teamTag)
-		{
-			colliderInfo.SendMessage("isCarrying", this.gameObject as GameObject);
 		}
 	}
 
