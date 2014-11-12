@@ -1,21 +1,35 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class heavyAnimCtrlScript : MonoBehaviour {
-
+public class heavyAnimCtrlScript : MonoBehaviour 
+{
+	
 	//[RequireComponent(typeof(Animator))]
-
+	
 	private Animator anim;
 	private AnimatorStateInfo currentBaseState;
 	private AnimatorStateInfo primaryWeaponLayer;
 	private AnimatorStateInfo secondaryWeaponLayer;
-
+	
+	private float VMovement;
+	private float HMovement;
+	private bool Firing;
+	private bool IsAiming;
+	private bool IsJumping;
+	private bool IsReloading;
+	private bool IsCrouching;
+	private bool HasSecondary;
+	private bool Melee;
+	private bool IsZipline;
+	
 	// Use this for initialization
 	void Start () 
 	{
 		anim = GetComponent<Animator>();
 		if(anim.layerCount == 3)
 			anim.SetLayerWeight(1,1);
+		HasSecondary = false;
+		Melee = false;
 	}
 	
 	// Update is called once per frame
@@ -23,102 +37,187 @@ public class heavyAnimCtrlScript : MonoBehaviour {
 	{
 		
 	}
-
+	
 	void FixedUpdate()
 	{
-		//setting the vertical and horizontal movement values for the animator
-		float VMovement = Input.GetAxis("Vertical");
-		float HMovement = Input.GetAxis("Horizontal");
-		anim.SetFloat("verticalMovement",VMovement);
-		anim.SetFloat("horizontalMovement",HMovement);
-
-
-		//play the shooting animation until you let go of the key
-		if(Input.GetButton("Fire1"))
+		if(networkView.isMine)
 		{
-			anim.SetBool("Firing",true);
-		}
-		else
-		{
-			anim.SetBool("Firing",false);
-		}
-
-		//activate the aiming bool for animations
-		if(Input.GetButton("Fire2"))
-		{
-			anim.SetBool("IsAiming",true);
-		}
-		else
-		{
-			anim.SetBool("IsAiming",false);
-		}
-
-		//play the jumping animation
-		if(Input.GetButtonDown("Jump"))
-		{
-			anim.SetBool("IsJumping",true);
-		}
-		else
-		{
-			anim.SetBool("IsJumping",false);
-		}
-
-		//play the reloading animation
-		if(Input.GetKeyDown(KeyCode.R))
-		{
-			anim.SetBool("IsReloading",true);
-		}
-		else
-		{
-			anim.SetBool("IsReloading",false);
-		}
-
-		//play the crouching animation & enable crouching anim branch
-		if(Input.GetKey(KeyCode.LeftShift))  //change the key to what is on the character controller, ask andrew
-		{
-			anim.SetBool("IsCrouching",true);
-		}
-		else
-		{
-			anim.SetBool("IsCrouching",false);
-		}
-
-		//Temporary code for switching to the secondary weapon
-		if(Input.GetKeyDown(KeyCode.F))
-		{
-			if(!anim.GetBool("HasSecondary"))
+			//setting the vertical and horizontal movement values for the animator
+			VMovement = Input.GetAxis("Vertical");
+			HMovement = Input.GetAxis("Horizontal");
+			anim.SetFloat("verticalMovement",VMovement);
+			anim.SetFloat("horizontalMovement",HMovement);
+			
+			
+			//play the shooting animation until you let go of the key
+			if(Input.GetButton("Fire1"))
 			{
-				anim.SetBool("HasSecondary",true);
+				Firing = true;
+				anim.SetBool("Firing",Firing);
 			}
 			else
 			{
-				anim.SetBool("HasSecondary",false);
+				Firing = false;
+				anim.SetBool("Firing",Firing);
 			}
-		}
-
-		//Temporary code for melee attack
-		if(Input.GetKeyDown(KeyCode.X))
-		{
-			if(!anim.GetBool("Melee"))
+			
+			//activate the aiming bool for animations
+			if(Input.GetButton("Fire2"))
 			{
-				anim.SetBool("Melee",true);
+				IsAiming = true;
+				anim.SetBool("IsAiming",IsAiming);
 			}
-
+			else
+			{
+				IsAiming = false;
+				anim.SetBool("IsAiming",IsAiming);
+			}
+			
+			//play the jumping animation
+			if(Input.GetButtonDown("Jump"))
+			{
+				IsJumping = true;
+				anim.SetBool("IsJumping",IsJumping);
+			}
+			else
+			{
+				IsJumping = false;
+				anim.SetBool("IsJumping",IsJumping);
+			}
+			
+			//play the reloading animation
+			if(Input.GetKeyDown(KeyCode.R))
+			{
+				IsReloading = true;
+				anim.SetBool("IsReloading",IsReloading);
+			}
+			else
+			{
+				IsReloading = false;
+				anim.SetBool("IsReloading",IsReloading);
+			}
+			
+			//play the crouching animation & enable crouching anim branch
+			if(Input.GetKey(KeyCode.LeftShift))  //change the key to what is on the character controller, ask andrew
+			{
+				IsCrouching = true;
+				anim.SetBool("IsCrouching",IsCrouching);
+			}
+			else
+			{
+				IsCrouching = false;
+				anim.SetBool("IsCrouching",IsCrouching);
+			}
+			
+			//Temporary code for switching to the secondary weapon
+			if(Input.GetKeyDown(KeyCode.F))
+			{
+				if(!anim.GetBool("HasSecondary"))
+				{
+					HasSecondary = true;
+					anim.SetBool("HasSecondary",HasSecondary);
+				}
+				else
+				{
+					HasSecondary = false;
+					anim.SetBool("HasSecondary",HasSecondary);
+				}
+			}
+			
+			//Temporary code for melee attack
+			if(Input.GetButtonDown("Fire2"))
+			{
+				if(!anim.GetBool("Melee"))
+				{
+					Melee = true;
+					anim.SetBool("Melee",Melee);
+				}
+				
+			}
+			else
+			{
+				Melee = false;
+				anim.SetBool("Melee",Melee);
+			}
+			
+			//Temporary play the zipline Animation
+			if(Input.GetKey(KeyCode.Q))
+			{
+				IsZipline = true;
+				anim.SetBool("IsZipline",IsZipline);
+			}
+			else
+			{
+				IsZipline = false;
+				anim.SetBool("IsZipline",IsZipline);
+			}
+			
+		}
+	}
+	
+	
+	
+	// Synchronizing variables across the network
+	void OnSerializeNetworkView(BitStream stream, NetworkMessageInfo info)
+	{
+		float syncVMovement = 0;
+		float syncHMovement= 0;
+		bool syncFiring = false;
+		bool syncIsAiming = false;
+		bool syncIsJumping = false;
+		bool syncIsReloading = false;
+		bool syncIsCrouching = false;
+		bool syncHasSecondary = false;
+		bool syncMelee = false;
+		bool syncIsZipline = false;
+		
+		if(stream.isWriting)
+		{
+			syncVMovement = VMovement;
+			syncHMovement = HMovement;
+			syncFiring = Firing;
+			syncIsAiming = IsAiming;
+			syncIsJumping = IsJumping;
+			syncIsReloading = IsReloading;
+			syncIsCrouching = IsCrouching;
+			syncHasSecondary = HasSecondary;
+			syncMelee = Melee;
+			syncIsZipline = IsZipline;
+			
+			stream.Serialize(ref syncVMovement);
+			stream.Serialize(ref syncHMovement);
+			stream.Serialize(ref syncFiring);
+			stream.Serialize(ref syncIsAiming);
+			stream.Serialize(ref syncIsJumping);
+			stream.Serialize(ref syncIsReloading);
+			stream.Serialize(ref syncIsCrouching);
+			stream.Serialize(ref syncHasSecondary);
+			stream.Serialize(ref syncMelee);
+			stream.Serialize(ref syncIsZipline);
 		}
 		else
 		{
-			anim.SetBool("Melee",false);
+			stream.Serialize(ref syncVMovement);
+			stream.Serialize(ref syncHMovement);
+			stream.Serialize(ref syncFiring);
+			stream.Serialize(ref syncIsAiming);
+			stream.Serialize(ref syncIsJumping);
+			stream.Serialize(ref syncIsReloading);
+			stream.Serialize(ref syncIsCrouching);
+			stream.Serialize(ref syncHasSecondary);
+			stream.Serialize(ref syncMelee);
+			stream.Serialize(ref syncIsZipline);
+			
+			VMovement = syncVMovement;
+			HMovement = syncHMovement;
+			Firing = syncFiring;
+			IsAiming = syncIsAiming;
+			IsJumping = syncIsJumping;
+			IsReloading = syncIsReloading;
+			IsCrouching = syncIsCrouching;
+			HasSecondary = syncHasSecondary;
+			Melee = syncMelee;
+			IsZipline = syncIsZipline;
 		}
-
-		//Temporary play the zipline Animation
-		if(Input.GetKey(KeyCode.Q))
-		{
-			anim.SetBool("IsZipline",true);
-		}
-		else
-		{
-			anim.SetBool("IsZipline",false);
-		}
-
 	}
 }
