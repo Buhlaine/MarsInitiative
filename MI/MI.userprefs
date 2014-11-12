@@ -1,10 +1,13 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Programming\Marcus\Animation\animationScripts\trooperAnimCtrlScript.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Programming\Marcus\Weapons\Scripts\DamageController.cs">
     <Files>
+      <File FileName="Assets\Programming\Dori\Scripts\Player.cs" Line="460" Column="4" />
       <File FileName="Assets\Programming\Marcus\Animation\animationScripts\assassinAnimCtrlScript.cs" Line="224" Column="1" />
       <File FileName="Assets\Programming\Marcus\Animation\animationScripts\heavyAnimCtrlScript.cs" Line="224" Column="1" />
-      <File FileName="Assets\Programming\Marcus\Animation\animationScripts\trooperAnimCtrlScript.cs" Line="224" Column="1" />
+      <File FileName="Assets\Programming\Marcus\Animation\animationScripts\trooperAnimCtrlScript.cs" Line="203" Column="39" />
+      <File FileName="Assets\Programming\Marcus\Weapons\Scripts\DamageController.cs" Line="44" Column="3" />
+      <File FileName="Assets\Programming\Marcus\Weapons\Scripts\weaponScript.cs" Line="215" Column="7" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

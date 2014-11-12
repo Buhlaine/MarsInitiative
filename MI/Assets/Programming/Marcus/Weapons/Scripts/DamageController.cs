@@ -27,12 +27,12 @@ public class DamageController : MonoBehaviour {
 		isDamaging = true;
 	}
 
-	int ApplyDamage(int damage)
+	void ApplyDamage(int damage)
 	{
 		//check if object is already dead
 		if (hitPoints[statsLevel] <= 0)
 		{
-			return 0;
+			return;
 		}
 
 		hitPoints[statsLevel] -= damage;
@@ -41,7 +41,7 @@ public class DamageController : MonoBehaviour {
 		{
 			Destroy(this.gameObject, deathDelay);
 		}
-		return hitPoints[statsLevel];
+
 	}
 
 	void ApplyDotDamage(float creationTime)

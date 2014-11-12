@@ -212,7 +212,9 @@ public class weaponScript : MonoBehaviour {
 			{
 
 				//send damage message to the hit object
-				hit.collider.SendMessageUpwards("ApplyDamage", damage[statsLevel], SendMessageOptions.DontRequireReceiver);
+				//hit.collider.SendMessageUpwards("ApplyDamage", damage[statsLevel], SendMessageOptions.DontRequireReceiver);
+				networkView.RPC("ApplyDamage", hit.collider.gameObject.networkView.owner,damage[statsLevel]);
+				
 			}
 
 
@@ -258,7 +260,8 @@ public class weaponScript : MonoBehaviour {
 				}
 
 				//apply damage to the kit object
-				hit.collider.SendMessageUpwards("ApplyDamage",damage[statsLevel],SendMessageOptions.DontRequireReceiver);
+				//hit.collider.SendMessageUpwards("ApplyDamage",damage[statsLevel],SendMessageOptions.DontRequireReceiver);
+				networkView.RPC("ApplyDamage", hit.collider.gameObject.networkView.owner,damage[statsLevel]);
 			}
 		}
 
