@@ -12,8 +12,8 @@ public class NetworkLobby : MonoBehaviour {
 	
 	private string gameName;
 	
-	//public string MSIP = "smp.awesomecraft.net";
-	private string MSIP = "smp.awesomecraft.net";
+	public string MSIP = "localhost";
+	//private string MSIP = "smp.awesomecraft.net";
 
 	void Start(){
 		MasterServer.ipAddress = MSIP;
@@ -33,11 +33,11 @@ public class NetworkLobby : MonoBehaviour {
 		MasterServer.RequestHostList("Sol");
 	}
 	
-	public IEnumerator waitConnection(){
+	public IEnumerator waitConnection(string _team){
 		while((Network.peerType != NetworkPeerType.Client) && (Network.peerType != NetworkPeerType.Server)){
 			yield return null;
 		}
-		MasterData.MasterDataInstance.SendMessage("sendRegisterRequest");
+		MasterData.MasterDataInstance.SendMessage("sendRegisterRequest", _team);
 	}
 	
 	void OnGUI(){
@@ -52,7 +52,7 @@ public class NetworkLobby : MonoBehaviour {
 				//Network.InitializeServer(32, port, false);
 				Network.InitializeServer(32, port+(int)Random.Range(1,100), false);
 				MasterServer.RegisterHost("Sol",gameName);
-				StartCoroutine(waitConnection());
+				StartCoroutine(waitConnection("red"));
 				RefreshHostList();
 				isHost = true;
 			}
@@ -63,9 +63,13 @@ public class NetworkLobby : MonoBehaviour {
 				GUI.Label(new Rect(50,50+(i*50),50,25),i.ToString());
 				GUI.Label(new Rect(100,50+(i*50),200,25),MasterServer.PollHostList()[i].gameName);
 				if(!isHost){
-					if(GUI.Button(new Rect(250,50+(i*50),50,25),"Join")){
+					if(GUI.Button(new Rect(250,50+(i*50),50,25),"Join Red")){
 						Network.Connect(MasterServer.PollHostList()[i].ip,MasterServer.PollHostList()[i].port);
-						StartCoroutine(waitConnection());
+						StartCoroutine(waitConnection("Red"));
+					}
+					if(GUI.Button(new Rect(310,50+(i*50),50,25),"Join Blu")){
+						Network.Connect(MasterServer.PollHostList()[i].ip,MasterServer.PollHostList()[i].port);
+						StartCoroutine(waitConnection("Blue"));
 					}
 				}
 			}
