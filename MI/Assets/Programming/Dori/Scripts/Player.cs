@@ -420,7 +420,6 @@ public class Player : MonoBehaviour
 	
 	void PulseDamage(float _damage)
 	{
-		Debug.Log ("Ping! Pulse damage taken!");
 		// Damaging the enemy in "pulses". Pulses controlled in ability script.
 		health -= _damage;
 	}
@@ -452,9 +451,7 @@ public class Player : MonoBehaviour
 			if(Physics.SphereCast(transform.position, controller.height / 2, transform.forward, out hit, 0.5f)) {
 				GameObject enemy = hit.transform.gameObject; 
 				if(enemy.transform.tag == "Enemy") {
-					// TODO Ask Andrew if this will work
-					networkView.RPC ("KillYourself", RPCMode.All, enemy.networkView.viewID.owner);
-					Debug.Log (enemy.networkView.viewID.owner);
+					networkView.RPC ("KillYourself", enemy.networkView.owner);
 				}
 			}
 		}

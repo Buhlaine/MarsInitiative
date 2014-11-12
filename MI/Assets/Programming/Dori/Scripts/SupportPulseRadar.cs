@@ -76,13 +76,16 @@ public class SupportPulseRadar : MonoBehaviour
 
 			// Marking enemies on the minimap
 			foreach (var enemy in EnemyInRadius) {
-				enemy.SendMessage("PulseRadar", enemy.name);
+//				enemy.SendMessage("PulseRadar", enemy.name);
+				//TODO Double check with Andrew that this is correct
+				networkView.RPC("PulseRadar", enemy.networkView.owner );
 				particle.SetActive(true);
 
 				damageCounter += 1.0f * Time.deltaTime;
 				if (damageCounter >= 3) {
 					damageCounter = 0;
-					enemy.SendMessage("PulseDamage", pulseDamage[currentAbilityLevel]);
+//					enemy.SendMessage("PulseDamage", pulseDamage[currentAbilityLevel]);
+					networkView.RPC("PulseDamage", enemy.networkView.owner, pulseDamage[currentAbilityLevel]);
 				}
 			}
 		}
@@ -90,9 +93,12 @@ public class SupportPulseRadar : MonoBehaviour
 		if (!isPulse) {
 			damageCounter = 0;
 
-			foreach (var enemy in EnemyInRadius) {
-				enemy.SendMessage("PulseRadar", enemy.name);
-			}
+//			foreach (var enemy in EnemyInRadius) {
+////				enemy.SendMessage("PulseRadar", enemy.name);
+//
+//				//TODO Double check with Andrew that this is correct
+//				networkView.RPC("PulseRadar", RPCMode.All, enemy.networkView.viewID);
+//			}
 		}
 	}
 

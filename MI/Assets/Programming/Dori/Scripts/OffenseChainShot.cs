@@ -33,17 +33,17 @@ public class OffenseChainShot : MonoBehaviour
 			chainShotActive = true;
 			particle.SetActive(true);
 
-			// Send a raycast forward. If it hits an enemy while the chainshot is active, then that enemy is dead.
-			RaycastHit enemy;
-			if(Physics.Raycast(transform.position, Vector3.forward, out enemy)) {
-				if(enemy.transform.tag == "Enemy") {
-					target = enemy.transform.gameObject;
-				}
-			}
+//			// Send a raycast forward. If it hits an enemy while the chainshot is active, then that enemy is dead.
+//			RaycastHit enemy;
+//			if(Physics.Raycast(transform.position, Vector3.forward, out enemy)) {
+//				if(enemy.transform.tag == "Enemy") {
+//					target = enemy.transform.gameObject;
+//				}
+//			}
 
 			hasShot = true;
-			chainShotActive = false;
-		}
+//			chainShotActive = false;
+		} 
 
 		// Reset Counter and start cool down period
 		if (hasShot) {
@@ -52,6 +52,7 @@ public class OffenseChainShot : MonoBehaviour
 
 		// The cooldown timer stars. Player cannot use this ability while the cooldown is active.
 		if (startCooldown) {
+			particle.SetActive(false);
 			cooldownCounter += 1.0f * Time.deltaTime;
 		}
 
@@ -64,7 +65,8 @@ public class OffenseChainShot : MonoBehaviour
 
 		// Send the name of the short enemy to the weapons
 		if (chainShotActive) {
-			player.SendMessage ("ChainShot", target.name);
+//			player.SendMessage ("ChainShot", target.name);
+			player.SendMessage("sniperSkillActivate", SendMessageOptions.DontRequireReceiver);
 		}
 	}
 }

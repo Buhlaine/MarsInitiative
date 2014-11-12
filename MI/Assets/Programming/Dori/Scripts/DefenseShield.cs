@@ -33,6 +33,7 @@ public class DefenseShield : MonoBehaviour
 //	private Player player;
 	private SphereCollider sphereCollider;
 	private GameObject particle;
+	private GameObject player;
 
 	// Create two lists to store teammates in player's radius, and teammates with active shields
 	private List<GameObject> BlueInRadius = new List<GameObject>();	
@@ -45,8 +46,8 @@ public class DefenseShield : MonoBehaviour
 		cooldownPeriod = 24.0f;
 
 		sphereCollider = this.transform.GetComponent<SphereCollider> ();
-//		string parent = this.gameObject.transform.parent.gameObject.name;
-//		player = GameObject.Find (parent).GetComponent<Player>();
+		string parent = this.gameObject.transform.parent.gameObject.name;
+		player = GameObject.Find (parent).GetComponent<Player>();
 		particle = gameObject.transform.FindChild("SFX_BubbleShield").gameObject;
 
 		particle.SetActive(false);
@@ -127,10 +128,10 @@ public class DefenseShield : MonoBehaviour
 	
 	void OnTriggerEnter(Collider other) 
 	{
-		GameObject[] teammates = GameObject.FindGameObjectsWithTag ("Teammate");
+		GameObject[] teammates = GameObject.FindGameObjectsWithTag (player.tag);
 		// Checking for whether there are teammates within the set radius
 		foreach (var teammate in teammates) {
-			if(other.tag == "Teammate") {
+			if(other.tag == player.tag) {
 				BlueInRadius.Add(other.gameObject);
 				Debug.Log ("Adding: " + teammate.gameObject.name + " | " + other.gameObject.name);
 			}
