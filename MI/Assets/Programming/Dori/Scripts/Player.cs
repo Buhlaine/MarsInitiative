@@ -43,6 +43,10 @@ public class Player : MonoBehaviour
 	private CharacterController controller;
 	private GameObject particle;
 
+	// Team Variables
+	public string enemy;
+	public string teammate;
+
 	void Awake()
 	{
 		// Set the this game object's tag to "Player"
@@ -125,7 +129,14 @@ public class Player : MonoBehaviour
 
 	void SetTeam()
 	{
-		networkView.RPC("RPCPlayerTeam", RPCMode.All, this.gameObject.networkView.viewID.owner + "," + team);
+		if (team == "Blue") {
+			teammate = "Blue";
+			enemy = "Red";
+		}
+		if (team == "Red") {
+			teammate = "Red";
+			enemy = "Blue";
+		}
 	}
 
 	// Synchronizing variables across the network
@@ -249,6 +260,12 @@ public class Player : MonoBehaviour
 			abilityTwo.SetActive(true);
 			boostAbility.SetActive(true);
 		}
+	}
+
+	void Reset()
+	{
+		health = defaultHealth;
+		ammo = maxAmmo;
 	}
 
 	// XP SECTION

@@ -15,19 +15,21 @@ public class OffenseMarkEnemy : MonoBehaviour
 	public bool isMarking;
 	public bool startCooldown;
 
-//	private Player player;
+	private Player player;
 	private SphereCollider sphereCollider;
 	public List<GameObject> EnemiesInRadius = new List<GameObject>();
 	public List<GameObject> EnemiesMarked = new List<GameObject>();
+
+	void Awake()
+	{
+		player = this.gameObject.transform.parent.GetComponent<Player>();
+		sphereCollider = GetComponent<SphereCollider> ();
+	}
 
 	void Start()
 	{
 		currentAbilityLevel = 0;
 		cooldownPeriod = 16.0f;
-
-//		string parent = this.gameObject.transform.parent.gameObject.name;
-//		player = GameObject.Find (parent).GetComponent<Player>();
-		sphereCollider = GetComponent<SphereCollider> ();
 	}
 	
 	void Update()
@@ -82,19 +84,18 @@ public class OffenseMarkEnemy : MonoBehaviour
 
 	void OnTriggerEnter(Collider other) 
 	{
-		GameObject[] enemies = GameObject.FindGameObjectsWithTag ("Enemy");
+		GameObject[] enemies = GameObject.FindGameObjectsWithTag (player.enemy);
 		// Adding enemies within the set radius
 		foreach (var str in enemies) {
 			if (other.gameObject == str) { 
 				EnemiesInRadius.Add(other.gameObject);
-				Debug.Log ("Adding: " + str);
 			}
 		}
 	}
 	
 	void OnTriggerExit(Collider other)
 	{
-		GameObject[] enemies = GameObject.FindGameObjectsWithTag ("Enemy");
+		GameObject[] enemies = GameObject.FindGameObjectsWithTag (player.enemy);
 		// Delete the enemies who are not within range
 		foreach (var str in enemies) {
 			if (other.gameObject == str) { 

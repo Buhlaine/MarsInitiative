@@ -27,19 +27,20 @@ public class SupportPulseRadar : MonoBehaviour
 	public bool isPulse;
 	public bool startCooldown;
 
-//	private Player player;
+	private Player player;
 	private SphereCollider sphereCollider;
 	private List<GameObject> EnemyInRadius = new List<GameObject>();
 	private GameObject particle;
 
+	void Awake()
+	{
+		sphereCollider = this.gameObject.transform.GetComponent<SphereCollider> ();
+		player = this.gameObject.transform.parent.GetComponent<Player>();
+		particle = transform.FindChild("Radar").gameObject;
+	}
+
 	void Start()
 	{
-		// Create references and set values
-		sphereCollider = this.gameObject.transform.GetComponent<SphereCollider> ();
-//		string ability = this.gameObject.transform.parent.gameObject.name;
-//		player = GameObject.Find (ability).GetComponent<Player>();
-		particle = transform.FindChild("Radar").gameObject;
-		
 		currentAbilityLevel = 0;
 		cooldownPeriod = 16.0f;
 		particle.SetActive(false);
@@ -92,17 +93,9 @@ public class SupportPulseRadar : MonoBehaviour
 
 		if (!isPulse) {
 			damageCounter = 0;
-
-//			foreach (var enemy in EnemyInRadius) {
-////				enemy.SendMessage("PulseRadar", enemy.name);
-//
-//				//TODO Double check with Andrew that this is correct
-//				networkView.RPC("PulseRadar", RPCMode.All, enemy.networkView.viewID);
-//			}
 		}
 	}
 
-	// If called by the player because of a player level up, then this ability has been chosen for a level up
 	void Changed()
 	{
 		currentAbilityLevel += 1;
@@ -110,12 +103,11 @@ public class SupportPulseRadar : MonoBehaviour
 
 	void OnTriggerEnter(Collider other)
 	{
-		GameObject[] enemies = GameObject.FindGameObjectsWithTag ("Enemy");
+		GameObject[] enemies = GameObject.FindGameObjectsWithTag (player.enemy);
 		// Adding enemies to a list if they're within range
 		foreach (var enemy in enemies) {
-			if (other.gameObject.tag == "Enemy") {
+			if (other.gameObject.tag == player.enemy) {
 				EnemyInRadius.Add(other.gameObject);
-				Debug.Log ("Adding: " + enemy.gameObject);
 			}
 		}
 	}
@@ -124,9 +116,8 @@ public class SupportPulseRadar : MonoBehaviour
 	{
 		// Removing enemies from a list if they're not within range
 		foreach (var enemy in EnemyInRadius) {
-			if (other.gameObject.tag == "Enemy") { 
+			if (other.gameObject.tag == player.enemy) { 
 				EnemyInRadius.Remove(other.gameObject);
-				Debug.Log ("Removing: " + enemy.gameObject);
 			}
 		}
 	}

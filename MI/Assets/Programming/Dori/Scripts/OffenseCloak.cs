@@ -16,21 +16,18 @@ public class OffenseCloak : MonoBehaviour
 	public bool startCooldown;
 
 	private Player player;
-//	private SphereCollider sphereCollider;
 	private GameObject particle;
+
+	void Awake()
+	{
+		player = this.gameObject.transform.parent.GetComponent<Player>();
+		particle = gameObject.transform.FindChild("SFX_Cloaking").gameObject;
+	}
 
 	void Start()
 	{
-		// Set references and values
 		currentAbilityLevel = 0;
 		cooldownPeriod = 26.0f;
-
-//		sphereCollider = this.gameObject.transform.GetComponent<SphereCollider> ();
-		string ability = this.gameObject.transform.parent.gameObject.name;
-		player = GameObject.Find (ability).GetComponent<Player>();
-		particle = gameObject.transform.FindChild("SFX_Cloaking").gameObject;
-		Debug.Log (particle);
-
 		particle.SetActive (false);
 
 		Reset ();
@@ -47,7 +44,7 @@ public class OffenseCloak : MonoBehaviour
 		// Fire a raycast in front of the player and gather hit info
 		if(currentAbilityLevel >= 1 && !isCamo) {
 			if(Physics.Raycast(transform.position, Vector3.forward, out hitInfo, 50.0f)) {
-				if(hitInfo.transform.tag == "Teammate") {
+				if(hitInfo.transform.tag == player.teammate) {
 					// Assign the target to variable marked
 					target = hitInfo.transform.name;
 				} 

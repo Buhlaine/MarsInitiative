@@ -16,14 +16,15 @@ public class OffenseChainShot : MonoBehaviour
 	private Player player;
 	private GameObject particle;
 
+	void Awake()
+	{
+		player = this.gameObject.transform.parent.GetComponent<Player>();
+		particle  = gameObject.transform.FindChild("SFX_Chain_Shot_Barrel").gameObject;
+	}
+
 	void Start()
 	{
 		currentAbilityLevel = 0;
-
-		string ability = this.gameObject.transform.parent.gameObject.name;
-		player = GameObject.Find (ability).GetComponent<Player>();
-		particle  = gameObject.transform.FindChild("SFX_Chain_Shot_Barrel").gameObject;
-
 		particle.SetActive(false);
 	}
 
@@ -32,17 +33,7 @@ public class OffenseChainShot : MonoBehaviour
 		if(Input.GetKeyDown (KeyCode.Q) && !startCooldown && !chainShotActive) {
 			chainShotActive = true;
 			particle.SetActive(true);
-
-//			// Send a raycast forward. If it hits an enemy while the chainshot is active, then that enemy is dead.
-//			RaycastHit enemy;
-//			if(Physics.Raycast(transform.position, Vector3.forward, out enemy)) {
-//				if(enemy.transform.tag == "Enemy") {
-//					target = enemy.transform.gameObject;
-//				}
-//			}
-
 			hasShot = true;
-//			chainShotActive = false;
 		} 
 
 		// Reset Counter and start cool down period
@@ -65,7 +56,6 @@ public class OffenseChainShot : MonoBehaviour
 
 		// Send the name of the short enemy to the weapons
 		if (chainShotActive) {
-//			player.SendMessage ("ChainShot", target.name);
 			player.SendMessage("sniperSkillActivate", SendMessageOptions.DontRequireReceiver);
 		}
 	}

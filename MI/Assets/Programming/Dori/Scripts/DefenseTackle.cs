@@ -15,12 +15,14 @@ public class DefenseTackle : MonoBehaviour
 //	private Player player;
 	private GameObject particle;
 
+	void Awake()
+	{
+		particle = gameObject.transform.FindChild("SFX_Tackle_Explosion").gameObject;
+//		player = this.gameObject.transform.parent.GetComponent<Player>();
+	}
+
 	void Start()
 	{
-//		string ability = this.gameObject.transform.parent.gameObject.name;
-//		player = GameObject.Find (ability).GetComponent<Player>();
-		particle = gameObject.transform.FindChild("SFX_Tackle_Explosion").gameObject;
-
 		currentAbilityLevel = 0;
 		particle.SetActive(false);
 	}

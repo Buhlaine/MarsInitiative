@@ -12,28 +12,6 @@ public class XPTracker : MonoBehaviour
 	public int[] xpAmounts;
 	
 	private Dictionary<string, string> playerList = new Dictionary<string, string>();
-
-	void Awake()
-	{
-		AssignTags();
-	}
-
-	void AssignTags()
-	{
-		GameObject[] teammates;
-		GameObject[] enemies;
-
-		teammates = GameObject.FindGameObjectsWithTag("Blue");
-		enemies = GameObject.FindGameObjectsWithTag("Red");
-
-		foreach (var teammate in teammates) {
-			teammate.tag = "Teammate";
-		}
-
-		foreach (var enemy in enemies) {
-			enemy.tag = "Enemy";
-		}
-	}
 	
 	void StorePlayer(ArrayList _playerInfo)
 	{

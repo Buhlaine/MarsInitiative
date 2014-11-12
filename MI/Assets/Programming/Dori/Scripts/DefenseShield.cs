@@ -33,23 +33,23 @@ public class DefenseShield : MonoBehaviour
 //	private Player player;
 	private SphereCollider sphereCollider;
 	private GameObject particle;
-	private GameObject player;
+	private Player player;
 
 	// Create two lists to store teammates in player's radius, and teammates with active shields
 	private List<GameObject> BlueInRadius = new List<GameObject>();	
 	private List<GameObject> BlueShielded = new List<GameObject>();
 
+	void Awake()
+	{
+		sphereCollider = this.transform.GetComponent<SphereCollider> ();
+		player = this.gameObject.transform.parent.GetComponent<Player>();
+		particle = gameObject.transform.FindChild("SFX_BubbleShield").gameObject;
+	}
+
 	void Start()
 	{
-		// Create references and set values
 		currentAbilityLevel = 0;
 		cooldownPeriod = 24.0f;
-
-		sphereCollider = this.transform.GetComponent<SphereCollider> ();
-		string parent = this.gameObject.transform.parent.gameObject.name;
-		player = GameObject.Find (parent).GetComponent<Player>();
-		particle = gameObject.transform.FindChild("SFX_BubbleShield").gameObject;
-
 		particle.SetActive(false);
 	}
 
@@ -86,9 +86,6 @@ public class DefenseShield : MonoBehaviour
 			sphereCollider.enabled = true;
 			gameObject.transform.parent.gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
 
-//			particle.transform.FindChild ("Particle System 1").particleSystem.enableEmission = true;
-//			particle.transform.FindChild ("Particle System 2").particleSystem.enableEmission = true;
-
 			particle.SetActive(true);
 			
 			foreach (GameObject teammates in BlueInRadius) {
@@ -106,9 +103,6 @@ public class DefenseShield : MonoBehaviour
 		if (!isShielded) {
 			sphereCollider.enabled = false;
 			gameObject.transform.parent.gameObject.layer = LayerMask.NameToLayer("Default");
-
-//			particle.transform.FindChild ("Particle System 1").particleSystem.enableEmission = false;
-//			particle.transform.FindChild ("Particle System 2").particleSystem.enableEmission = false;
 
 			particle.SetActive(false);
 			
@@ -128,12 +122,11 @@ public class DefenseShield : MonoBehaviour
 	
 	void OnTriggerEnter(Collider other) 
 	{
-		GameObject[] teammates = GameObject.FindGameObjectsWithTag (player.tag);
+		GameObject[] teammates = GameObject.FindGameObjectsWithTag (player.teammate);
 		// Checking for whether there are teammates within the set radius
 		foreach (var teammate in teammates) {
-			if(other.tag == player.tag) {
+			if(other.tag == player.teammate) {
 				BlueInRadius.Add(other.gameObject);
-				Debug.Log ("Adding: " + teammate.gameObject.name + " | " + other.gameObject.name);
 			}
 		}
 	}

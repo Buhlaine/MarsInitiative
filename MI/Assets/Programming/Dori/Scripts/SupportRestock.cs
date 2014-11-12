@@ -30,15 +30,16 @@ public class SupportRestock : MonoBehaviour
 	private SphereCollider sphereCollider;
 	private List<GameObject> BlueInRadius = new List<GameObject>();	
 	private GameObject particle;
+
+	void Awake()
+	{
+		sphereCollider = this.gameObject.transform.GetComponent<SphereCollider> ();
+		player = this.gameObject.transform.parent.GetComponent<Player>();
+		particle = transform.FindChild("SFX_Regen_Health_Ammo").gameObject;
+	}
 	
 	void Start()
 	{
-		// Create references and set values
-		sphereCollider = this.gameObject.transform.GetComponent<SphereCollider> ();
-		string ability = this.gameObject.transform.parent.gameObject.name;
-		player = GameObject.Find (ability).GetComponent<Player>();
-		particle = transform.FindChild("SFX_Regen_Health_Ammo").gameObject;
-		
 		currentAbilityLevel = 0;
 		cooldownPeriod = 15.0f;
 		particle.SetActive(false);
@@ -97,7 +98,6 @@ public class SupportRestock : MonoBehaviour
 		}
 	}
 
-	// If called by the player because of a player level up, then this ability has been chosen for a level up
 	void Changed()
 	{
 		currentAbilityLevel += 1;
@@ -106,13 +106,12 @@ public class SupportRestock : MonoBehaviour
 	void OnTriggerEnter(Collider other) 
 	{
 		// Finding GameObjects with a tag that matches "Teammate"
-		GameObject[] teammates = GameObject.FindGameObjectsWithTag ("Teammate");
+		GameObject[] teammates = GameObject.FindGameObjectsWithTag (player.teammate);
 
 		// Checking for whether there are teammates within the set radius
 		foreach (var teammate in teammates) {
-			if (other.tag == "Teammate") { 
+			if (other.tag == player.teammate) { 
 				BlueInRadius.Add(other.gameObject);
-				Debug.Log ("Adding: " + teammate.gameObject + " Count: " + BlueInRadius.Count);
 			}
 		}
 	}
@@ -120,8 +119,7 @@ public class SupportRestock : MonoBehaviour
 	void OnTriggerExit(Collider other)
 	{
 		// Delete the teammates who are not within the radius of the player
-		if (other.tag == "Teammate") { 
-			Debug.Log ("Removing: " + other.gameObject);
+		if (other.tag == player.teammate) { 
 			BlueInRadius.Remove(other.gameObject);
 		}
 	}
