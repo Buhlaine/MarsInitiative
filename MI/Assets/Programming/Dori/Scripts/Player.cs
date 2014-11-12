@@ -139,6 +139,12 @@ public class Player : MonoBehaviour
 		}
 	}
 
+	[RPC]
+	void setPosition(Vector3 _pos)
+	{
+		this.transform.position = _pos;
+	}
+
 	// Synchronizing variables across the network
 	void OnSerializeNetworkView(BitStream stream, NetworkMessageInfo info)
 	{
@@ -458,6 +464,7 @@ public class Player : MonoBehaviour
 	}
 
 	// TEST DEFENSE SECTION
+	[RPC]
 	void Charge(int _duration) 
 	{
 		RaycastHit hit;
