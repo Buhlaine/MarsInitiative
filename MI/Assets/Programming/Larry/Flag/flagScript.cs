@@ -10,6 +10,7 @@ public class flagScript : MonoBehaviour {
 	GameObject teambase;
 	GameObject enemybase;
 	Vector3 homePos;
+	GameObject[] initialPos;
 	string enemyTeam;
 	string homeTeam;
 	public Vector3 fudgeFactor = new Vector3 (0.0f, 0.5f, 0.0f);
@@ -17,6 +18,20 @@ public class flagScript : MonoBehaviour {
 	// Use this for initialization
 	void Start () 
 	{
+		initialPos = GameObject.FindGameObjectsWithTag ("flagInit");
+		Vector3 dist1 = this.transform.position - initialPos[0].transform.position;
+		Vector3 dist2 = this.transform.position - initialPos[1].transform.position;
+		
+		//Setting team flag and enemy flag by distance from this
+		if(dist1.magnitude > dist2.magnitude)
+		{
+			this.homePos = initialPos[1].transform.position;
+		}
+		else
+		{
+			this.homePos = initialPos[0].transform.position;
+		}
+
 		//setting enemy team
 		//used in collision for flag drop
 		if(this.name == "blueFlagObj")
@@ -29,20 +44,6 @@ public class flagScript : MonoBehaviour {
 			enemyTeam = "Blue";
 			homeTeam = "Red";
 		}
-
-		GameObject[] flagInitTest = GameObject.FindGameObjectsWithTag ("flagInit");
-		Vector3 dist1 = flagInitTest [0].transform.position - this.transform.position;
-		Vector3 dist2 = flagInitTest [1].transform.position - this.transform.position;
-
-		if(dist1.sqrMagnitude < dist2.sqrMagnitude)
-		{
-			homePos = flagInitTest[0].transform.position;
-		}
-		else
-		{
-			homePos = flagInitTest[1].transform.position;
-		}
-
 		this.transform.position = homePos;
 	}
 	
@@ -52,7 +53,7 @@ public class flagScript : MonoBehaviour {
 		//if flag taken, follow enemy
 		if(follow)
 		{
-			this.transform.position = enemyPlayer.transform.position;
+			this.transform.position = enemyPlayer.transform.position + new Vector3(0.0f, 1.0f, 0.0f);
 			enemyPlayer.SendMessage("setCarriedFlag", this.gameObject as GameObject);
 		}
 
@@ -66,7 +67,10 @@ public class flagScript : MonoBehaviour {
 			{
 				//May be removed.
 				//had issues during testing where dead player picked flag up
-				colliderInfo.gameObject.SendMessage("areYouAlive", this.gameObject as GameObject);
+				followPlayer(colliderInfo.gameObject as GameObject);
+				flagPickedUp();
+				colliderInfo.SendMessage("obtainedFlag");
+				//colliderInfo.gameObject.SendMessage("areYouAlive", this.gameObject as GameObject);
 			}
 			else if(colliderInfo.gameObject.tag == homeTeam)
 			{
@@ -119,17 +123,11 @@ public class flagScript : MonoBehaviour {
 	
 
 	//set position when carrying player dies
+	[RPC]
 	void flagDropped(Vector3 dropPosition)
 	{
 		this.transform.position = dropPosition + fudgeFactor;
 		follow = false;
 		dropped = true;
-	}
-
-
-	//Testing Purposes---------------------------------------------------------------------------
-	void setColor(Color changeColor)
-	{
-		this.renderer.material.color = changeColor;
 	}
 }

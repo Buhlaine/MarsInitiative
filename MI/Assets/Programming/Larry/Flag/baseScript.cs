@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections;
-using System.Collections.Generic;
 
 public class baseScript : MonoBehaviour {
 
@@ -14,6 +13,14 @@ public class baseScript : MonoBehaviour {
 	int addAmount = 1;
 	//GameObject carriedFlag;
 
+	/*------------------------------------------
+	check andrew's tag script
+	
+
+
+
+	 * ---------------------------------------------*/
+
 	// Use this for initialization
 	void Start () 
 	{
@@ -21,7 +28,6 @@ public class baseScript : MonoBehaviour {
 		GameObject[] flagTest = GameObject.FindGameObjectsWithTag ("Flag");
 		GameObject[] baseTest = GameObject.FindGameObjectsWithTag ("Base");
 
-		//Setting Enemy base
 		foreach(GameObject bases in baseTest)
 		{
 			if(bases.gameObject != this.gameObject)
@@ -29,35 +35,39 @@ public class baseScript : MonoBehaviour {
 				enemyBase =  bases;
 			}
 		}
-		Vector3 dist1 = flagTest [0].transform.position - this.transform.position;
-		Vector3 dist2 = flagTest [1].transform.position - this.transform.position;
 
-		if(dist1.sqrMagnitude < dist2.sqrMagnitude)
-		{
-			teamFlag = flagTest[0];
-			enemyFlag = flagTest[1];
-		}
-		else
+		//finding distance from flag the base is
+		Vector3 dist1 = this.transform.position - flagTest [0].transform.position;
+		Vector3 dist2 = this.transform.position - flagTest [1].transform.position;
+
+		//Setting team flag and enemy flag by distance from this
+		if(dist1.magnitude > dist2.magnitude)
 		{
 			teamFlag = flagTest[1];
 			enemyFlag = flagTest[0];
 		}
+		else
+		{
+			teamFlag = flagTest[0];
+			enemyFlag = flagTest[1];
+		}
 
+		//setting team and enemy color for use later
 		if(teamFlag.name == "blueFlagObj")
 		{
-			this.renderer.material.color = Color.blue;
+			//renderer.material.color = Color.blue;
 			teamTag = "Blue";
 			enemyTag = "Red";
 		}
-		else if(teamFlag.name == "redFlagObj")
+		else if(teamFlag.name =="redFlagObj")
 		{
-			this.renderer.material.color = Color.red;
+			//renderer.material.color = Color.red;
 			teamTag = "Red";
 			enemyTag = "Blue";
 		}
 
 		teamFlag.SendMessage ("setTeamBase", this.gameObject as GameObject);
-
+		enemyFlag.SendMessage ("setEnemyBase", this.gameObject as GameObject);
 	}
 	
 	// Update is called once per frame
@@ -96,9 +106,6 @@ public class baseScript : MonoBehaviour {
 
 	void capFlagRequest(GameObject _requstor)
 	{
-		//FIX THIS SHIT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-		//----------------------------------------------------------------------------
 		//checking to see if flag is returned to keep from adding more than one to flagCaps
 		enemyFlag.SendMessage ("flagReturn", this.gameObject as GameObject);
 		//turning off flag carrying on team to avoid adding more than once to flagCcaps
@@ -115,13 +122,25 @@ public class baseScript : MonoBehaviour {
 		}
 	}
 
+	//[RPC]
 	void addEnergy(int energyAmount)
 	{
 		flagCaps += energyAmount;
 	}
-	
+
+	//[RPC]
 	void flagReturned()
 	{
 		flagHere = true;
 	}
+
+	void OnGUI()
+	{
+		GUI.Label (new Rect (Camera.main.WorldToScreenPoint (this.transform.position).x, 10, 100, 50), teamTag +  " flag caps: " + flagCaps);
+	}
+
+//	void setCarriedFlag(GameObject enemyFlag)
+//	{
+//		carriedFlag = enemyFlag;
+//	}
 }

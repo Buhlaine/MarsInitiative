@@ -12,15 +12,21 @@ public class spawnManagerScript : MonoBehaviour
 	GameObject finalSpawnPos;
 	int spawnWeight = 1000;
 	public float spawnWaitTime = 5.0f;
+	bool check = false;
 
+	/*----------------------------------------------------
 
+	make sure spawn happens once. spawning twice
+
+	----------------------------------------------------*/
 	//testing----------------------------------------------
 	GameObject thisGO;
 	//----------------------------------------------------
 	public GameObject assassin;
 	public GameObject enforcer;
 	public GameObject trooper;
-	bool gameBegin = false;
+	bool gameBegin = true;
+	GameObject testObj;
 
 	//Testing stuff
 	//int playerNumber = 5;
@@ -59,41 +65,46 @@ public class spawnManagerScript : MonoBehaviour
 		//Testing Purposes
 		//Remove input when in game use
 		//Player request to spawn
-		if(Input.GetKeyDown(KeyCode.Y))
-		{
-			for(int i = 0; i < 8; i++)
-			{
-				Debug.Log(i);
-				checkSpawn(thisGO);
-			}
-		}
-		if(Input.GetKeyDown(KeyCode.I))
-		{
-			spawnRequest(thisGO);
-		}
-		if(Input.GetKeyDown(KeyCode.U))
-		{
-			setGameBegin();
-		}
-		if(Input.GetKeyDown(KeyCode.O))
-		{
-			Debug.Log(gameBegin);
-		}
+//		if(Input.GetKeyDown(KeyCode.Y))
+//		{
+//			for(int i = 0; i < 8; i++)
+//			{
+//				Debug.Log(i);
+//				//checkSpawn(thisGO);
+//			}
+//		}
+//		if(Input.GetKeyDown(KeyCode.H))
+//		{
+//			spawnRequest(thisGO);
+//		}
+//		if(Input.GetKeyDown(KeyCode.J))
+//		{
+//			networkView.RPC("setGameBegin", RPCMode.All);
+//			if(networkView.isMine)
+//				check = true;
+//		}
+//		if(Input.GetKeyDown(KeyCode.K))
+//		{
+//			Debug.Log(gameBegin);
+//		}
 	}
-
-	IEnumerator spawnDelay(float delayTime, GameObject _requestor)
+	
+	IEnumerator spawnDelay(float delayTime, GameObject thisGO)
 	{
 		Debug.Log ("Spawn Start time: " + Time.time);
 		yield return new WaitForSeconds(delayTime);
-		checkSpawn (_requestor);
+		checkSpawn(thisGO);
 	}
 
-	void spawnRequest (GameObject _requestor)
+
+	void spawnRequest (GameObject thisGO)
 	{
-		StartCoroutine (spawnDelay(spawnWaitTime, _requestor));
+		Debug.Log ("This Worked!!!---+++");
+		StartCoroutine (spawnDelay(spawnWaitTime, thisGO));
 	}
 
-	void checkSpawn(GameObject _requestor)
+
+	void checkSpawn(GameObject thisGO)
 	{
 		//Debug.Log (gameBegin);
 		if(gameBegin)
@@ -115,16 +126,16 @@ public class spawnManagerScript : MonoBehaviour
 			}
 		}
 		//running spawn
-		spawn (_requestor);
+		spawn (thisGO);
 	}
-
-	void spawn(GameObject playerSpawning)
+	
+	void spawn(GameObject thisGO)
 	{
 		//For final-------------------------------------------------------------------
 		//move playerScript = playerSpawning.GetComponent<move> ();
 		//string playerClass = playerScript.playerClass;
 		//----------------------------------------------------------------------------
-
+		testObj = thisGO;
 		//for testing---------------------------------------------------------------
 		string tag = "Red";
 		string playerClass = "assassin";
@@ -230,49 +241,6 @@ public class spawnManagerScript : MonoBehaviour
 					}
 				}
 			}
-	//-----------------------------------------------------------------------------------------------------------------------
-			//For some reason I didnt think to use foreach
-			//Dumb me, fixed it up top. Leaving this part in for now just in case top doesn't work right
-	//		for(int i = 0; i < spawnPoints.Length; i++)
-	//		{
-	//			if(multiple)
-	//			{
-	//				if(allSpawns[spawnPoints[i]] > allSpawns[finalSpawnPos])
-	//				{
-	//					finalSpawnPos = spawnPoints[i];
-	//					multiple = false;
-	//					//posSpawncount = 0;
-	//				}
-	//				else if(allSpawns[spawnPoints[i]] == allSpawns[finalSpawnPos])
-	//				{
-	//					possibleSpawns.Add(spawnPoints[i]);
-	//					//posSpawncount++;
-	//				}
-	//			}
-	//			else
-	//			{
-	//				if(finalSpawnPos == null)
-	//				{
-	//					finalSpawnPos = spawnPoints[i];
-	//				}
-	//				else
-	//				{
-	//					if(allSpawns[spawnPoints[i]] == allSpawns[finalSpawnPos])
-	//					{
-	//						multiple = true;
-	//						//possibleSpawns = new GameObject[8];
-	//						possibleSpawns.Add(finalSpawnPos);
-	//						possibleSpawns.Add(spawnPoints[i]);
-	//						//posSpawncount = 2;
-	//					}
-	//					else if(allSpawns[spawnPoints[i]] > allSpawns[finalSpawnPos])
-	//					{
-	//						finalSpawnPos = spawnPoints[i];
-	//					}
-	//				}
-	//			}
-	//		}
-	//---------------------------------------------------------------------------------------------------------------------------
 
 			//if multiple is true
 			if(multiple)
@@ -281,13 +249,11 @@ public class spawnManagerScript : MonoBehaviour
 				possibleSpawns.TrimExcess();
 				//Get a random number to choose spawnPoint randomly
 				int randNum = Random.Range(0, possibleSpawns.Count - 1);
+
 				//Stand-in for actual spawning. Need to add check for different classes
-				if(playerClass == "assassin")
-					GameObject.Instantiate (assassin, possibleSpawns[randNum].transform.position, Quaternion.identity);
-				else if(playerClass == "trooper")
-					GameObject.Instantiate (trooper, possibleSpawns[randNum].transform.position, Quaternion.identity);
-				else if(playerClass == "enforcer")
-					GameObject.Instantiate (enforcer, possibleSpawns[randNum].transform.position, Quaternion.identity);
+				//networkView.RPC("spawnPlayer", RPCMode.All, possibleSpawns[randNum].transform.position);
+				spawnPlayer(thisGO, possibleSpawns[randNum].transform.position);
+
 				//Goes through each spawnPoint and request them to resetspawn so weight is accurate next time spawn is requested
 				foreach(GameObject GO in spawnPoints)
 				{
@@ -301,14 +267,9 @@ public class spawnManagerScript : MonoBehaviour
 			}
 			else
 			{
-				//Stand-in for actual spawning. Need to add check for different classes
-				if(playerClass == "assassin")
-					GameObject.Instantiate (assassin, finalSpawnPos.transform.position, Quaternion.identity);
-				else if(playerClass == "trooper")
-					GameObject.Instantiate (trooper, finalSpawnPos.transform.position, Quaternion.identity);
-				else if(playerClass == "enforcer")
-					GameObject.Instantiate (enforcer, finalSpawnPos.transform.position, Quaternion.identity);
-
+				Debug.Log(thisGO);
+				//networkView.RPC("spawnPlayer", RPCMode.All, finalSpawnPos.transform.position);
+				spawnPlayer(thisGO, finalSpawnPos.transform.position);
 				//Goes through each spawnPoint and request them to resetspawn so weight is accurate next time spawn is requested
 				foreach(GameObject GO in spawnPoints)
 				{
@@ -323,9 +284,16 @@ public class spawnManagerScript : MonoBehaviour
 		}
 	}
 
+	[RPC]
 	void setGameBegin()
 	{
 		//Debug.Log ("++++++++++++++++++++++++++ljkhsdfkhsdfojfdjsoidjoifjds");
-		gameBegin = !gameBegin;
+		gameBegin = true;
+	}
+
+
+	void spawnPlayer(GameObject playerRequest, Vector3 instPosition)
+	{
+		playerRequest.SendMessage ("setPosition", instPosition);
 	}
 }
