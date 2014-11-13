@@ -82,7 +82,8 @@ public class mapgrouppequeno : MonoBehaviour {
 
 	void OnGUI()
 	{
-		GUI.BeginGroup (new Rect (((mapMiddleX)-(mapWidth/4)), ((mapMiddleY)-(mapHeight/4)) , mapWidth/2, mapHeight/2), mapstyle);
+		Rect mapParameter = new Rect (((mapMiddleX) - (mapWidth / 4)), ((mapMiddleY) - (mapHeight / 4)), mapWidth / 2, mapHeight / 2);
+		GUI.BeginGroup (mapParameter, mapstyle);
 		//----------------middle - halfwidth = right border-|||--middle - halfwidth = top border
 		//GUI.Box (new Rect (1, 1 , iconSize, iconSize), "", enemyIcon);
 		iconPos = new Rect ((mapMiddleX)- (mapMiddleX - (mapWidth / 4))-iconHalfSize,(mapMiddleY)-(mapMiddleY - (mapHeight / 4))-iconHalfSize, iconSize, iconSize);//defining
@@ -133,7 +134,7 @@ public class mapgrouppequeno : MonoBehaviour {
 
 
 		GUI.Box (iconPos, "", playerIcon);//player icon
-
+		//GUI.DrawTexture (new Rect (((mapMiddleX) - (mapWidth / 4)), ((mapMiddleY) - (mapHeight / 4)), mapWidth / 2, mapHeight / 2), mapBorder);
 
 		//Debug.Log (((playerIconWidth+5)-((playerIconWidth+5) - (mapWidth / 4))) +"="+ (((playerIconWidth + 5) + (mapWidth / 4))-(playerIconWidth+5)));
 		//print (((playerIconHeight+5)-((playerIconHeight+5) - (mapHeight / 4)))+ "="+ (((playerIconHeight + 5) - (mapHeight / 4))-(playerIconHeight+5)));
@@ -146,6 +147,11 @@ public class mapgrouppequeno : MonoBehaviour {
 
 
 		GUI.EndGroup ();
+		float mapDiagonal=Mathf.Sqrt(Mathf.Pow(mapParameter.width,2)+Mathf.Pow(mapParameter.height,2));
+		//GUI.DrawTexture (new Rect (((mapMiddleX) - (mapWidth / 4))-20.71067811865475f, ((mapMiddleY) - (mapHeight / 4))-20.71067811865475f, (mapWidth / 2)+41.4213562373095f, (mapHeight / 2)+41.4213562373095f), mapBorder);
+		GUI.DrawTexture (new Rect (mapParameter.xMin-((mapDiagonal-mapParameter.width)/2), mapParameter.yMin-((mapDiagonal-mapParameter.height)/2), mapParameter.width+(mapDiagonal-mapParameter.width), mapParameter.height+(mapDiagonal-mapParameter.height)), mapBorder);
+		Debug.Log (mapDiagonal+"jkl");
+		Debug.Log (mapParameter.xMax);
 		//GUI.DrawTexture (new Rect (((mapMiddleX)-(mapWidth/4))-(mapWidth/4), ((mapMiddleY)-(mapHeight/4)-(mapHeight/4)) , mapWidth, mapHeight), texture2);
 		//GUI.DrawTexture (new Rect (((mapMiddleX)-(mapWidth/4))-(mapWidth/4), 0 , mapWidth, mapHeight), texture2);
 

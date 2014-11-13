@@ -20,16 +20,10 @@ public class bombscript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		TimerScreenLoc = Camera.main.WorldToScreenPoint(new Vector3(box.transform.position.x, box.transform.position.y));
-		//box.transform.position= new Vector3 (TimerScreenLoc.x, TimerScreenLoc.y,box.transform.position.z);
 		Debug.Log ("x"+TimerScreenLoc.x);
 		Debug.Log ("y"+TimerScreenLoc.y);
 
 		timer.transform.position = new Vector3(this.transform.position.x,this.transform.position.y+5.0f,this.transform.position.z);
-//		TimerScreenLoc = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height));
-//		timer.transform.position = new Vector3 (Mathf.Clamp (timer.transform.position.x, ScreenLoc.x, TimerScreenLoc.x), Mathf.Clamp (timer.transform.position.y, ScreenLoc.y, TimerScreenLoc.y), this.transform.position.z);
-
-		//TimerScreenLoc = new Vector3 (Mathf.Clamp (timer.transform.position.x, 0, Screen.width), (Mathf.Clamp (timer.transform.position.y - Screen.height, 0, Screen.height)), timer.transform.position.z);
-		//ScreenLoc = Camera.main.w
 	}
 
 	void OnDrawGizmosSelected() {

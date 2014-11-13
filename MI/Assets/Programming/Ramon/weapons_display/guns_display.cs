@@ -37,14 +37,6 @@ public class guns_display : MonoBehaviour {
 
 	void OnGUI() {
 
-//		GUI.Box (new Rect (Screen.width-200f, Screen.height-250f, 200f, 250f),"", guns_s);
-//		GUI.Box (new Rect (Screen.width-190f, Screen.height-205f, 180f, 100f),"330", guns_one);
-//		GUI.Box (new Rect (Screen.width-190f, Screen.height-95f, 175f, 90f),"210", guns_second);
-//		if(Input.GetKey(KeyCode.Space))
-//		   display_bomb.normal.background=grenade_on;
-//		else
-//		   display_bomb.normal.background=grenade_off;
-
 		//gun background diplay
 		GUI.Box (new Rect (Screen.width-275f, Screen.height-325f, 275f, 340f),"",display_all);
 		//GUI.Box (new Rect (0f, 0f, 50f, 50f),"",display_bomb);
