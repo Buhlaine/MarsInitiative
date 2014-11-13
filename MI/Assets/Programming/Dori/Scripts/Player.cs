@@ -48,22 +48,16 @@ public class Player : MonoBehaviour
 	public string enemy;
 	public string teammate;
 
-	void Awake()
-	{
-		// Set the this game object's tag to "Player"
-		//this.gameObject.tag = "Player";
-
-		xptracker = GameObject.FindGameObjectWithTag ("XPTracker").GetComponent<XPTracker> ();
-		controller = GetComponent<CharacterController> ();
-		particle = gameObject.transform.FindChild ("Fist_Bump").gameObject;
-		spawnManager = GameObject.FindGameObjectWithTag ("spwinManager");
-	}
-
 	void Start()
 	{
 		// Check what class the player has chosen - this will dictate max health, speed, and other things
 		CheckPlayerClass ();
 		SetTeam ();
+
+		xptracker = GameObject.FindGameObjectWithTag ("XPTracker").GetComponent<XPTracker> ();
+		controller = GetComponent<CharacterController> ();
+		particle = gameObject.transform.FindChild ("Fist_Bump").gameObject;
+		spawnManager = GameObject.FindGameObjectWithTag ("spwnManager");
 
 		ammo = 0; 
 		maxAmmo = 500;
