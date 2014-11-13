@@ -295,5 +295,6 @@ public class spawnManagerScript : MonoBehaviour
 	void spawnPlayer(GameObject playerRequest, Vector3 instPosition)
 	{
 		playerRequest.SendMessage ("setPosition", instPosition);
+        playerRequest.SendMessage("setLifeOff");
 	}
 }

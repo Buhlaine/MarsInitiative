@@ -78,10 +78,10 @@ public class flagScript : MonoBehaviour {
 				{
 					//May be removed.
 					//had issues during testing where dead player picked flag up
-					followPlayer(colliderInfo.gameObject as GameObject);
-					flagPickedUp();
-					colliderInfo.SendMessage("obtainedFlag");
-					//colliderInfo.gameObject.SendMessage("areYouAlive", this.gameObject as GameObject);
+                    //followPlayer(colliderInfo.gameObject as GameObject);
+                    //flagPickedUp();
+                    //colliderInfo.SendMessage("obtainedFlag");
+					colliderInfo.gameObject.SendMessage("areYouAlive", this.gameObject as GameObject);
 				}
 			}
 		}

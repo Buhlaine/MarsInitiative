@@ -119,14 +119,24 @@ public class playerFlagMngr : MonoBehaviour
 		this.carriedFlag = enemyFlag;
 	}
 
-//	void areYouAlive(GameObject _requestor)
-//	{
-//		if(isAlive)
-//		{
-//			_requestor.SendMessage("followPlayer", this.gameObject as GameObject);
-//			_requestor.SendMessage("flagPickedUp");
-//			carryFlag = true;
-//		}
-//	}
+    void setLife()
+    {
+        isAlive = true;
+    }
+
+    void setLifeOff()
+    {
+        isAlive = false;
+    }
+
+    void areYouAlive(GameObject _requestor)
+    {
+        if (isAlive)
+        {
+            _requestor.SendMessage("followPlayer", this.gameObject as GameObject);
+            _requestor.SendMessage("flagPickedUp");
+            carryFlag = true;
+        }
+    }
 
 }
