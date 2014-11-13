@@ -42,6 +42,7 @@ public class Player : MonoBehaviour
 	private XPTracker xptracker;
 	private CharacterController controller;
 	private GameObject particle;
+	private GameObject spawnManager;
 
 	// Team Variables
 	public string enemy;
@@ -51,6 +52,11 @@ public class Player : MonoBehaviour
 	{
 		// Set the this game object's tag to "Player"
 		this.gameObject.tag = "Player";
+
+		xptracker = GameObject.FindGameObjectWithTag ("XPTracker").GetComponent<XPTracker> ();
+		controller = GetComponent<CharacterController> ();
+		particle = gameObject.transform.FindChild ("Fist_Bump").gameObject;
+		spawnManager = GameObject.FindGameObjectWithTag ("spwinManager");
 	}
 
 	void Start()
@@ -71,11 +77,6 @@ public class Player : MonoBehaviour
 		level = 0;
 
 		sprintSpeed = 10;
-
-		xptracker = GameObject.FindGameObjectWithTag ("XPTracker").GetComponent<XPTracker> ();
-		controller = GetComponent<CharacterController> ();
-		particle = gameObject.transform.FindChild ("Fist_Bump").gameObject;
-
 		ReceiveLevelUp ();
 
 		// When player logs in, send a message to XPTracker with this players name to be stored into a team list
@@ -352,11 +353,14 @@ public class Player : MonoBehaviour
 
 	void OnDeath(string _id)
 	{
-		int result = int.Parse(_id);
-		deaths += 1;
+//		int result = int.Parse(_id);
+//		deaths += 1;
 
 		// Broadcast that this player has died
-		networkView.RPC ("requestSpawn", RPCMode.All, result);
+//		networkView.RPC ("requestSpawn", RPCMode.All, result);
+		spawnManager.SendMessage ("spawnRequest", this.gameObject);
+
+		this.gameObject.SendMessage ("setLife");
 	}
 
 	void KillYourself()
@@ -369,6 +373,11 @@ public class Player : MonoBehaviour
 	void AddXP(int _xp)
 	{
 		xp += _xp;
+
+		ArrayList data = new ArrayList ();
+		
+		data.Add (xp);
+		data.Add (level);
 
 		// Send current xp to experience bar (GUI)
 		this.gameObject.SendMessage ("getCurrent", xp, SendMessageOptions.DontRequireReceiver);
@@ -430,8 +439,13 @@ public class Player : MonoBehaviour
 		xp = 0;
 		xp += _leftOverXP;
 
+		ArrayList data = new ArrayList ();
+
+		data.Add (xp);
+		data.Add (level);
+
 		// Send current xp to experience bar (GUI)
-		this.gameObject.SendMessage ("getCurrent", xp, SendMessageOptions.DontRequireReceiver);
+		this.gameObject.SendMessage ("getCurrent", data, SendMessageOptions.DontRequireReceiver);
 	}
 
 	// SUPPORT CLASS SECTION
