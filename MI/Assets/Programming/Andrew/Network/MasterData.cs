@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -9,7 +9,8 @@ public class MasterData : MonoBehaviour{
 	public static MasterData MasterDataInstance;
 	
 	public static string team;
-	
+
+
 	void Start(){
 		DontDestroyOnLoad(this.gameObject);
 		MasterDataInstance = this;
