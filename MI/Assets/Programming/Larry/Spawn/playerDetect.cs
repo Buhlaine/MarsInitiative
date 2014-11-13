@@ -66,12 +66,12 @@ public class playerDetect : MonoBehaviour {
 //				Debug.Log("++++++++++++++++++++++++");
 //			}
 //		}
-		if(Input.GetKeyDown(KeyCode.L))
-		{
-			this.calcSpawnWeight("Red");
-			spawnWeightPrint();
-			this.resetWeight();
-		}
+        //if(Input.GetKeyDown(KeyCode.L))
+        //{
+        //    this.calcSpawnWeight("Red");
+        //    spawnWeightPrint();
+        //    this.resetWeight();
+        //}
 //		if(Input.GetKeyDown(KeyCode.M))
 //		{
 //			foreach(DictionaryEntry units in playersInZone)

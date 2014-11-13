@@ -35,30 +35,30 @@ public class playerFlagMngr : MonoBehaviour
 	{
 //		if(networkView.isMine)
 //		{
-			if(this.tag == "Red")
-			{
-				this.transform.Translate (Vector3.right * speed * Input.GetAxis ("Horizontal") * Time.deltaTime);
-				this.transform.Translate (Vector3.forward* speed * Input.GetAxis ("Vertical") * Time.deltaTime);
-			}
-			else if(this.tag == "Blue")
-			{
-				if(Input.GetKey(KeyCode.I))
-				{
-					this.transform.Translate (Vector3.forward * speed * Time.deltaTime);
-				}
-				if(Input.GetKey(KeyCode.J))
-				{
-					this.transform.Translate (Vector3.left* speed * Time.deltaTime);
-				}
-				if(Input.GetKey(KeyCode.K))
-				{
-					this.transform.Translate (Vector3.back * speed * Time.deltaTime);
-				}
-				if(Input.GetKey(KeyCode.L))
-				{
-					this.transform.Translate (Vector3.right* speed * Time.deltaTime);
-				}
-			}
+            //if(this.tag == "Red")
+            //{
+            //    this.transform.Translate (Vector3.right * speed * Input.GetAxis ("Horizontal") * Time.deltaTime);
+            //    this.transform.Translate (Vector3.forward* speed * Input.GetAxis ("Vertical") * Time.deltaTime);
+            //}
+            //else if(this.tag == "Blue")
+            //{
+            //    if(Input.GetKey(KeyCode.I))
+            //    {
+            //        this.transform.Translate (Vector3.forward * speed * Time.deltaTime);
+            //    }
+            //    if(Input.GetKey(KeyCode.J))
+            //    {
+            //        this.transform.Translate (Vector3.left* speed * Time.deltaTime);
+            //    }
+            //    if(Input.GetKey(KeyCode.K))
+            //    {
+            //        this.transform.Translate (Vector3.back * speed * Time.deltaTime);
+            //    }
+            //    if(Input.GetKey(KeyCode.L))
+            //    {
+            //        this.transform.Translate (Vector3.right* speed * Time.deltaTime);
+            //    }
+            //}
 			//checking if player is carrying flag
 			if(Input.GetMouseButtonDown(1))
 			{
