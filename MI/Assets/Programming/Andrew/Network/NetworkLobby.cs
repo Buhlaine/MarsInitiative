@@ -12,8 +12,8 @@ public class NetworkLobby : MonoBehaviour {
 	
 	private string gameName;
 	
-	public string MSIP = "localhost";
-	//private string MSIP = "smp.awesomecraft.net";
+	//public string MSIP = "localhost";
+	private string MSIP = "smp.awesomecraft.net";
 
 	void Start(){
 		MasterServer.ipAddress = MSIP;

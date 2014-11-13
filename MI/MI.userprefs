@@ -1,10 +1,12 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Programming\Andrew\Network\TeamFinder.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Programming\Andrew\Network\MasterData.cs">
     <Files>
-      <File FileName="Assets\Programming\Andrew\Network\NetworkLobby.cs" Line="65" Column="58" />
-      <File FileName="Assets\Programming\Andrew\Network\MasterData.cs" Line="12" Column="2" />
-      <File FileName="Assets\Programming\Andrew\Network\TeamFinder.cs" Line="15" Column="3" />
+      <File FileName="Assets\Programming\Andrew\Network\NetworkLobby.cs" Line="84" Column="2" />
+      <File FileName="Assets\Programming\Andrew\Network\MasterData.cs" Line="3" Column="32" />
+      <File FileName="Assets\Programming\Andrew\Network\TeamFinder.cs" Line="6" Column="2" />
+      <File FileName="Assets\Programming\Larry\Flag\baseScript.cs" Line="95" Column="55" />
+      <File FileName="Assets\Programming\Larry\Flag\flagScript.cs" Line="138" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

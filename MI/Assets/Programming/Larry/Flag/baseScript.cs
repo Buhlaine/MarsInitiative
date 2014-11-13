@@ -89,7 +89,7 @@ public class baseScript : MonoBehaviour {
 			//if enemy, flag is captured, follow enemy
 			if(colliderInfo.tag == "Player")
 			{
-				Player colPlayer = colliderInfo.GetComponent<PlayerPrefs> ();
+				Player colPlayer = colliderInfo.gameObject.GetComponent<Player> ();
 				if(colPlayer.team == enemyTag)
 				{
 					teamFlag.SendMessage("followPlayer", colliderInfo.gameObject as GameObject);

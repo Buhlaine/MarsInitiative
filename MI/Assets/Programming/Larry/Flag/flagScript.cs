@@ -65,7 +65,7 @@ public class flagScript : MonoBehaviour {
 		{
 			if(colliderInfo.gameObject.tag == "Player")
 			{
-				Player colPlayer = colliderInfo.GetComponent<PlayerPrefs> ();
+				Player colPlayer = colliderInfo.gameObject.GetComponent<Player> ();
 				if(colPlayer.team == homeTeam)
 				{
 					follow = false;
