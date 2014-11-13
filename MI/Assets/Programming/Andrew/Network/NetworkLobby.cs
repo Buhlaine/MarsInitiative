@@ -38,6 +38,8 @@ public class NetworkLobby : MonoBehaviour {
 			yield return null;
 		}
 		MasterData.MasterDataInstance.SendMessage("sendRegisterRequest", _team);
+		yield return new WaitForSeconds(2);
+		Application.LoadLevel("Main");
 	}
 	
 	void OnGUI(){
@@ -75,9 +77,9 @@ public class NetworkLobby : MonoBehaviour {
 			}
 		}
 
-		if(GUI.Button(new Rect(Screen.width-250,Screen.height-100,200,50),"DC")){
+		/*if(GUI.Button(new Rect(Screen.width-250,Screen.height-100,200,50),"DC")){
 			Network.Disconnect();
-		}
+		}*/
 
 	}
 }

@@ -51,7 +51,7 @@ public class Player : MonoBehaviour
 	void Awake()
 	{
 		// Set the this game object's tag to "Player"
-		this.gameObject.tag = "Player";
+		//this.gameObject.tag = "Player";
 
 		xptracker = GameObject.FindGameObjectWithTag ("XPTracker").GetComponent<XPTracker> ();
 		controller = GetComponent<CharacterController> ();
