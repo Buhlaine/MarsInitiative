@@ -21,6 +21,7 @@ public class trooperAnimCtrlScript : MonoBehaviour
 	private bool HasSecondary;
 	private bool Melee;
 	private bool IsZipline;
+	private bool IsDead;
 	
 	// Use this for initialization
 	void Start () 
@@ -125,7 +126,7 @@ public class trooperAnimCtrlScript : MonoBehaviour
 			}
 			
 			//Temporary code for melee attack
-			if(Input.GetButtonDown("Fire2"))
+			if(Input.GetButtonDown("Fire3"))
 			{
 				if(!anim.GetBool("Melee"))
 				{
@@ -141,21 +142,37 @@ public class trooperAnimCtrlScript : MonoBehaviour
 			}
 			
 			//Temporary play the zipline Animation
-			if(Input.GetKey(KeyCode.Q))
+			if(IsZipline == true)
 			{
-				IsZipline = true;
 				anim.SetBool("IsZipline",IsZipline);
 			}
 			else
 			{
-				IsZipline = false;
 				anim.SetBool("IsZipline",IsZipline);
+			}
+			
+			//if the player dies play annimation
+			if(IsDead == true)
+			{
+				anim.SetBool("IsDead",IsDead);
+			}
+			else
+			{
+				anim.SetBool("IsDead",IsDead);
 			}
 			
 		}
 	}
 	
+	public void Zipline(bool activate)
+	{
+		IsZipline = activate;
+	}
 	
+	public void Dead(bool activate)
+	{
+		IsDead = activate;
+	}
 	
 	// Synchronizing variables across the network
 	void OnSerializeNetworkView(BitStream stream, NetworkMessageInfo info)
@@ -170,6 +187,7 @@ public class trooperAnimCtrlScript : MonoBehaviour
 		bool syncHasSecondary = false;
 		bool syncMelee = false;
 		bool syncIsZipline = false;
+		bool syncIsDead = false;
 		
 		if(stream.isWriting)
 		{
@@ -183,6 +201,7 @@ public class trooperAnimCtrlScript : MonoBehaviour
 			syncHasSecondary = HasSecondary;
 			syncMelee = Melee;
 			syncIsZipline = IsZipline;
+			syncIsDead = IsDead;
 			
 			stream.Serialize(ref syncVMovement);
 			stream.Serialize(ref syncHMovement);
@@ -194,6 +213,7 @@ public class trooperAnimCtrlScript : MonoBehaviour
 			stream.Serialize(ref syncHasSecondary);
 			stream.Serialize(ref syncMelee);
 			stream.Serialize(ref syncIsZipline);
+			stream.Serialize(ref syncIsDead);
 		}
 		else
 		{
@@ -207,6 +227,7 @@ public class trooperAnimCtrlScript : MonoBehaviour
 			stream.Serialize(ref syncHasSecondary);
 			stream.Serialize(ref syncMelee);
 			stream.Serialize(ref syncIsZipline);
+			stream.Serialize(ref syncIsDead);
 			
 			VMovement = syncVMovement;
 			HMovement = syncHMovement;
@@ -218,6 +239,7 @@ public class trooperAnimCtrlScript : MonoBehaviour
 			HasSecondary = syncHasSecondary;
 			Melee = syncMelee;
 			IsZipline = syncIsZipline;
+			IsDead = syncIsDead;
 		}
 	}
 }
