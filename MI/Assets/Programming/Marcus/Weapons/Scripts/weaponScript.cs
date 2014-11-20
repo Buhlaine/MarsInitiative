@@ -228,7 +228,7 @@ public class weaponScript : MonoBehaviour {
 		//this block of code is for shotgun firing
 		else if (isShotgun)
 		{
-			LayerMask layerMask = 1 << 8; //grabbing the eighth layer
+			LayerMask layerMask = 1 << 3; //grabbing the eighth layer
 			layerMask = ~layerMask;       //inverting the layer mask so it hits everything but 8 
 
 			RaycastHit[] hits;
