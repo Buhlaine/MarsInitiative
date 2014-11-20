@@ -43,9 +43,11 @@ public class SupportPulseRadar : MonoBehaviour
 	{
 		currentAbilityLevel = 0;
 		cooldownPeriod = 16.0f;
-		particle.SetActive(false);
+		particle.transform.FindChild("Radar_Effect").gameObject.SetActive(false);
+		particle.transform.FindChild("Burst").gameObject.SetActive(false);
 	}
 
+	[RPC]
 	void Update()
 	{
 		// Set the radius of the sphere collider to the pre-determined amount
@@ -63,7 +65,8 @@ public class SupportPulseRadar : MonoBehaviour
 
 		// Reset and start cool down
 		if(startCooldown) {
-			particle.SetActive(false);
+			particle.transform.FindChild("Radar_Effect").gameObject.SetActive(false);
+			particle.transform.FindChild("Burst").gameObject.SetActive(false);
 			cooldownCounter += 1.0f * Time.deltaTime;
 		}
 		
@@ -74,18 +77,18 @@ public class SupportPulseRadar : MonoBehaviour
 
 		if (isPulse) {
 			pulseCounter += 1.0f * Time.deltaTime;
+			particle.transform.FindChild("Radar_Effect").gameObject.SetActive(true);
+			particle.transform.FindChild("Burst").gameObject.SetActive(true);
 
 			// Marking enemies on the minimap
 			foreach (var enemy in EnemyInRadius) {
-//				enemy.SendMessage("PulseRadar", enemy.name);
-				//TODO Double check with Andrew that this is correct
-				networkView.RPC("PulseRadar", enemy.networkView.owner );
-				particle.SetActive(true);
+				networkView.RPC("PulseRadar", enemy.networkView.owner);
+				particle.transform.FindChild("Radar_Effect").gameObject.SetActive(true);
+				particle.transform.FindChild("Burst").gameObject.SetActive(true);
 
 				damageCounter += 1.0f * Time.deltaTime;
 				if (damageCounter >= 3) {
 					damageCounter = 0;
-//					enemy.SendMessage("PulseDamage", pulseDamage[currentAbilityLevel]);
 					networkView.RPC("PulseDamage", enemy.networkView.owner, pulseDamage[currentAbilityLevel]);
 				}
 			}

@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: 15cbc39d90607154ea27d69fd6a8af63
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - TagObj: {fileID: 100000, guid: ca67ba0446a622d4d9dbdf8fe502f327, type: 2}
+  - Tag: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 

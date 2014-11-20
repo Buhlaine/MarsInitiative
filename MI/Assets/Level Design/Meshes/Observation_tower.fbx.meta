@@ -7,8 +7,7 @@ ModelImporter:
     400000: //RootNode
     2300000: //RootNode
     3300000: //RootNode
-    4300000: Observation_tower
-    4300002: observation_tower_01
+    4300000: polySurface34
     9500000: //RootNode
   materials:
     importMaterials: 1

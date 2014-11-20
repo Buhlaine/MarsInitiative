@@ -38,6 +38,8 @@ public class Player : MonoBehaviour
 	public GameObject abilityTwo;
 	public GameObject boostAbility;
 	public bool isShooting;
+	public bool isInteracting;
+	public bool playParticle;
 
 	private XPTracker xptracker;
 	private CharacterController controller;
@@ -69,6 +71,9 @@ public class Player : MonoBehaviour
 		assists = 0;
 		deaths = 0;
 		level = 0;
+
+		isInteracting = false;
+		playParticle = false;
 
 		sprintSpeed = 10;
 		ReceiveLevelUp ();
@@ -103,19 +108,24 @@ public class Player : MonoBehaviour
 			OnDeath ();
 		}
 
-		// Fist Bump
+		// Fist Bump and Interact
 		if (Input.GetKeyDown (KeyCode.F)) {
-			particle.SetActive (true);
+			StartCoroutine("FistBump");
+			isInteracting = true;
+		} else {
+			isInteracting = false;		
 		}
 
-		// Sprint
-		if (Input.GetKeyDown (KeyCode.LeftShift)) {
-			speed = sprintSpeed;
-			stamina -= 1 * Time.deltaTime;
-		} else if (Input.GetKeyUp (KeyCode.LeftShift)) {
-			speed = defaultSpeed[classIndex];
-			stamina += 1 * Time.deltaTime;
+		if(isInteracting) {
+			SendMessage("Interact", SendMessageOptions.DontRequireReceiver);
 		}
+	}
+
+	IEnumerator FistBump()
+	{
+		particle.SetActive (true);
+		yield return new WaitForSeconds (2);
+		particle.SetActive (false);
 	}
 
 	void SetTeam()
@@ -298,7 +308,7 @@ public class Player : MonoBehaviour
 		captures += 1;
 	}
 
-	void OnAssist() //TODO Are assists coded? O_O
+	void OnAssist() //TODO Assists
 	{
 		Debug.Log ("Assist");
 		string player = this.gameObject.name;
@@ -472,7 +482,7 @@ public class Player : MonoBehaviour
 		RaycastHit hit;
 		for (float i = 0.0f; i <= _duration; i += 1.0f * Time.deltaTime) {
 			Vector3 forward = transform.TransformDirection(Vector3.forward);
-			controller.Move ( forward * speed * 1.5f * Time.deltaTime);
+			controller.Move (forward * 0.5f * Time.deltaTime);
 
 			if(Physics.SphereCast(transform.position, controller.height / 2, transform.forward, out hit, 0.5f)) {
 				GameObject enemy = hit.transform.gameObject; 
@@ -493,7 +503,7 @@ public class Player : MonoBehaviour
 	void CloakOff()
 	{
 		// Change shader back to default
-		this.gameObject.renderer.material.shader = Shader.Find("Diffuse"); //TODO Need an actual shader 
+		this.gameObject.renderer.material.shader = Shader.Find("Diffuse"); //TODO Need Invisible Shader
 		this.gameObject.renderer.material.SetColor("Color", Color.blue); // For testing
 	}
 }
