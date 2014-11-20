@@ -22,15 +22,17 @@ public class trooperAnimCtrlScript : MonoBehaviour
 	private bool Melee;
 	private bool IsZipline;
 	private bool IsDead;
+	private bool HasCapsule;
 	
 	// Use this for initialization
 	void Start () 
 	{
 		anim = GetComponent<Animator>();
-		if(anim.layerCount == 3)
+		if(anim.layerCount == 4)
 			anim.SetLayerWeight(1,1);
 		HasSecondary = false;
 		Melee = false;
+		HasCapsule = false;
 	}
 	
 	// Update is called once per frame
@@ -155,10 +157,16 @@ public class trooperAnimCtrlScript : MonoBehaviour
 			if(IsDead == true)
 			{
 				anim.SetBool("IsDead",IsDead);
+				anim.SetBool("IsDead",false);
+			}
+			
+			if(HasCapsule == true)
+			{
+				anim.SetBool("HasCapsule",HasCapsule);
 			}
 			else
 			{
-				anim.SetBool("IsDead",IsDead);
+				anim.SetBool("HasCapsule",HasCapsule);
 			}
 			
 		}
@@ -172,6 +180,11 @@ public class trooperAnimCtrlScript : MonoBehaviour
 	public void Dead(bool activate)
 	{
 		IsDead = activate;
+	}
+	
+	public void Capsule(bool activate)
+	{
+		HasCapsule = activate;
 	}
 	
 	// Synchronizing variables across the network
@@ -188,6 +201,7 @@ public class trooperAnimCtrlScript : MonoBehaviour
 		bool syncMelee = false;
 		bool syncIsZipline = false;
 		bool syncIsDead = false;
+		bool syncHasCapsule = false;
 		
 		if(stream.isWriting)
 		{
@@ -202,6 +216,7 @@ public class trooperAnimCtrlScript : MonoBehaviour
 			syncMelee = Melee;
 			syncIsZipline = IsZipline;
 			syncIsDead = IsDead;
+			syncHasCapsule = HasCapsule;
 			
 			stream.Serialize(ref syncVMovement);
 			stream.Serialize(ref syncHMovement);
@@ -214,6 +229,7 @@ public class trooperAnimCtrlScript : MonoBehaviour
 			stream.Serialize(ref syncMelee);
 			stream.Serialize(ref syncIsZipline);
 			stream.Serialize(ref syncIsDead);
+			stream.Serialize(ref syncHasCapsule);
 		}
 		else
 		{
@@ -228,6 +244,7 @@ public class trooperAnimCtrlScript : MonoBehaviour
 			stream.Serialize(ref syncMelee);
 			stream.Serialize(ref syncIsZipline);
 			stream.Serialize(ref syncIsDead);
+			stream.Serialize(ref syncHasCapsule);
 			
 			VMovement = syncVMovement;
 			HMovement = syncHMovement;
@@ -240,6 +257,7 @@ public class trooperAnimCtrlScript : MonoBehaviour
 			Melee = syncMelee;
 			IsZipline = syncIsZipline;
 			IsDead = syncIsDead;
+			HasCapsule = syncHasCapsule;
 		}
 	}
 }
