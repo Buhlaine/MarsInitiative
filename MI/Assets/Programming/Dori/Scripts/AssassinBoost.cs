@@ -14,7 +14,7 @@ public class AssassinBoost : MonoBehaviour
 
 	void Update()
 	{
-		// TODO Ask design team if Z is okay to use for marking enemies / ability three activiation
+		// TODO Need Button for Third Ability
 		RaycastHit hit;
 
 		if (Input.GetKeyDown (KeyCode.Z) && canMark) {
@@ -34,7 +34,7 @@ public class AssassinBoost : MonoBehaviour
 		}
 		
 		if(currentAbilityLevel == 3) {
-			// TODO Deals more damage with bullets
+			// TODO Deals Bullet Damage
 		}
 	}
 	

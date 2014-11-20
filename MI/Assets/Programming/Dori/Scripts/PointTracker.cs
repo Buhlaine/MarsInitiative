@@ -27,13 +27,13 @@ public class PointTracker : MonoBehaviour
 			addingPoints = true;
 			blueTeamPoints += capturePoints;
 			addingPoints = false;
-			// TODO Send message to GUI to display points
+			// TODO Point Display
 		}
 		if(_team == "Red" && !addingPoints) {
 			addingPoints = true;
 			redTeamPoints += capturePoints;
 			addingPoints = false;
-			// TODO Send message to GUI to display points
+			// TODO Point Display
 		}
 	}
 }

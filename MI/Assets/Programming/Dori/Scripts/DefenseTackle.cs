@@ -35,19 +35,18 @@ public class DefenseTackle : MonoBehaviour
 		
 		// Stop counter
 		if (chargeCounter >= chargeDuration[currentAbilityLevel]) {
-			startCooldown = true;
 			isCharge = false;
+			startCooldown = true;
 			chargeCounter = 0;
 		}
 		
 		// Reset and start cool down
 		if(startCooldown) {
-			particle.SetActive(false);
 			cooldownCounter += 1.0f * Time.deltaTime;
+			particle.SetActive(false);
 		}
 		
 		if (cooldownCounter >= cooldownPeriod[currentAbilityLevel]) {
-			particle.transform.FindChild("Particle System").particleSystem.enableEmission = false;
 			startCooldown = false;
 			cooldownCounter = 0;
 		}
@@ -55,11 +54,8 @@ public class DefenseTackle : MonoBehaviour
 		if (isCharge) {
 			particle.SetActive(true);
 			chargeCounter += 1.0f * Time.deltaTime;
-			particle.transform.FindChild("Particle System").particleSystem.enableEmission = true;
 			// Send message to parent turning Charge on with the duration
 			gameObject.transform.parent.SendMessage ("Charge", chargeDuration[currentAbilityLevel]);
-
-			isCharge = false;
 		}
 	}
 }
