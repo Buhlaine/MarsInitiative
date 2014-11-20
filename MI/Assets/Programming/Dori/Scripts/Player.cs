@@ -90,21 +90,17 @@ public class Player : MonoBehaviour
 		if(Input.GetMouseButtonDown(0)){
 			// DUCK SECTION
 			RaycastHit duckInfo;
-			// TODO Last parameter should be actual weapon's range. 10 for testing
 			if(Physics.Raycast(transform.position, Vector3.forward, out duckInfo, 10.0f)) {
 				if (duckInfo.transform.tag == "Duck") { 
-					// Apply damage to the duck, and send the name of this player
-					duckInfo.transform.gameObject.SendMessage("WhoKillMe", this.gameObject.name); 
-					// TODO Should be actual weapon's damage. 10 for testing
-					duckInfo.transform.gameObject.SendMessage("Damage", 10.0f); 
-					Debug.Log ("Duck! " + duckInfo.transform.name + " " + duckInfo.transform.gameObject.GetComponent<DuckScript>().health);
+					// Insta-Kill Duck
+					duckInfo.transform.gameObject.SendMessage("KillDuck", this.gameObject.name); 
 				}
 			} 
 		}
 
 		// Health
 		if(health <= 0) {
-			OnDeath (this.gameObject.networkView.viewID.ToString());
+			OnDeath ();
 		}
 
 		// Fist Bump
@@ -345,16 +341,14 @@ public class Player : MonoBehaviour
 		xptracker.SendMessage ("CompleteLevel", data);
 	}
 
-	void OnDeath(string _id)
+	void OnDeath()
 	{
-//		int result = int.Parse(_id);
-//		deaths += 1;
-
-		// Broadcast that this player has died
-//		networkView.RPC ("requestSpawn", RPCMode.All, result);
 		spawnManager.SendMessage ("spawnRequest", this.gameObject);
-
+		this.gameObject.SendMessage ("Dead", true);
 		this.gameObject.SendMessage ("setLife");
+
+		// Turn the game object off so the player can't see the spawning process and the colliders aren't active
+		this.gameObject.SetActive (false);
 	}
 
 	void KillYourself()
