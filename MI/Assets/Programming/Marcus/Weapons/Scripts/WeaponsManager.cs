@@ -19,11 +19,13 @@ public class WeaponsManager : MonoBehaviour {
 		{
 			weaponChoice = 0;
 			SelectWeapon(weaponChoice);
+			gameObject.SendMessage("SwitchFromSecondary",SendMessageOptions.DontRequireReceiver);
 		}
 		else if(Input.GetKeyDown("2"))
 		{
 			weaponChoice = 1;
 			SelectWeapon(weaponChoice);
+			gameObject.SendMessage("SwitchToSecondary",SendMessageOptions.DontRequireReceiver);
 		}
 		/*
 		else if(Input.GetKeyDown("3"))

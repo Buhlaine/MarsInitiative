@@ -124,21 +124,11 @@ public class heavyAnimCtrlScript : MonoBehaviour
 				IsCrouching = false;
 				anim.SetBool("IsCrouching",IsCrouching);
 			}
+
 			
-			//Temporary code for switching to the secondary weapon
-			if(Input.GetKeyDown(KeyCode.F))
-			{
-				if(!anim.GetBool("HasSecondary"))
-				{
-					HasSecondary = true;
-					anim.SetBool("HasSecondary",HasSecondary);
-				}
-				else
-				{
-					HasSecondary = false;
-					anim.SetBool("HasSecondary",HasSecondary);
-				}
-			}
+			anim.SetBool("HasSecondary",HasSecondary);
+			
+
 			
 			//Temporary code for melee attack
 			if(Input.GetButtonDown("Fire3"))
@@ -208,6 +198,16 @@ public class heavyAnimCtrlScript : MonoBehaviour
 	public void ZiplineStop()
 	{
 		IsZipline = false;
+	}
+
+	public void SwitchToSecondary()
+	{
+		HasSecondary = true;
+	}
+
+	public void SwitchFromSecondary()
+	{
+		HasSecondary = false;
 	}
 
 	// Synchronizing variables across the network
