@@ -23,6 +23,7 @@ public class assassinAnimCtrlScript : MonoBehaviour
 	private bool IsZipline;
 	private bool IsDead;
 	private bool HasCapsule;
+	private bool BroFist;
 	
 	// Use this for initialization
 	void Start () 
@@ -98,6 +99,18 @@ public class assassinAnimCtrlScript : MonoBehaviour
 			{
 				IsReloading = false;
 				anim.SetBool("IsReloading",IsReloading);
+			}
+			
+			//Bro Fist!
+			if(Input.GetKeyDown(KeyCode.F))
+			{
+				BroFist = true;
+				anim.SetBool("BroFist",BroFist);
+			}
+			else
+			{
+				BroFist = false;
+				anim.SetBool("BroFist",BroFist);
 			}
 			
 			//play the crouching animation & enable crouching anim branch
@@ -185,6 +198,16 @@ public class assassinAnimCtrlScript : MonoBehaviour
 	public void Capsule(bool activate)
 	{
 		HasCapsule = activate;
+	}
+	
+	public void ZiplineStart()
+	{
+		IsZipline = true;
+	}
+	
+	public void ZiplineStop()
+	{
+		IsZipline = false;
 	}
 	
 	// Synchronizing variables across the network
