@@ -5,8 +5,8 @@ using System.Collections.Generic;
 public class spawnManagerScript : MonoBehaviour 
 {
 	Dictionary<GameObject, int> allSpawns = new Dictionary<GameObject, int> ();
-	List<GameObject> blueStart = new List<GameObject>();
-	List<GameObject> redStart = new List<GameObject>();
+	static List<GameObject> blueStart = new List<GameObject>();
+	static List<GameObject> redStart = new List<GameObject>();
 	GameObject[] spawnPoints;
 	List<GameObject> possibleSpawns = new List<GameObject> ();
 	GameObject finalSpawnPos;
@@ -25,7 +25,7 @@ public class spawnManagerScript : MonoBehaviour
 	public GameObject assassin;
 	public GameObject enforcer;
 	public GameObject trooper;
-	bool gameBegin = true;
+	bool gameBegin = false;
 	GameObject testObj;
 
 	//Testing stuff
@@ -40,10 +40,12 @@ public class spawnManagerScript : MonoBehaviour
 			if(spawnStart.gameObject.name.Contains("Blue") || spawnStart.gameObject.name.Contains("blue"))
 			{
 				blueStart.Add(spawnStart);
+				Debug.Log("Start Blue");
 			}
 			else if(spawnStart.gameObject.name.Contains("Red") || spawnStart.gameObject.name.Contains("red"))
 			{
 				redStart.Add(spawnStart);
+				Debug.Log("Start Red");
 			}
 		}
 
@@ -100,7 +102,10 @@ public class spawnManagerScript : MonoBehaviour
 	void spawnRequest (GameObject thisGO)
 	{
 		Debug.Log ("This Worked!!!---+++");
-		StartCoroutine (spawnDelay(spawnWaitTime, thisGO));
+		if (!gameBegin)
+			spawn (thisGO);
+		else
+			StartCoroutine (spawnDelay(spawnWaitTime, thisGO));
 	}
 
 
@@ -138,7 +143,7 @@ public class spawnManagerScript : MonoBehaviour
 		testObj = thisGO;
 		//for testing---------------------------------------------------------------
 		string tag = "Red";
-		string playerClass = "assassin";
+		//string playerClass = "assassin";
 		//-----------------------------------------------------------------------------
 		if(!gameBegin)
 		{
@@ -146,38 +151,17 @@ public class spawnManagerScript : MonoBehaviour
 			//testing-------------------------------------------
 			if(tag == "Blue")
 			{
-				if(playerClass == "assassin")
-				{
-					GameObject.Instantiate (assassin, blueStart[0].transform.position, Quaternion.identity);
-				}
-				else if(playerClass == "trooper")
-				{
-					GameObject.Instantiate (trooper, blueStart[0].transform.position, Quaternion.identity);
-				}
-				else if(playerClass == "enforcer")
-				{
-					GameObject.Instantiate (enforcer, blueStart[0].transform.position, Quaternion.identity);
-				}
-				blueStart.RemoveAt(0);
+				spawnPlayer(thisGO, blueStart[0].transform.position);
+				removeSpwn("Blue");
+				//blueStart.RemoveAt(0);
 			}
 			//else if(playerSpawning.tag == "Red")
 			//testing------------------------------------
 			else if(tag == "Red")
 			{
-				if(playerClass == "assassin")
-				{
-					GameObject.Instantiate (assassin, redStart[0].transform.position, Quaternion.identity);
-				}
-				else if(playerClass == "trooper")
-				{
-					GameObject.Instantiate (trooper, redStart[0].transform.position, Quaternion.identity);
-				}
-				else if(playerClass == "enforcer")
-				{
-					GameObject.Instantiate (enforcer, redStart[0].transform.position, Quaternion.identity);
-				}
-
-				redStart.RemoveAt(0);
+				spawnPlayer(thisGO, redStart[0].transform.position);
+				removeSpwn("Red");
+				//redStart.RemoveAt(0);
 			}
 		}
 		else if(gameBegin)
@@ -292,9 +276,21 @@ public class spawnManagerScript : MonoBehaviour
 	}
 
 
+	void removeSpwn(string teamColor)
+	{
+		Debug.LogWarning (redStart.Count);
+		if (teamColor == "Red" || teamColor == "red")
+			redStart.RemoveAt (0);
+		else
+			blueStart.RemoveAt(0);
+
+		Debug.LogWarning (redStart.Count);
+	}
+
 	void spawnPlayer(GameObject playerRequest, Vector3 instPosition)
 	{
 		playerRequest.SendMessage ("setPosition", instPosition);
-        playerRequest.SendMessage("setLifeOff");
+        playerRequest.SendMessage("setLife");
+		playerRequest.SendMessage ("Reset");
 	}
 }
