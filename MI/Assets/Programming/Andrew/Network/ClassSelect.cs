@@ -16,7 +16,7 @@ public class ClassSelect : MonoBehaviour {
 					butts = 3;
 				}
 				Network.Instantiate(Prefabs_rb_A_E_T[i+butts],Vector3.zero,Quaternion.identity,i+butts);
-				//GameObject.FindGameObjectWithTag("spwnManager").SendMessage("spawnRequest",GameObject.FindGameObjectWithTag("Player"));
+				GameObject.FindGameObjectWithTag("spwnManager").SendMessage("spawnRequest",GameObject.FindGameObjectWithTag("Player"));
 				
 				if(Network.peerType == NetworkPeerType.Client){
 					Debug.Log("ST "+Network.peerType.ToString());
@@ -31,7 +31,7 @@ public class ClassSelect : MonoBehaviour {
 		
 		if(Network.peerType == NetworkPeerType.Server){
 			if (GUI.Button(new Rect(Screen.width-250,50,200,40),"Start with "+spawns.ToString()+" of "+Network.connections.Length.ToString())){
-				//GameObject.FindGameObjectWithTag("spwnManager").SendMessage("setgameBegin");
+				GameObject.FindGameObjectWithTag("spwnManager").SendMessage("setgameBegin");
 				Destroy(this.gameObject);
 			}
 		}
