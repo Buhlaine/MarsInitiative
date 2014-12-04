@@ -34,6 +34,8 @@ public class assassinAnimCtrlScript : MonoBehaviour
 		HasSecondary = false;
 		Melee = false;
 		HasCapsule = false;
+		BroFist = false;
+		IsZipline = false;
 	}
 	
 	// Update is called once per frame

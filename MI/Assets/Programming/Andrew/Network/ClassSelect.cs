@@ -30,8 +30,9 @@ public class ClassSelect : MonoBehaviour {
 		}
 		
 		if(Network.peerType == NetworkPeerType.Server){
-			if (GUI.Button(new Rect(Screen.width-250,50,200,40),"Start with "+spawns.ToString()+" of "+Network.connections.Length.ToString())){
-				GameObject.FindGameObjectWithTag("spwnManager").SendMessage("setgameBegin");
+			GUI.Button(new Rect(Screen.width-250,50,200,40),"Space to start with "+spawns.ToString()+" of "+Network.connections.Length.ToString());
+			if(Input.GetKeyDown(KeyCode.Space)){
+				GameObject.FindGameObjectWithTag("spwnManager").SendMessage("setGameBegin");
 				Destroy(this.gameObject);
 			}
 		}

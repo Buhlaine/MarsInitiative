@@ -226,7 +226,7 @@ public class start_menu : MonoBehaviour {
 				if(GUI.Button (Button6RedHalf, "Register",button[4]))
 				{
 					button[2].normal.background=button[4].active.background;
-					gameObject.SendMessage("Register", "red");
+					gameObject.SendMessage("Register", "Red");
 					//Debug.Log("campaing");
 					//selection=3;
 					//createOrplay=true;
@@ -236,7 +236,7 @@ public class start_menu : MonoBehaviour {
 				if(GUI.Button (Button6BlueHalf, "Register",button[5]))
 				{
 					button[2].normal.background=button[5].active.background;
-					gameObject.SendMessage("Register", "blue");
+					gameObject.SendMessage("Register", "Blue");
 					//Debug.Log("campaing");
 					//selection=3;
 					//createOrplay=true;
@@ -254,7 +254,7 @@ public class start_menu : MonoBehaviour {
 				if(GUI.Button (Button7RedHalf, "Join",button[4])&& (MasterServer.PollHostList().Length != 0))
 				{
 					button[3].normal.background=button[4].active.background;
-					gameObject.SendMessage("Join", "red");
+					gameObject.SendMessage("Join", "Red");
 					//Debug.Log("campaing");
 					//selection=3;
 					//createOrplay=true;
@@ -264,7 +264,7 @@ public class start_menu : MonoBehaviour {
 				if(GUI.Button (Button7BlueHalf, "Join",button[5])&& (MasterServer.PollHostList().Length != 0))
 				{
 					button[3].normal.background=button[5].active.background;
-					gameObject.SendMessage("Join", "blue");
+					gameObject.SendMessage("Join", "Blue");
 					//Debug.Log("campaing");
 					//selection=3;
 					//createOrplay=true;
