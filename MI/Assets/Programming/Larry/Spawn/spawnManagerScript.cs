@@ -40,12 +40,12 @@ public class spawnManagerScript : MonoBehaviour
 			if(spawnStart.gameObject.name.Contains("Blue") || spawnStart.gameObject.name.Contains("blue"))
 			{
 				blueStart.Add(spawnStart);
-				Debug.Log("Start Blue");
+				//Debug.Log("Start Blue");
 			}
 			else if(spawnStart.gameObject.name.Contains("Red") || spawnStart.gameObject.name.Contains("red"))
 			{
 				redStart.Add(spawnStart);
-				Debug.Log("Start Red");
+				//Debug.Log("Start Red");
 			}
 		}
 
@@ -151,16 +151,26 @@ public class spawnManagerScript : MonoBehaviour
 			//testing-------------------------------------------
 			if(tag == "Blue")
 			{
-				spawnPlayer(thisGO, blueStart[0].transform.position);
-				removeSpwn("Blue");
+				foreach(GameObject GO in blueStart)
+				{
+					if(GO.activeInHierarchy)
+						finalSpawnPos = GO;
+				}
+				spawnPlayer(thisGO, finalSpawnPos.transform.position);
+				//removeSpwn("Blue");
 				//blueStart.RemoveAt(0);
 			}
 			//else if(playerSpawning.tag == "Red")
 			//testing------------------------------------
 			else if(tag == "Red")
 			{
-				spawnPlayer(thisGO, redStart[0].transform.position);
-				removeSpwn("Red");
+				foreach(GameObject GO in redStart)
+				{
+					if(GO.activeInHierarchy)
+						finalSpawnPos = GO;
+				}
+				spawnPlayer(thisGO, finalSpawnPos.transform.position);
+				//removeSpwn("Red");
 				//redStart.RemoveAt(0);
 			}
 		}
