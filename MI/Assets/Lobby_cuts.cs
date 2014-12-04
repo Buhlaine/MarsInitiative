@@ -2,9 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class NetworkLobby : MonoBehaviour {
-
-	public HostData[] hostList;
+public class Lobby_cuts : MonoBehaviour {
+	
+	private HostData[] hostList;
 	//public string ip = "127.0.0.1";
 	public int port = 23466;
 	
@@ -14,7 +14,7 @@ public class NetworkLobby : MonoBehaviour {
 	
 	//private string MSIP = "localhost";
 	private string MSIP = "smp.awesomecraft.net";
-
+	
 	void Start(){
 		MasterServer.ipAddress = MSIP;
 		gameName = "Game "+((int)Random.Range(1000,9999)).ToString();
@@ -28,7 +28,7 @@ public class NetworkLobby : MonoBehaviour {
 		}
 	}
 	
-	void RefreshHostList(){
+	public void RefreshHostList(){
 		MasterServer.ClearHostList();
 		MasterServer.RequestHostList("Sol");
 	}
@@ -39,10 +39,25 @@ public class NetworkLobby : MonoBehaviour {
 		}
 		MasterData.MasterDataInstance.SendMessage("sendRegisterRequest", _team);
 		yield return new WaitForSeconds(2);
-		Application.LoadLevel("Main");
+		Application.LoadLevel("level");
 	}
-	
-	void OnGUI(){
+
+	//UI sendmessages
+
+	public void Register(string team){
+		Network.InitializeServer(32, port+(int)Random.Range(1,100), false);
+		MasterServer.RegisterHost("Sol",gameName);
+		StartCoroutine(waitConnection(team));
+		RefreshHostList();
+		isHost = true;
+	}
+
+	public void Join(string team){
+		Network.Connect(MasterServer.PollHostList()[0].ip,MasterServer.PollHostList()[0].port);
+		StartCoroutine(waitConnection(team));
+	}
+
+	/*void OnGUI(){
 		
 		if(GUI.Button(new Rect(50,Screen.height-100,200,50),"Refresh")){
 			RefreshHostList();
@@ -76,10 +91,10 @@ public class NetworkLobby : MonoBehaviour {
 				}
 			}
 		}
-
-		/*if(GUI.Button(new Rect(Screen.width-250,Screen.height-100,200,50),"DC")){
+		
+		if(GUI.Button(new Rect(Screen.width-250,Screen.height-100,200,50),"DC")){
 			Network.Disconnect();
-		}*/
-
-	}
+		}
+		
+	}*/
 }

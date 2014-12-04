@@ -69,7 +69,7 @@ public class start_menu : MonoBehaviour {
 		widthpos [8] = 0.65f;
 		heightpos [8] = 0.7f;//728
 
-		widthpos [9] = 0.759375f;
+		widthpos [9] = 0.759375f;//1215
 		heightpos [9] = 0.7f;//728
 
 		widthpos [10] = 0.65f;
@@ -123,6 +123,7 @@ public class start_menu : MonoBehaviour {
 		Rect Button7=new Rect (widthpos[8]*Screen.width, heightpos[8]*Screen.height, widthdim[0]*Screen.width, heightdim[0]*Screen.height);
 		Rect Button7BlueHalf=new Rect (widthpos[9]*Screen.width, heightpos[9]*Screen.height, widthdim[1]*Screen.width, heightdim[1]*Screen.height);
 		Rect Button7RedHalf=new Rect (widthpos[10]*Screen.width, heightpos[10]*Screen.height, widthdim[1]*Screen.width, heightdim[1]*Screen.height);
+		Rect Button8=new Rect (0.88f*Screen.width, heightpos[9]*Screen.height, widthdim[1]*Screen.width, heightdim[1]*Screen.height);
 
 		if(selection==1)
 		{
@@ -209,6 +210,12 @@ public class start_menu : MonoBehaviour {
 				button[1].hover.background=button[1].active.background;
 				widthpos[type]=Mathf.Lerp(widthpos[type], 1.0f, Time.deltaTime);
 				widthpos[type]=Mathf.Lerp(widthpos[type], 1.0f, Time.deltaTime);
+				if(GUI.Button(Button8, "Refresh", button[6]))
+				{
+					gameObject.SendMessage("RefreshHostList");
+
+				}
+				GUI.Box(Button8, "Refresh", BN);
 				GUI.Box (Button6, "Register", button[2]);
 //				if(GUI.Button (Button6, "Register"))
 //				{
@@ -219,6 +226,7 @@ public class start_menu : MonoBehaviour {
 				if(GUI.Button (Button6RedHalf, "Register",button[4]))
 				{
 					button[2].normal.background=button[4].active.background;
+					gameObject.SendMessage("Register", "red");
 					//Debug.Log("campaing");
 					//selection=3;
 					//createOrplay=true;
@@ -228,6 +236,7 @@ public class start_menu : MonoBehaviour {
 				if(GUI.Button (Button6BlueHalf, "Register",button[5]))
 				{
 					button[2].normal.background=button[5].active.background;
+					gameObject.SendMessage("Register", "blue");
 					//Debug.Log("campaing");
 					//selection=3;
 					//createOrplay=true;
@@ -242,18 +251,20 @@ public class start_menu : MonoBehaviour {
 //					//createOrplay=true;
 //				}
 
-				if(GUI.Button (Button7RedHalf, "Join",button[4]))
+				if(GUI.Button (Button7RedHalf, "Join",button[4])&& (MasterServer.PollHostList().Length != 0))
 				{
 					button[3].normal.background=button[4].active.background;
+					gameObject.SendMessage("Join", "red");
 					//Debug.Log("campaing");
 					//selection=3;
 					//createOrplay=true;
 				}
 				GUI.Box (Button7RedHalf, "Join",BN);
 
-				if(GUI.Button (Button7BlueHalf, "Join",button[5]))
+				if(GUI.Button (Button7BlueHalf, "Join",button[5])&& (MasterServer.PollHostList().Length != 0))
 				{
 					button[3].normal.background=button[5].active.background;
+					gameObject.SendMessage("Join", "blue");
 					//Debug.Log("campaing");
 					//selection=3;
 					//createOrplay=true;
