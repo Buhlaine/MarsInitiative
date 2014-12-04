@@ -149,7 +149,8 @@ public class spawnManagerScript : MonoBehaviour
 		{
 			//if(playerSpawning.tag == "Blue")
 			//testing-------------------------------------------
-			if(tag == "Blue")
+			//if(tag == "Blue")
+			if(thisGO.gameObject.GetComponent<Player>().team == "Blue")
 			{
 				foreach(GameObject GO in blueStart)
 				{

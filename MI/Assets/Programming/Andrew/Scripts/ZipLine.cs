@@ -16,6 +16,10 @@ public class ZipLine : MonoBehaviour {
 		}
 	}
 	
+	void Update () {
+		
+	}
+	
 	void OnDrawGizmos(){
 		Gizmos.color = Color.red;
 		Gizmos.DrawLine(this.transform.position+(Vector3.up*0.5f),target.transform.position);
@@ -23,12 +27,11 @@ public class ZipLine : MonoBehaviour {
 	
 	void OnTriggerStay(Collider collider){
 		if (Input.GetKeyDown(KeyCode.R)){
-			//Debug.Log("R");
+			Debug.Log("R");
 			if(collider.gameObject.tag == "Player"){
-				//Debug.Log("Plyaer");
-				collider.gameObject.SendMessage("ZiplineStart");
+				Debug.Log("Plyaer");
+				//collider.gameObject.SendMessage("lockMovement",collider.gameObject);
 				StartCoroutine(Zip(collider.gameObject));
-				
 			}
 		}
 	}
@@ -40,7 +43,6 @@ public class ZipLine : MonoBehaviour {
 			progress += Time.deltaTime;
 			Debug.Log(progress.ToString());
 			yield return null;
-			collider.gameObject.SendMessage("ZiplineStop");
 		}
 	}
 	
