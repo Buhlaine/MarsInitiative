@@ -3,47 +3,31 @@ using System.Collections;
 
 public class DoorClient : MonoBehaviour 
 {
-	public float doorTimer;
-	public bool isOpen;
-	public GameObject door;
-	private Collider collider;
+	private BoxCollider collider;
 
 	void Start()
 	{
-		doorTimer = 0.0f;
-		collider = this.gameObject.GetComponent<Collider> ();
+		collider = this.gameObject.GetComponent<BoxCollider>();
+
+		ConnectToServer();
 	}
 
-	void Update()
-	{
-		if(isOpen) {
-			doorTimer += 1.0f * Time.deltaTime;
-		}
-
-		if(doorTimer >= 10.0f) {
-			Reset ();
-			doorTimer = 0.0f;
-		}
+	void ConnectToServer() {
+		Network.Connect("127.0.0.1", 25000);
 	}
 
 	[RPC]
-	void Interact()
+	void OpenDoor(bool colliderOff)
 	{
-		animation.Play ("Open");
-		collider.enabled = false;
-		// Send RPC to NetworkPeerType
+		animation.Play ();
+		collider.enabled = colliderOff;
+		networkView.RPC("OpenDoor", RPCMode.All, colliderOff);
 	}
 
-	[RPC]
-	void Reset()
+	void OnTriggerEnter(Collider other)
 	{
-		animation.Play ("Close"); 
-		collider.enabled = true;
-		// Send RPC to NetworkPeerType
-	}
-
-	void OnConnectedToServer()
-	{
-		//TODO Destroy Dummy Door
+		if(other.gameObject.tag == "Player") {
+			OpenDoor(false);
+		}
 	}
 }

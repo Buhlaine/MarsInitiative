@@ -1,0 +1,103 @@
+fileFormatVersion: 2
+guid: ad25054fe98e7cf459078ac6c234b64b
+ModelImporter:
+  serializedVersion: 16
+  fileIDToRecycleName:
+    100000: Akward_tunnel_01
+    100002: //RootNode
+    100004: IrisDoor
+    100006: IrisDoorJT0
+    100008: IrisDoorJT1
+    100010: IrisDoorJT10
+    100012: IrisDoorJT11
+    100014: IrisDoorJT12
+    100016: IrisDoorJT2
+    100018: IrisDoorJT3
+    100020: IrisDoorJT4
+    100022: IrisDoorJT5
+    100024: IrisDoorJT6
+    100026: IrisDoorJT7
+    100028: IrisDoorJT8
+    100030: IrisDoorJT9
+    100032: IrisDoorJTMain
+    100034: polySurface2
+    400000: Akward_tunnel_01
+    400002: //RootNode
+    400004: IrisDoor
+    400006: IrisDoorJT0
+    400008: IrisDoorJT1
+    400010: IrisDoorJT10
+    400012: IrisDoorJT11
+    400014: IrisDoorJT12
+    400016: IrisDoorJT2
+    400018: IrisDoorJT3
+    400020: IrisDoorJT4
+    400022: IrisDoorJT5
+    400024: IrisDoorJT6
+    400026: IrisDoorJT7
+    400028: IrisDoorJT8
+    400030: IrisDoorJT9
+    400032: IrisDoorJTMain
+    400034: polySurface2
+    2300000: polySurface2
+    3300000: polySurface2
+    4300000: polySurface2
+    4300002: IrisDoor
+    7400000: Take 001
+    9500000: //RootNode
+    11100000: //RootNode
+    13700000: IrisDoor
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: .00999999978
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 1
+  additionalBone: 0
+  userData: 
