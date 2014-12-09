@@ -99,7 +99,7 @@ public class playerDetect : MonoBehaviour {
 		{
 			//Add player to dictionary and keep track of it's teamColor
 			//Might have to add a check to see if entering object is actually a player
-			playersInZone.Add(playerInRange.gameObject, playerInRange.tag);
+			playersInZone.Add(playerInRange.gameObject, playerInRange.GetComponent<Player>().team);
 		}
 	}
 

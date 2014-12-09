@@ -27,6 +27,8 @@ public class baseScript : MonoBehaviour {
 		//gathering flags on map
 		GameObject[] flagTest = GameObject.FindGameObjectsWithTag ("Flag");
 		GameObject[] baseTest = GameObject.FindGameObjectsWithTag ("Base");
+		Debug.LogWarning ("Flag count: " + flagTest.Length);
+		Debug.LogWarning ("Base count: " + baseTest.Length);
 
 		foreach(GameObject bases in baseTest)
 		{
@@ -53,13 +55,13 @@ public class baseScript : MonoBehaviour {
 		}
 
 		//setting team and enemy color for use later
-		if(teamFlag.name == "blueFlagObj")
+		if(teamFlag.name.Contains("Blue"))
 		{
 			//renderer.material.color = Color.blue;
 			teamTag = "Blue";
 			enemyTag = "Red";
 		}
-		else if(teamFlag.name =="redFlagObj")
+		else if(teamFlag.name.Contains("Red"))
 		{
 			//renderer.material.color = Color.red;
 			teamTag = "Red";

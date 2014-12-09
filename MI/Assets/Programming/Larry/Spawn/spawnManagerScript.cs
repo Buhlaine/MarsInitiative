@@ -123,7 +123,7 @@ public class spawnManagerScript : MonoBehaviour
 			foreach(GameObject spawnP in spawnPoints)
 			{
 				//requesting all spawnPoints to calculate their spawnWeights
-				spawnP.SendMessage("calcSpawnWeight", "Red"/*_requestor.tag*/);
+				spawnP.SendMessage("calcSpawnWeight", thisGO.GetComponent<Player>().team);
 				//accessing their script to get spawn weight
 				spawnWeight = spawnP.GetComponent<playerDetect>();
 				//setting their spawnWeight in the Dictionary
