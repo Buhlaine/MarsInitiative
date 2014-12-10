@@ -13,6 +13,8 @@ public class upgrade_screen : MonoBehaviour {
 	public GUIStyle upgrade_W;
 	//player level style
 	public GUIStyle player_L;
+	//level skill points style
+	public GUIStyle skillPoints;
 	//level descripton style
 	public GUIStyle PLD;
 	//player level
@@ -218,7 +220,7 @@ public class upgrade_screen : MonoBehaviour {
 	[RPC]
 	void levelChecking( ArrayList playerInfo)
 	{
-		playerName = playerInfo[0].ToString();
+		playerName = "-"+playerInfo[0].ToString()+"-";
 		currentLevel = (int) playerInfo[1];
 		className = playerclass[(int) playerInfo [2]];
 		skillpoints = (int) playerInfo [3];
@@ -245,6 +247,9 @@ public class upgrade_screen : MonoBehaviour {
 
 		player_L.normal.textColor = new Color32(254,245,147,255);
 		player_L.fontSize = 85; 
+
+		skillPoints.normal.textColor = new Color32(210,142,210,255);
+		skillPoints.fontSize = 55; 
 
 		if(upgrading)
 		{
@@ -449,6 +454,10 @@ public class upgrade_screen : MonoBehaviour {
 			//PLAYER'S NAME
 			Vector2 cobt = player_L.CalcSize (new GUIContent(playerName));
 			GUI.Box (new Rect (0.74375f*Screen.width-(cobt.x/2), 0.7980769f*Screen.height, cobt.x, 0.1201923f*Screen.height), playerName, player_L);
+
+			//SKILLPOINTS
+			GUI.Box (new Rect (0.1f*Screen.width, 0.7f*Screen.height, 0.07625f*Screen.width, 0.1201923f*Screen.height), "Skill"+ System.Environment.NewLine+"Points", skillPoints);
+			GUI.Box (new Rect (0.18f*Screen.width, 0.68f*Screen.height, 0.07625f*Screen.width, 0.1201923f*Screen.height), skillpoints.ToString(), player_L);
 
 
 //			Debug.LogWarning(((830.0f*100)/Screen.height)/100+"h");
