@@ -1,10 +1,12 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Programming\Marcus\Animation\animationScripts\heavyAnimCtrlScript.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Programming\Ramon\chat\mychat.cs">
     <Files>
-      <File FileName="Assets\Programming\Ramon\minimap\miniMapScript.cs" Line="1" Column="1" />
-      <File FileName="Assets\Programming\Marcus\Animation\animationScripts\singlePlayer_AnimCtrl.cs" Line="74" Column="5" />
-      <File FileName="Assets\Programming\Marcus\Animation\animationScripts\heavyAnimCtrlScript.cs" Line="25" Column="12" />
+      <File FileName="Assets\Programming\Ramon\minimap\miniMapScript.cs" Line="191" Column="1" />
+      <File FileName="Assets\Programming\Dori\Scripts\Player.cs" Line="508" Column="2" />
+      <File FileName="Assets\Programming\Ramon\start menu\start_menu.cs" Line="338" Column="1" />
+      <File FileName="Assets\Programming\Ramon\chat\mychat.cs" Line="189" Column="1" />
+      <File FileName="Assets\Programming\Ramon\abilities\upgrade_screen.cs" Line="221" Column="17" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
