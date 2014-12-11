@@ -25,7 +25,7 @@ public class spawnManagerScript : MonoBehaviour
 	public GameObject assassin;
 	public GameObject enforcer;
 	public GameObject trooper;
-	bool gameBegin = false;
+	public bool gameBegin = false;
 	GameObject testObj;
 
 	//Testing stuff

@@ -49,15 +49,29 @@ public class miniMapScript : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		iconHalfSize = iconSize / 2;
-		findEnemies();
+		//findEnemies();
+		Debug.LogWarning("starttttttttttttttt");
 		
 	}
 	
 	void findEnemies()
 	{
-		enemy = GameObject.FindGameObjectsWithTag ("Enemy");
+		if(this.GetComponent<Player>().team=="Red")
+		{
+			Debug.LogWarning("REEDDDDDDDDDDDDD");
+			enemy = GameObject.FindGameObjectsWithTag ("Blue");
 
-		ally = GameObject.FindGameObjectsWithTag ("Ally");
+			ally = GameObject.FindGameObjectsWithTag ("Red");
+		}
+		else if(this.GetComponent<Player>().team=="Blue")
+		{
+			Debug.LogWarning("BLUEEEEEEEEEEEEE");
+			enemy = GameObject.FindGameObjectsWithTag ("Red");
+			
+			ally = GameObject.FindGameObjectsWithTag ("Blue");
+		}
+
+		Debug.LogWarning("NOTHINNGGGGGGGGGGGGGGG");
 		//for(int i=0; i<enemy.Length; i++)
 		//Debug.Log (enemy[i].transform.name);
 		
@@ -65,6 +79,11 @@ public class miniMapScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if(GameObject.FindGameObjectWithTag("spwnManager").GetComponent<spawnManagerScript>().gameBegin)
+		{
+			findEnemies();
+		}
+		Debug.LogWarning("starttttttttttttttt");
 		playerIconWidth = (0.9f * Screen.width);
 		playerIconHeight = (0.1f * Screen.height);
 		mapMiddleY = playerIconHeight + iconHalfSize;
@@ -108,35 +127,44 @@ public class miniMapScript : MonoBehaviour {
 		GUIUtility.RotateAroundPivot(angle, pivot);
 		GUI.DrawTexture (mapPos, map);//makes map
 
-		//enemy
-		for(int i=0; i<enemy.Length; i++)
+		if(GameObject.FindGameObjectWithTag("spwnManager").GetComponent<spawnManagerScript>().gameBegin)
 		{
-			if(enemy[i].name==visibleEnemyOnMap)
+			//enemy
+			if(enemy.Length>0)
 			{
-				//enemy's icon position
-				float ex = GetMapPos (enemy[i].transform.position.x, mapWidth, sceneWidth);
-				float ez = GetMapPos (enemy[i].transform.position.z, mapHeight, sceneHeight);
-				float enemyMapx = ((ex - iconHalfSize)+((mapMiddleX)-((mapMiddleX) - (mapWidth / 4)))-playerMapx);
-				// playericonwidth= so it starts at the same place|||playermapx=so it move with the map
-				float enemyMapz = ((((ez * -1.0f) - iconHalfSize) + mapHeight)+((mapMiddleY)-((mapMiddleY) - (mapHeight / 4))-playerMapz));
+				for(int i=0; i<enemy.Length; i++)
+				{
+					if(enemy[i].name==visibleEnemyOnMap)
+					{
+						//enemy's icon position
+						float ex = GetMapPos (enemy[i].transform.position.x, mapWidth, sceneWidth);
+						float ez = GetMapPos (enemy[i].transform.position.z, mapHeight, sceneHeight);
+						float enemyMapx = ((ex - iconHalfSize)+((mapMiddleX)-((mapMiddleX) - (mapWidth / 4)))-playerMapx);
+						// playericonwidth= so it starts at the same place|||playermapx=so it move with the map
+						float enemyMapz = ((((ez * -1.0f) - iconHalfSize) + mapHeight)+((mapMiddleY)-((mapMiddleY) - (mapHeight / 4))-playerMapz));
 
-				GUI.Box (new Rect (enemyMapx, enemyMapz , iconSize, iconSize), "", enemyIcon);
+						GUI.Box (new Rect (enemyMapx, enemyMapz , iconSize, iconSize), "", enemyIcon);
 
-			}//enemy icon
-		}
+					}//enemy icon
+				}
+			}
 
-		//ally
-		for(int i=0; i<ally.Length; i++)
-		{
-				//ally's icon position
-				float ex = GetMapPos (ally[i].transform.position.x, mapWidth, sceneWidth);
-				float ez = GetMapPos (ally[i].transform.position.z, mapHeight, sceneHeight);
-				float enemyMapx = ((ex - iconHalfSize)+((mapMiddleX)-((mapMiddleX) - (mapWidth / 4)))-playerMapx);
-				// playericonwidth= so it starts at the same place|||playermapx=so it move with the map
-				float enemyMapz = ((((ez * -1.0f) - iconHalfSize) + mapHeight)+((mapMiddleY)-((mapMiddleY) - (mapHeight / 4))-playerMapz));
-				
-				GUI.Box (new Rect (enemyMapx, enemyMapz , iconSize, iconSize), "", allyIcon);
-				
+			//ally
+			if(ally.Length>0)
+			{
+				for(int i=0; i<ally.Length; i++)
+				{
+						//ally's icon position
+						float ex = GetMapPos (ally[i].transform.position.x, mapWidth, sceneWidth);
+						float ez = GetMapPos (ally[i].transform.position.z, mapHeight, sceneHeight);
+						float enemyMapx = ((ex - iconHalfSize)+((mapMiddleX)-((mapMiddleX) - (mapWidth / 4)))-playerMapx);
+						// playericonwidth= so it starts at the same place|||playermapx=so it move with the map
+						float enemyMapz = ((((ez * -1.0f) - iconHalfSize) + mapHeight)+((mapMiddleY)-((mapMiddleY) - (mapHeight / 4))-playerMapz));
+						
+						GUI.Box (new Rect (enemyMapx, enemyMapz , iconSize, iconSize), "", allyIcon);
+						
+				}
+			}
 		}
 		GUI.matrix = matrixBackup;
 		//GUI.DrawTexture (new Rect (0, 0, mapWidth, mapHeight), texture2);

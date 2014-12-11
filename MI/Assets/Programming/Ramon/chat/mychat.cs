@@ -113,7 +113,7 @@ public class mychat : MonoBehaviour {
 			if(stringToEdit != "")
 			{
 				//Input.eatKeyPressOnTextFieldFocus = false;
-				chat(this.name+":"+" "+stringToEdit);
+				chat(GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().name+":"+" "+stringToEdit);
 				stringToEdit ="";
 				StopCoroutine ("disappearanceTime");
 				//Input.eatKeyPressOnTextFieldFocus = true;

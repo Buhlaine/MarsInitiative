@@ -133,7 +133,7 @@ public class start_menu : MonoBehaviour {
 			button[0].hover.background=button[0].active.background;
 			widthpos[0]=Mathf.Lerp(widthpos[0], 1.0f, Time.deltaTime);
 			widthpos[2]=Mathf.Lerp(widthpos[2], 1.0f, Time.deltaTime);
-			Debug.LogWarning(widthpos[0]);
+			//Debug.LogWarning(widthpos[0]);
 
 			//Debug.LogWarning(i); 
 		}
