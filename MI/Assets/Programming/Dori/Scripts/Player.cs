@@ -357,8 +357,7 @@ public class Player : MonoBehaviour
 		this.gameObject.SendMessage ("Dead", true);
 		this.gameObject.SendMessage ("setLife");
 
-		// Turn the game object off so the player can't see the spawning process and the colliders aren't active
-		this.gameObject.SetActive (false);
+		this.gameObject.transform.position = GameObject.FindGameObjectWithTag ("HoldingSpot").transform.position;
 	}
 
 	void KillYourself()

@@ -140,10 +140,10 @@ public class baseScript : MonoBehaviour {
 		flagHere = true;
 	}
 
-	void OnGUI()
-	{
-		GUI.Label (new Rect (Camera.main.WorldToScreenPoint (this.transform.position).x, 10, 100, 50), teamTag +  " flag caps: " + flagCaps);
-	}
+//	void OnGUI()
+//	{
+//		GUI.Label (new Rect (Camera.main.WorldToScreenPoint (this.transform.position).x, 10, 100, 50), teamTag +  " flag caps: " + flagCaps);
+//	}
 
 //	void setCarriedFlag(GameObject enemyFlag)
 //	{
