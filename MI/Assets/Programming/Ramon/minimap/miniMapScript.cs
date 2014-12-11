@@ -11,6 +11,7 @@ public class miniMapScript : MonoBehaviour {
 	
 	public GUIStyle playerIcon;//player location on map
 	public GUIStyle enemyIcon;//enemy location on map
+	public GUIStyle allyIcon;//ally location on map
 	public GUIStyle mapstyle;
 	
 	public float mapMiddleX;//middle of the minimap
@@ -38,6 +39,10 @@ public class miniMapScript : MonoBehaviour {
 	//finding enemies stuff
 	//public ArrayList enemies;
 	GameObject[] enemy;
+
+	//finding allies stuff
+	//public ArrayList allies;
+	GameObject[] ally;
 	
 	string visibleEnemyOnMap;
 	
@@ -51,6 +56,8 @@ public class miniMapScript : MonoBehaviour {
 	void findEnemies()
 	{
 		enemy = GameObject.FindGameObjectsWithTag ("Enemy");
+
+		ally = GameObject.FindGameObjectsWithTag ("Ally");
 		//for(int i=0; i<enemy.Length; i++)
 		//Debug.Log (enemy[i].transform.name);
 		
@@ -100,7 +107,8 @@ public class miniMapScript : MonoBehaviour {
 		Matrix4x4 matrixBackup = GUI.matrix;
 		GUIUtility.RotateAroundPivot(angle, pivot);
 		GUI.DrawTexture (mapPos, map);//makes map
-		
+
+		//enemy
 		for(int i=0; i<enemy.Length; i++)
 		{
 			if(enemy[i].name==visibleEnemyOnMap)
@@ -116,6 +124,20 @@ public class miniMapScript : MonoBehaviour {
 
 			}//enemy icon
 		}
+
+		//ally
+		for(int i=0; i<ally.Length; i++)
+		{
+				//ally's icon position
+				float ex = GetMapPos (ally[i].transform.position.x, mapWidth, sceneWidth);
+				float ez = GetMapPos (ally[i].transform.position.z, mapHeight, sceneHeight);
+				float enemyMapx = ((ex - iconHalfSize)+((mapMiddleX)-((mapMiddleX) - (mapWidth / 4)))-playerMapx);
+				// playericonwidth= so it starts at the same place|||playermapx=so it move with the map
+				float enemyMapz = ((((ez * -1.0f) - iconHalfSize) + mapHeight)+((mapMiddleY)-((mapMiddleY) - (mapHeight / 4))-playerMapz));
+				
+				GUI.Box (new Rect (enemyMapx, enemyMapz , iconSize, iconSize), "", allyIcon);
+				
+		}
 		GUI.matrix = matrixBackup;
 		//GUI.DrawTexture (new Rect (0, 0, mapWidth, mapHeight), texture2);
 		
@@ -128,7 +150,7 @@ public class miniMapScript : MonoBehaviour {
 		float mapDiagonal=Mathf.Sqrt(Mathf.Pow(mapParameter.width,2)+Mathf.Pow(mapParameter.height,2));
 
 		//using the diagonal of the map define the size of the circle border so it doesnt so the corners
-		GUI.DrawTexture (new Rect (mapParameter.xMin-((mapDiagonal-mapParameter.width)/2), mapParameter.yMin-((mapDiagonal-mapParameter.height)/2), mapParameter.width+(mapDiagonal-mapParameter.width), mapParameter.height+(mapDiagonal-mapParameter.height)), mapBorder);
+		GUI.DrawTexture (new Rect (mapParameter.xMin-((mapDiagonal-mapParameter.width)), mapParameter.yMin-((mapDiagonal-mapParameter.height)), mapParameter.width+(mapDiagonal-mapParameter.width)*2f, mapParameter.height+(mapDiagonal-mapParameter.height)*2f), mapBorder);
 		
 	}
 	
