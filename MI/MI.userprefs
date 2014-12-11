@@ -1,8 +1,10 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Programming\Ramon\minimap\miniMapScript.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Programming\Marcus\Animation\animationScripts\heavyAnimCtrlScript.cs">
     <Files>
-      <File FileName="Assets\Programming\Ramon\minimap\miniMapScript.cs" Line="153" Column="251" />
+      <File FileName="Assets\Programming\Ramon\minimap\miniMapScript.cs" Line="1" Column="1" />
+      <File FileName="Assets\Programming\Marcus\Animation\animationScripts\singlePlayer_AnimCtrl.cs" Line="74" Column="5" />
+      <File FileName="Assets\Programming\Marcus\Animation\animationScripts\heavyAnimCtrlScript.cs" Line="25" Column="12" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
