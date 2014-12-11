@@ -1,8 +1,8 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Programming\Ramon\minimap\miniMapScript.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Programming\Dori\Scripts\DoorLocal.cs">
     <Files>
-      <File FileName="Assets\Programming\Ramon\minimap\miniMapScript.cs" Line="153" Column="251" />
+      <File FileName="Assets\Programming\Dori\Scripts\DoorLocal.cs" Line="24" Column="62" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
