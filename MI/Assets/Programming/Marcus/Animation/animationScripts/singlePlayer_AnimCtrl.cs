@@ -43,8 +43,6 @@ public class singlePlayer_AnimCtrl : MonoBehaviour
 	
 	void FixedUpdate()
 	{
-		if(networkView.isMine)
-		{
 			//setting the vertical and horizontal movement values for the animator
 			VMovement = Input.GetAxis("Vertical");
 			HMovement = Input.GetAxis("Horizontal");
@@ -170,8 +168,7 @@ public class singlePlayer_AnimCtrl : MonoBehaviour
 			{
 				anim.SetBool("HasCapsule",HasCapsule);
 			}
-			
-		}
+
 	}
 	
 	public void Zipline(bool activate)
