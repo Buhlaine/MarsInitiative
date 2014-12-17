@@ -64,36 +64,12 @@ public class spawnManagerScript : MonoBehaviour
 
 	void Update () 
 	{
-		//Testing Purposes
-		//Remove input when in game use
-		//Player request to spawn
-//		if(Input.GetKeyDown(KeyCode.Y))
-//		{
-//			for(int i = 0; i < 8; i++)
-//			{
-//				Debug.Log(i);
-//				//checkSpawn(thisGO);
-//			}
-//		}
-//		if(Input.GetKeyDown(KeyCode.H))
-//		{
-//			spawnRequest(thisGO);
-//		}
-//		if(Input.GetKeyDown(KeyCode.J))
-//		{
-//			networkView.RPC("setGameBegin", RPCMode.All);
-//			if(networkView.isMine)
-//				check = true;
-//		}
-//		if(Input.GetKeyDown(KeyCode.K))
-//		{
-//			Debug.Log(gameBegin);
-//		}
+
 	}
 	
 	IEnumerator spawnDelay(float delayTime, GameObject thisGO)
 	{
-		Debug.Log ("Spawn Start time: " + Time.time);
+		//Debug.Log ("Spawn Start time: " + Time.time);
 		yield return new WaitForSeconds(delayTime);
 		checkSpawn(thisGO);
 	}
@@ -140,16 +116,19 @@ public class spawnManagerScript : MonoBehaviour
 		//move playerScript = playerSpawning.GetComponent<move> ();
 		//string playerClass = playerScript.playerClass;
 		//----------------------------------------------------------------------------
-		testObj = thisGO;
+		//testObj = thisGO;
 		//for testing---------------------------------------------------------------
-		string tag = "Red";
+		//string tag = "Red";
 		//string playerClass = "assassin";
 		//-----------------------------------------------------------------------------
+		Debug.Log ("----------------------");
+		Debug.Log(thisGO.GetComponent<Player>().team);
 		if(!gameBegin)
 		{
 			//if(playerSpawning.tag == "Blue")
 			//testing-------------------------------------------
 			//if(tag == "Blue")
+			Debug.Log(thisGO.GetComponent<Player>().team);
 			if(thisGO.gameObject.GetComponent<Player>().team == "Blue")
 			{
 				foreach(GameObject GO in blueStart)
@@ -157,19 +136,21 @@ public class spawnManagerScript : MonoBehaviour
 					if(GO.activeInHierarchy)
 						finalSpawnPos = GO;
 				}
+				Debug.Log("Red");
 				spawnPlayer(thisGO, finalSpawnPos.transform.position);
 				//removeSpwn("Blue");
 				//blueStart.RemoveAt(0);
 			}
 			//else if(playerSpawning.tag == "Red")
 			//testing------------------------------------
-			else if(tag == "Red")
+			else if(thisGO.gameObject.GetComponent<Player>().team == "Red")
 			{
 				foreach(GameObject GO in redStart)
 				{
 					if(GO.activeInHierarchy)
 						finalSpawnPos = GO;
 				}
+				Debug.Log("Blue");
 				spawnPlayer(thisGO, finalSpawnPos.transform.position);
 				//removeSpwn("Red");
 				//redStart.RemoveAt(0);

@@ -84,9 +84,11 @@ public class baseScript : MonoBehaviour {
 
 	void OnTriggerStay(Collider colliderInfo)
 	{
+		Debug.Log ("+++++++++++++++++++++++++");
 		//checking to see if flag is at base
 		if(flagHere)
 		{
+			//Debug.Log ("---------------------------");
 			//checking to see if colliderinfo is enemy
 			//if enemy, flag is captured, follow enemy
 			if(colliderInfo.tag == "Player")
@@ -94,6 +96,7 @@ public class baseScript : MonoBehaviour {
 				Player colPlayer = colliderInfo.gameObject.GetComponent<Player> ();
 				if(colPlayer.team == enemyTag)
 				{
+					//Debug.Log (enemyTag + "+++++++++++++++++++++++++");
 					teamFlag.SendMessage("followPlayer", colliderInfo.gameObject as GameObject);
 					//setting carrying on enemy player
 					colliderInfo.SendMessage("obtainedFlag");
@@ -102,9 +105,10 @@ public class baseScript : MonoBehaviour {
 				}
 				//check to see if colliderinfo is team
 				//if team, check to see if play is carrying
-				else if(colliderInfo.tag == teamTag)
+				else if(colliderInfo.tag == "Player")
 				{
-					colliderInfo.SendMessage("isCarrying", this.gameObject as GameObject);
+					if(colPlayer.team == teamTag)
+						colliderInfo.SendMessage("isCarrying", this.gameObject as GameObject);
 				}
 			}
 		}
